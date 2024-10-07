@@ -9,22 +9,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.LoginController">
    <right>
-      <AnchorPane prefHeight="400.0" prefWidth="335.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="640.0" prefWidth="606.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="24.0" layoutY="167.0" prefHeight="17.0" prefWidth="54.0" text="Username" />
-            <Label layoutX="24.0" layoutY="215.0" text="Password" />
-            <TextField fx:id="usernameField" layoutX="93.0" layoutY="163.0" promptText="Enter Username..." />
-            <TextField layoutX="93.0" layoutY="211.0" promptText="Enter Password..." />
-            <Button layoutX="113.0" layoutY="264.0" mnemonicParsing="false" onAction="#loginAccepted" prefHeight="25.0" prefWidth="110.0" text="Login" />
-            <PasswordField fx:id="passwordField" layoutX="94.0" layoutY="211.0" promptText="Enter Password..." />
-            <Label fx:id="loginResult" alignment="CENTER" layoutY="317.0" prefHeight="18.0" prefWidth="335.0" />
+            <Label layoutX="106.0" layoutY="236.0" prefHeight="24.0" prefWidth="64.0" text="Username" />
+            <Label layoutX="106.0" layoutY="284.0" prefHeight="24.0" prefWidth="64.0" text="Password" />
+            <TextField fx:id="usernameField" layoutX="190.0" layoutY="232.0" prefHeight="32.0" prefWidth="320.0" promptText="Enter Username..." />
+            <TextField layoutX="189.0" layoutY="283.0" promptText="Enter Password..." />
+            <Button layoutX="106.0" layoutY="336.0" mnemonicParsing="false" onAction="#loginAccepted" prefHeight="26.0" prefWidth="405.0" text="Login" />
+            <PasswordField fx:id="passwordField" layoutX="190.0" layoutY="283.0" prefHeight="32.0" prefWidth="320.0" promptText="Enter Password..." />
+            <Label fx:id="loginResult" alignment="CENTER" layoutX="106.0" layoutY="389.0" prefHeight="18.0" prefWidth="409.0" />
          </children>
       </AnchorPane>
    </right>
    <center>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fitHeight="197.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../Images/img.png" />
          </image></ImageView>
