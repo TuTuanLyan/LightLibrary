@@ -11,7 +11,10 @@ target/
 *.iws
 *.iml
 *.ipr
-.idea/
+.idea/encodings.xml
+.idea/misc.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
 .idea/*
 
 ### Eclipse ###
