@@ -1,18 +1,27 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.LightLibrary;
 import com.lightlibrary.Models.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class LoginController {
+
     @FXML
     private Label loginResult;
 
@@ -23,8 +32,8 @@ public class LoginController {
     private PasswordField passwordField;
 
     /**
-     * Check valid of user infor
-     * @param event
+     * Check valid of user information.
+     * @param event read event.
      */
     @FXML
     protected void loginAccepted(ActionEvent event) {
@@ -39,10 +48,10 @@ public class LoginController {
     }
 
     /**
-     * checkLogin checks the correctness of the user information requested to log in
-     * @param username username account
-     * @param password user account password
-     * @return true if user information is correct and false when user information incorrect
+     * checkLogin checks the correctness of the user information requested to log in.
+     * @param username username account.
+     * @param password user account password.
+     * @return true if user information is correct and false when user information incorrect.
      */
     private boolean checkLogin(String username, String password) {
         DatabaseConnection connectNow = new DatabaseConnection();
@@ -72,5 +81,16 @@ public class LoginController {
         }
 
         return false;
+    }
+
+    /**
+     * Switch from Login Scene to Register Scene by click Register button.
+     * @param event will read event when you click on Register button.
+     */
+    public void goToRegister(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/register.fxml")));
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root, 960, 640));
+        stage.show();
     }
 }
