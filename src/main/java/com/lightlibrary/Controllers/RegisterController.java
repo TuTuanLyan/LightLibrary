@@ -65,6 +65,15 @@ public class RegisterController {
 
         boolean valid = true;
 
+        fullNameNotificationLabel.setText("");
+        phoneNumberNotificationLabel.setText("");
+        emailNotificationLabel.setText("");
+        usernameNotificationLabel.setText("");
+        passwordNotificationLabel.setText("");
+        confirmPasswordNotificationLabel.setText("");
+
+        submitRegistrationResult.setText("");
+
         if (fullNameField.getText().isEmpty()) {
             fullNameNotificationLabel.setText("Full Name is required");
             valid = false;
@@ -126,7 +135,7 @@ public class RegisterController {
         int n = fullName.length();
 
         for (int i = 0; i < n; i++) {
-            if (!Character.isLetter(fullName.charAt(i))) {
+            if (!Character.isLetter(fullName.charAt(i)) && fullName.charAt(i) != ' ') {
                 return false;
             }
         }
