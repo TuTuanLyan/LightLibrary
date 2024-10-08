@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.RegisterController">
    <children>
       <BorderPane layoutX="405.0" layoutY="199.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,7 +25,7 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="36.0" prefWidth="320.0" promptText="Enter your full name" />
+                        <TextField fx:id="fullNameField" prefHeight="36.0" prefWidth="320.0" promptText="Enter your full name" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" layoutX="48.0" layoutY="150.0" prefHeight="40.0" prefWidth="480.0">
@@ -36,7 +35,7 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="36.0" prefWidth="320.0" promptText="Enter your phone number" />
+                        <TextField fx:id="phoneNumberField" prefHeight="36.0" prefWidth="320.0" promptText="Enter your phone number" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" layoutX="48.0" layoutY="230.0" prefHeight="40.0" prefWidth="480.0">
@@ -46,7 +45,7 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="36.0" prefWidth="320.0" promptText="Enter your email" />
+                        <TextField fx:id="emailField" prefHeight="36.0" prefWidth="320.0" promptText="Enter your email" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" layoutX="48.0" layoutY="308.0" prefHeight="40.0" prefWidth="480.0">
@@ -56,7 +55,7 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="36.0" prefWidth="320.0" promptText="Enter your user name" />
+                        <TextField fx:id="usernameField" prefHeight="36.0" prefWidth="320.0" promptText="Enter your user name" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" layoutX="48.0" layoutY="397.0" prefHeight="40.0" prefWidth="480.0">
@@ -66,23 +65,31 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <PasswordField prefHeight="36.0" prefWidth="320.0" promptText="Enter your password" />
+                        <PasswordField fx:id="passwordField" prefHeight="36.0" prefWidth="320.0" promptText="Enter your password" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="52.0" layoutY="481.0" prefHeight="40.0" prefWidth="480.0">
+                  <HBox alignment="CENTER" layoutX="48.0" layoutY="482.0" prefHeight="40.0" prefWidth="480.0">
                      <children>
                         <Label prefHeight="40.0" prefWidth="160.0" text="Confirm password">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <PasswordField prefHeight="36.0" prefWidth="320.0" promptText="Confirm your password" />
+                        <PasswordField fx:id="confirmPasswordField" prefHeight="36.0" prefWidth="320.0" promptText="Confirm your password" />
                      </children>
                   </HBox>
-                  <Button alignment="CENTER" layoutX="137.0" layoutY="565.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="320.0" text="Submit" textAlignment="CENTER" />
-                  <Label layoutX="209.0" layoutY="353.0" prefHeight="18.0" prefWidth="320.0" />
-                  <Label layoutX="209.0" layoutY="444.0" prefHeight="18.0" prefWidth="320.0" />
-                  <Label layoutX="212.0" layoutY="534.0" prefHeight="18.0" prefWidth="320.0" />
+                  <Button alignment="CENTER" layoutX="132.0" layoutY="562.0" mnemonicParsing="false" onAction="#submitRegistration" prefHeight="48.0" prefWidth="320.0" text="Submit" textAlignment="CENTER" />
+                  <Label fx:id="usernameNotificationLabel" layoutX="209.0" layoutY="353.0" prefHeight="18.0" prefWidth="320.0" />
+                  <Label fx:id="passwordNotificationLabel" layoutX="209.0" layoutY="442.0" prefHeight="36.0" prefWidth="320.0" />
+                  <Label fx:id="confirmPasswordNotificationLabel" layoutX="209.0" layoutY="528.0" prefHeight="18.0" prefWidth="320.0" />
+                  <Label fx:id="emailNotificationLabel" layoutX="209.0" layoutY="276.0" prefHeight="18.0" prefWidth="320.0" />
+                  <Label fx:id="phoneNumberNotificationLabel" layoutX="209.0" layoutY="197.0" prefHeight="18.0" prefWidth="320.0" />
+                  <Label fx:id="fullNameNotificationLabel" layoutX="209.0" layoutY="118.0" prefHeight="18.0" prefWidth="320.0" />
+                  <Label fx:id="submitRegistrationResult" alignment="CENTER" layoutX="132.0" layoutY="25.0" prefHeight="25.0" prefWidth="320.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </center>
@@ -101,6 +108,6 @@
             </ImageView>
          </children>
       </VBox>
-      <Button layoutX="77.0" layoutY="561.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="266.0" text="Return to Login" />
+      <Button layoutX="77.0" layoutY="562.0" mnemonicParsing="false" onAction="#returnToLogin" prefHeight="47.0" prefWidth="266.0" text="Return to Login" />
    </children>
 </AnchorPane>
