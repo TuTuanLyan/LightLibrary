@@ -7,8 +7,8 @@ public class DatabaseConnection {
     public Connection databaseLink;
 
     /**
-     * Get Connection to database;
-     * @return a Connection data is link to connect with database
+     * Get Connection to database.
+     * @return a Connection data is link to connect with database.
      */
     public Connection getConnection() {
         String databaseName = "LoginData";
