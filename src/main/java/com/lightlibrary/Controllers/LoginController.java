@@ -1,6 +1,5 @@
 package com.lightlibrary.Controllers;
 
-import com.lightlibrary.LightLibrary;
 import com.lightlibrary.Models.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

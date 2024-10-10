@@ -103,7 +103,7 @@
             </Label>
             <ImageView fitHeight="311.0" fitWidth="315.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/LightLibraryLogo.png" />
+                  <Image url="@../Images/NonBgLightLibraryLogo.png" />
                </image>
             </ImageView>
          </children>

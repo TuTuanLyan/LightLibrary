@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LightLibrary extends Application {
     @Override
@@ -14,7 +15,7 @@ public class LightLibrary extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(LightLibrary.class.getResource("Views/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 960, 640);
         stage.setTitle("Light Library");
-        stage.getIcons().add(new Image(getClass().getResource("Images/LightLibraryLogo.png").toExternalForm()));
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("Images/LightLibraryLogo.png")).toExternalForm()));
         stage.setScene(scene);
         stage.show();
     }
