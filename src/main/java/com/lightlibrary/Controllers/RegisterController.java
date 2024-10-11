@@ -1,5 +1,6 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLOutput;
 import java.util.Objects;
 
 public class RegisterController {
@@ -47,6 +52,8 @@ public class RegisterController {
 
     @FXML
     private Label submitRegistrationResult;
+
+    private final DatabaseConnection dbConnection = new DatabaseConnection();
 
     /**
      * Switch from Register Scene to Login Scene by click Return to Log in button.
@@ -96,6 +103,9 @@ public class RegisterController {
         } else if (!checkUsernameValidation()) {
             usernameNotificationLabel.setText("Username must not have special characters");
             valid = false;
+        } else if (!checkUsernameAvailable()) {
+            usernameNotificationLabel.setText("Username already exists. Please try another username");
+            valid = false;
         }
 
         if (emailField.getText().isEmpty()) {
@@ -124,6 +134,23 @@ public class RegisterController {
         submitRegistrationResult.setText(resultNotification);
     }
 
+    /**
+     * Check Username available when user register.
+     * @return true if username doesn't exist and false in the opposite case.
+     */
+    private boolean checkUsernameAvailable() {
+        try (Connection conn = dbConnection.getConnection()) {
+            String query = "SELECT username FROM users WHERE username = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, usernameField.getText());
+            ResultSet rs = stmt.executeQuery();
+
+            return !rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * Validate the full name. The full name should only contain letters.
