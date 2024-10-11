@@ -57,7 +57,7 @@ public class LoginController {
         Connection connectDB = connectNow.getConnection();
 
         if (connectDB == null) {
-            System.out.println("Something went wrong connectDB is null!");
+            System.out.println("Something were wrong connectDB is null!");
             return false;
         }
 
@@ -86,6 +86,7 @@ public class LoginController {
      * Switch from Login Scene to Register Scene by click Register button.
      * @param event will read event when you click on Register button.
      */
+    @FXML
     public void goToRegister(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/register.fxml")));
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
