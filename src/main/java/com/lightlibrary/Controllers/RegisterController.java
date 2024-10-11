@@ -67,6 +67,10 @@ public class RegisterController {
         stage.show();
     }
 
+    /**
+     * Check validation of user information and issue notifications.
+     * @param event check click on submit button.
+     */
     @FXML
     public void submitRegistration(ActionEvent event) {
 
