@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@../StyleSheets/login.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.LoginController">
    <right>
       <AnchorPane prefHeight="640.0" prefWidth="606.0" stylesheets="@../StyleSheets/login.css" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="106.0" layoutY="236.0" prefHeight="24.0" prefWidth="64.0" text="Username" />
+            <Label layoutX="106.0" layoutY="236.0" prefHeight="24.0" prefWidth="64.0" stylesheets="@../StyleSheets/login.css" text="Username" />
             <Label layoutX="106.0" layoutY="284.0" prefHeight="24.0" prefWidth="64.0" text="Password" />
             <TextField fx:id="usernameField" layoutX="190.0" layoutY="232.0" prefHeight="32.0" prefWidth="320.0" promptText="Enter Username..." />
             <Button layoutX="106.0" layoutY="336.0" mnemonicParsing="false" onAction="#loginAccepted" prefHeight="26.0" prefWidth="405.0" text="Login" />
