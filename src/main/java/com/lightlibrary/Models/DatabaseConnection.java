@@ -11,7 +11,7 @@ public class DatabaseConnection {
      * @return a Connection data is link to connect with database.
      */
     public Connection getConnection() {
-        String databaseName = "LoginData";
+        String databaseName = "LibraryDB";
         String databaseUser = "root";
         String databasePassword = "#1Tutuan313";
 
