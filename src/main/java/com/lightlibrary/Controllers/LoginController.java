@@ -1,6 +1,7 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.DatabaseConnection;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginController {
 
@@ -30,6 +33,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
+
     /**
      * Check valid of user information.
      * @param event read event.
@@ -39,11 +43,28 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if (checkLogin(username, password)) {
-            loginResult.setText("Login Success!");
-        } else {
-            loginResult.setText("Login Failed. Please check your credentials.");
-        }
+        final ExecutorService executorService = Executors.newFixedThreadPool(2); // Tạo pool 2 luồng
+
+        // Tạo một task chạy trên luồng background
+        Task<Boolean> loginTask = new Task<>() {
+            @Override
+            protected Boolean call() {
+                return checkLogin(username, password);
+            }
+        };
+
+        // Khi task hoàn thành, cập nhật UI và dừng ExecutorService
+        loginTask.setOnSucceeded(e -> {
+            if (loginTask.getValue()) {
+                loginResult.setText("Login Success!");
+            } else {
+                loginResult.setText("Login Failed. Please check your credentials.");
+            }
+            executorService.shutdown(); // Dừng ExecutorService sau khi hoàn thành
+        });
+
+        // Chạy task trong executor
+        executorService.submit(loginTask);
     }
 
     /**
