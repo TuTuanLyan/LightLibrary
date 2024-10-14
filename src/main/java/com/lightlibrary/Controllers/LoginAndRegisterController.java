@@ -144,6 +144,10 @@ public class LoginAndRegisterController implements Initializable {
         return false;
     }
 
+    /**
+     * Check valid register information.
+     * @param event read event.
+     */
     @FXML
     protected void handleRegisterAction(ActionEvent event) {
         boolean valid = true;
