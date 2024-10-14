@@ -34,12 +34,6 @@ public class LoginAndRegister implements Initializable {
     private AnchorPane registerForm;
 
     @FXML
-    private Label fullNameNotificationLabel;
-
-    @FXML
-    private Label fullNameNotificationLabel3;
-
-    @FXML
     private Label loginNotificationLabel;
 
     @FXML
@@ -49,22 +43,27 @@ public class LoginAndRegister implements Initializable {
     private TextField loginUsername;
 
     @FXML
+    private TextField registerFullName;
+    @FXML
+    private Label fullNameNotificationLabel;
+
+    @FXML
+    private TextField registerUsername;
+    @FXML
+    private Label usenameNotitficationLabel;
+
+    @FXML
+    private PasswordField registerPassword;
+    @FXML
     private Label passwordNotificationLabel;
 
     @FXML
     private PasswordField registerConfirmPassword;
+    @FXML
+    private Label confirmPasswordNotificationLabel;
 
     @FXML
-    private TextField registerFullName;
-
-    @FXML
-    private PasswordField registerPassword;
-
-    @FXML
-    private TextField registerUsername;
-
-    @FXML
-    private Label usenameNotitficationLabel;
+    private Label registerNotificationLabel;
 
     /**
      *Set view of container.
@@ -77,6 +76,10 @@ public class LoginAndRegister implements Initializable {
         sliderContainer.setClip(clip);
     }
 
+    /**
+     * Check valid of user information.
+     * @param event read event.
+     */
     @FXML
     protected void handleLoginAction(ActionEvent event) {
         String username = loginUsername.getText();
@@ -95,6 +98,7 @@ public class LoginAndRegister implements Initializable {
             if (loginTask.getValue()) {
                 loginNotificationLabel.setText("Login Success!");
             } else {
+                loginPassword.clear();
                 loginNotificationLabel.setText("Login Failed. Please check your credentials.");
             }
             executorService.shutdown();
@@ -134,14 +138,41 @@ public class LoginAndRegister implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
+            return false;
         }
 
         return false;
     }
 
+    @FXML
+    protected void handleRegisterAction(ActionEvent event) {
+        boolean valid = true;
+
+        if (registerFullName.getText().isEmpty()) {
+            fullNameNotificationLabel.setText("* Full Name is required");
+            valid = false;
+        } else if (!checkFullNameValidation(registerFullName.getText())) {
+            fullNameNotificationLabel.setText("* Full name must not contain number.");
+            valid = false;
+        }
+
+        String registerResult = valid ? "Success!" : "Create account fail!";
+    }
+
+    private boolean checkFullNameValidation(String fullName) {
+        for (int i = 0; i < fullName.length(); i++) {
+            if (!Character.isLetter(fullName.charAt(i)) && fullName.charAt(i) != ' ') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Animation sliding to register form.
      */
+    @FXML
     public void goToRegister() {
 
         TranslateTransition registerFormSliding = new TranslateTransition();
@@ -161,6 +192,7 @@ public class LoginAndRegister implements Initializable {
     /**
      * Animation sliding to log in form.
      */
+    @FXML
     public void goToLogin() {
 
         TranslateTransition loginFormSliding = new TranslateTransition();
