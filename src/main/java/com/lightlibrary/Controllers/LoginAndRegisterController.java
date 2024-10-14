@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LoginAndRegister implements Initializable {
+public class LoginAndRegisterController implements Initializable {
 
     @FXML
     private AnchorPane sliderContainer;
