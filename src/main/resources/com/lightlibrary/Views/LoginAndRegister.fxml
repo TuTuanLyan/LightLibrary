@@ -113,7 +113,7 @@
                   <TextField fx:id="registerFullName" layoutX="50.0" layoutY="71.0" prefHeight="40.0" prefWidth="300.0" promptText="Enter your full name" styleClass="login-and-register-text-field" stylesheets="@../StyleSheets/Style.css" />
                   <Label layoutX="50.0" layoutY="143.0" />
                   <TextField fx:id="registerUsername" layoutX="50.0" layoutY="152.0" prefHeight="40.0" prefWidth="300.0" promptText="Enter your username" styleClass="login-and-register-text-field" stylesheets="@../StyleSheets/Style.css" />
-                  <Button layoutX="123.0" layoutY="414.0" mnemonicParsing="false" onAction="#handleRegisterAction" prefHeight="42.0" prefWidth="160.0" text="Submit">
+                  <Button layoutX="123.0" layoutY="414.0" mnemonicParsing="false" onAction="#handleRegisterAction" prefHeight="42.0" prefWidth="160.0" styleClass="slider" stylesheets="@../StyleSheets/Style.css" text="Submit">
                      <font>
                         <Font size="20.0" />
                      </font>
