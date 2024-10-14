@@ -1,3 +1,64 @@
 .slider {
     -fx-background-color: #ffffff;
 }
+
+.slider Button {
+    -fx-text-fill: white;
+    -fx-background-color: #34dda8;
+    -fx-background-radius: 24px;
+    -fx-border-radius: 24px;
+}
+
+.slider Button:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #23ca95;
+    -fx-background-radius: 24px;
+    -fx-border-radius: 24px;
+    -fx-font-size: 22px;
+}
+
+.login-and-register-text-field {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-padding: 12px;
+    -fx-border-color: #000000;
+}
+
+.login-and-register-text-field:focused {
+    -fx-background-color: rgba(152, 166, 154, 0);
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-padding: 15px;
+    -fx-border-color: #000000;
+}
+
+.register-notification {
+    -fx-text-fill: #ff2c2c;
+}
+
+.background {
+    -fx-background-color: linear-gradient(to bottom right, #a1f3c5, #f4f4c4);
+}
+
+.login-register-background-container Button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 24px;
+    -fx-border-width: 5px;
+}
+
+.login-register-background-container Button:hover{
+    -fx-background-color: transparent;
+    -fx-text-fill: #9af4c7;
+    -fx-border-color: #73dcab;
+    -fx-border-radius: 24px;
+    -fx-border-width: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(46, 45, 45, 0.5), 10, 0, 2, 2);
+    -fx-font-size: 22px;
+}
+
+.login-register-background-container Label{
+    -fx-text-fill: #ffffff;
+}

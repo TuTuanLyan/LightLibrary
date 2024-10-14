@@ -4,13 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DatabaseConnection {
-    public Connection databaseLink;
+    public static Connection databaseLink;
 
     /**
      * Get Connection to database.
      * @return a Connection data is link to connect with database.
      */
-    public Connection getConnection() {
+    public static Connection getConnection() {
         String databaseName = "LibraryDB";
         String databaseUser = "root";
         String databasePassword = "#1Tutuan313";

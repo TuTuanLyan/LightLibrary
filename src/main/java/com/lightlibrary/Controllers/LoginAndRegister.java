@@ -50,7 +50,7 @@ public class LoginAndRegister implements Initializable {
     @FXML
     private TextField registerUsername;
     @FXML
-    private Label usenameNotitficationLabel;
+    private Label usernameNotificationLabel;
 
     @FXML
     private PasswordField registerPassword;
@@ -156,9 +156,39 @@ public class LoginAndRegister implements Initializable {
             valid = false;
         }
 
-        String registerResult = valid ? "Success!" : "Create account fail!";
+        if (registerUsername.getText().isEmpty()) {
+            usernameNotificationLabel.setText("* Username is required");
+            valid = false;
+        } else if (!checkUsernameValidation(registerUsername.getText())) {
+            usernameNotificationLabel.setText("* Username must not have special characters");
+            valid = false;
+        } else if (!checkUsernameAvailable(registerUsername.getText())) {
+            usernameNotificationLabel.setText("* Username already exists. Please try another username");
+            valid = false;
+        }
+
+        if (registerPassword.getText().isEmpty()) {
+            passwordNotificationLabel.setText("* Password is required");
+            valid = false;
+        } else if (!checkPasswordValidation(registerPassword.getText())) {
+            passwordNotificationLabel.setText("* Password must have at least 8 characters and " +
+                    "\nmust not contain a consecutive series of numbers");
+            valid = false;
+        }
+
+        if (!checkConfirmPasswordValidation(registerConfirmPassword.getText())) {
+            confirmPasswordNotificationLabel.setText("* Password does not match");
+            valid = false;
+        }
+
+       registerNotificationLabel.setText(valid ? "Success!" : "Create account fail! Please try again.");
     }
 
+    /**
+     * Validate the full name. The full name should only contain letters.
+     *
+     * @return true if the full name is valid, false otherwise.
+     */
     private boolean checkFullNameValidation(String fullName) {
         for (int i = 0; i < fullName.length(); i++) {
             if (!Character.isLetter(fullName.charAt(i)) && fullName.charAt(i) != ' ') {
@@ -167,6 +197,86 @@ public class LoginAndRegister implements Initializable {
         }
 
         return true;
+    }
+
+    /**
+     * Check Username available when user register.
+     *
+     * @return true if username doesn't exist and false in the opposite case.
+     */
+    private boolean checkUsernameValidation(String username) {
+        for (int i = 0; i < username.length(); i++) {
+            char c = username.charAt(i);
+            if (!Character.isLetterOrDigit(c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Check Username available when user register.
+     * @return true if username doesn't exist and false in the opposite case.
+     */
+    private boolean checkUsernameAvailable(String username) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String query = "SELECT username FROM users WHERE username = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            return !rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Validate the password. The password must have at least 8 characters and must
+     * not contain a sequence of 3 or more consecutive digits.
+     *
+     * @return true if the password is valid, false otherwise.
+     */
+    private boolean checkPasswordValidation(String password) {
+        if (password.length() < 8) {
+            return false;
+        }
+
+        boolean hasLetter = false;
+        int consecutiveIncreaseCount = 0;
+
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+
+            if (Character.isLetter(c)) {
+                hasLetter = true;
+                consecutiveIncreaseCount = 0;
+            } else if (Character.isDigit(c)) {
+                if (i > 0 && Character.isDigit(password.charAt(i - 1))) {
+                    if (password.charAt(i) - password.charAt(i - 1) == 1) {
+                        consecutiveIncreaseCount++;
+                        if (consecutiveIncreaseCount >= 2) {
+                            return false;
+                        }
+                    } else {
+                        consecutiveIncreaseCount = 0;
+                    }
+                }
+            }
+        }
+
+        return hasLetter;
+    }
+
+    /**
+     * Validate if the confirmation password matches the password.
+     *
+     * @return true if the confirmation password matches the password, false otherwise.
+     */
+    private boolean checkConfirmPasswordValidation(String confirmPassword) {
+        return registerPassword.getText().equals(registerConfirmPassword.getText());
     }
 
     /**
