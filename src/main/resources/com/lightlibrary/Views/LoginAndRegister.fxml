@@ -97,7 +97,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <CheckBox layoutX="253.0" layoutY="278.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="90.0" text="Remeber me" />
+                  <CheckBox layoutX="242.0" layoutY="278.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="101.0" text="Remember me" textAlignment="CENTER" />
                   <Hyperlink layoutX="55.0" layoutY="282.0" prefHeight="24.0" prefWidth="110.0" text="Forgot password" />
                   <Label fx:id="loginNotificationLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="309.0" prefHeight="31.0" prefWidth="288.0" />
                   <PasswordField fx:id="loginPassword" layoutX="55.0" layoutY="228.0" prefHeight="45.0" prefWidth="288.0" promptText="Enter your password" styleClass="login-and-register-text-field" stylesheets="@../StyleSheets/Style.css" />

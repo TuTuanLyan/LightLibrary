@@ -190,8 +190,8 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Validate the full name. The full name should only contain letters.
-     *
-     * @return true if the full name is valid, false otherwise.
+     * @param fullName full string need to check.
+     * @return true if the full name don't have any number, false otherwise.
      */
     private boolean checkFullNameValidation(String fullName) {
         for (int i = 0; i < fullName.length(); i++) {
@@ -205,8 +205,8 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Check Username available when user register.
-     *
-     * @return true if username doesn't exist and false in the opposite case.
+     * @param username username string need to check.
+     * @return true if username is valid and false in the opposite case.
      */
     private boolean checkUsernameValidation(String username) {
         for (int i = 0; i < username.length(); i++) {
@@ -221,6 +221,7 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Check Username available when user register.
+     * @param username username string need to check.
      * @return true if username doesn't exist and false in the opposite case.
      */
     private boolean checkUsernameAvailable(String username) {
@@ -240,7 +241,7 @@ public class LoginAndRegisterController implements Initializable {
     /**
      * Validate the password. The password must have at least 8 characters and must
      * not contain a sequence of 3 or more consecutive digits.
-     *
+     * @param password password string need to check.
      * @return true if the password is valid, false otherwise.
      */
     private boolean checkPasswordValidation(String password) {
@@ -276,7 +277,7 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Validate if the confirmation password matches the password.
-     *
+     * @param confirmPassword confirm password string need to check.
      * @return true if the confirmation password matches the password, false otherwise.
      */
     private boolean checkConfirmPasswordValidation(String confirmPassword) {
