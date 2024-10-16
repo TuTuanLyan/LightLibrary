@@ -1,9 +1,9 @@
 package com.lightlibrary.Models;
 
-import com.google.api.services.books.Books;
-import com.google.api.services.books.BooksRequestInitializer;
-import com.google.api.services.books.model.Volume;
-import com.google.api.services.books.model.Volumes;
+import com.google.api.services.books.v1.Books;
+import com.google.api.services.books.v1.BooksRequestInitializer;
+import com.google.api.services.books.v1.model.Volume;
+import com.google.api.services.books.v1.model.Volumes;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class GoogleBooksAPIClient {
     public List<Volume> searchBooks(String query) throws IOException {
         // Tạo đối tượng Books với API key
         Books books = new Books.Builder(new com.google.api.client.http.javanet.NetHttpTransport(),
-                new com.google.api.client.json.jackson2.JacksonFactory(), null)
+                new com.google.api.client.json.gson.GsonFactory(), null)
                 .setApplicationName(APPLICATION_NAME)
                 .setGoogleClientRequestInitializer(new BooksRequestInitializer(API_KEY))
                 .build();
