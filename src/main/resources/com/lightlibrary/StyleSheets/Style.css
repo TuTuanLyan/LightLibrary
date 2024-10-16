@@ -62,3 +62,63 @@
 .login-register-background-container Label{
     -fx-text-fill: #ffffff;
 }
+
+
+/*Dashboard*/
+.navigation-bar {
+    -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
+    -fx-border-radius: 0px 25px 25px 0px;
+    -fx-background-radius: 0px 25px 25px 0px ;
+}
+
+.navigation-bar Button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 25px;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 5px;
+}
+
+.navigation-bar Button:hover {
+    -fx-background-color: transparent;
+    -fx-background-radius: 27px;
+    -fx-text-fill: linear-gradient(to bottom right, #93f1ba, #dafbd3);
+    -fx-border-radius: 27px;
+    -fx-border-color: linear-gradient(to bottom right, #93f1ba, #dafbd3);
+    -fx-border-width: 5px;
+}
+
+.search-bar {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: linear-gradient(to bottom right, #93f1ba, #c0e8b9);
+    -fx-border-width: 2px;
+}
+
+.search-bar:focused {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: linear-gradient(to bottom right, #74d897, #c5ecc5);
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 0, 2, 2);;
+}
+
+.search-bar-element {
+    -fx-background-color: transparent;
+}
+
+.dashboard-background {
+    -fx-background-color: transparent;
+}
+
+.individual-bar {
+    -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
+    -fx-border-radius: 25px 0px 0px 25px;
+    -fx-background-radius: 025px 0px 0px 25px;
+}
+
+.individual-bar Label {
+    -fx-text-fill: #ffffff;
+}
