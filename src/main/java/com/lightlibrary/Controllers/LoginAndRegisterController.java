@@ -5,19 +5,26 @@ import javafx.animation.TranslateTransition;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -96,13 +103,22 @@ public class LoginAndRegisterController implements Initializable {
 
         loginTask.setOnSucceeded(e -> {
             if (loginTask.getValue()) {
-                loginNotificationLabel.setText("Login Success!");
+                //loginNotificationLabel.setText("Login Success!");
+                try {
+                    Parent dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml")));
+                    Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    stage.setScene(new Scene(dashboard, 960, 640));
+                    stage.show();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                executorService.shutdown();
             } else {
                 loginPassword.clear();
                 loginNotificationLabel.setText("Login Failed. Please check your credentials.");
+                executorService.shutdown();
             }
-            executorService.shutdown();
-        });
+    });
 
         executorService.submit(loginTask);
     }
