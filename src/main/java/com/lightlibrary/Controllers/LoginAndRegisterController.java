@@ -73,7 +73,7 @@ public class LoginAndRegisterController implements Initializable {
     private Label registerNotificationLabel;
 
     /**
-     *Set view of container.
+     * Set view of container.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -85,6 +85,7 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Check valid of user information.
+     *
      * @param event read event.
      */
     @FXML
@@ -94,23 +95,28 @@ public class LoginAndRegisterController implements Initializable {
 
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        Task<Boolean> loginTask = new Task<>() {
+        Task<String> loginTask = new Task<>() {
             @Override
-            protected Boolean call() {
+            protected String call() {
                 return checkLoginValidity(username, password);
             }
         };
 
         loginTask.setOnSucceeded(e -> {
-            if (loginTask.getValue()) {
+            String role = loginTask.getValue();
+            if (role != null) {
                 //loginNotificationLabel.setText("Login Success!");
-                try {
-                    Parent dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml")));
-                    Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    stage.setScene(new Scene(dashboard, 960, 640));
-                    stage.show();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                if (role.equalsIgnoreCase("CUSTOMER")) {
+                    try {
+                        Parent dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml")));
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(new Scene(dashboard, 960, 640));
+                        stage.show();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else if (role.equalsIgnoreCase("ADMIN")) {
+                    loginNotificationLabel.setText("Welcome Admin!");
                 }
                 executorService.shutdown();
             } else {
@@ -118,27 +124,27 @@ public class LoginAndRegisterController implements Initializable {
                 loginNotificationLabel.setText("Login Failed. Please check your credentials.");
                 executorService.shutdown();
             }
-    });
+        });
 
         executorService.submit(loginTask);
     }
 
     /**
      * checkLogin checks the correctness of the user information requested to log in.
+     *
      * @param username username account.
      * @param password user account password.
-     * @return true if user information is correct and false when user information incorrect.
+     * @return "CUSTOMER", "ADMIN" if valid login; null if login fails.
      */
-    private boolean checkLoginValidity(String username, String password) {
-        DatabaseConnection connectNow = new DatabaseConnection();
-        Connection connectDB = connectNow.getConnection();
+    private String checkLoginValidity(String username, String password) {
+        Connection connectDB = DatabaseConnection.getConnection();
 
         if (connectDB == null) {
             System.out.println("Something were wrong connectDB is null!");
-            return false;
+            return null;
         }
 
-        String connectQuery = "SELECT * FROM users WHERE username = ? AND password = ?";
+        String connectQuery = "SELECT role FROM users WHERE username = ? AND password = ?";
 
         try {
             PreparedStatement preparedStatement = connectDB.prepareStatement(connectQuery);
@@ -148,20 +154,21 @@ public class LoginAndRegisterController implements Initializable {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) { // result is not null
-                return true;
+                return resultSet.getString("role");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
-            return false;
+            return null;
         }
 
-        return false;
+        return null;
     }
 
     /**
      * Check valid register information.
+     *
      * @param event read event.
      */
     @FXML
@@ -201,11 +208,12 @@ public class LoginAndRegisterController implements Initializable {
             valid = false;
         }
 
-       registerNotificationLabel.setText(valid ? "Success!" : "Create account fail! Please try again.");
+        registerNotificationLabel.setText(valid ? "Success!" : "Create account fail! Please try again.");
     }
 
     /**
      * Validate the full name. The full name should only contain letters.
+     *
      * @param fullName full string need to check.
      * @return true if the full name don't have any number, false otherwise.
      */
@@ -221,6 +229,7 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Check Username available when user register.
+     *
      * @param username username string need to check.
      * @return true if username is valid and false in the opposite case.
      */
@@ -237,6 +246,7 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Check Username available when user register.
+     *
      * @param username username string need to check.
      * @return true if username doesn't exist and false in the opposite case.
      */
@@ -257,6 +267,7 @@ public class LoginAndRegisterController implements Initializable {
     /**
      * Validate the password. The password must have at least 8 characters and must
      * not contain a sequence of 3 or more consecutive digits.
+     *
      * @param password password string need to check.
      * @return true if the password is valid, false otherwise.
      */
@@ -293,6 +304,7 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Validate if the confirmation password matches the password.
+     *
      * @param confirmPassword confirm password string need to check.
      * @return true if the confirmation password matches the password, false otherwise.
      */

@@ -49,7 +49,7 @@
     -fx-border-width: 5px;
 }
 
-.login-register-background-container Button:hover{
+.login-register-background-container Button:hover {
     -fx-background-color: transparent;
     -fx-text-fill: #9af4c7;
     -fx-border-color: #73dcab;
@@ -59,7 +59,7 @@
     -fx-font-size: 22px;
 }
 
-.login-register-background-container Label{
+.login-register-background-container Label {
     -fx-text-fill: #ffffff;
 }
 
@@ -68,7 +68,7 @@
 .navigation-bar {
     -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
     -fx-border-radius: 0px 25px 25px 0px;
-    -fx-background-radius: 0px 25px 25px 0px ;
+    -fx-background-radius: 0px 25px 25px 0px;
 }
 
 .navigation-bar Button {
