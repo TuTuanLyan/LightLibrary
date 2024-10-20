@@ -11,10 +11,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@../StyleSheets/Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@../StyleSheets/Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.UserDashboardController">
     <children>
-        <AnchorPane layoutX="250.0" layoutY="90.0" prefHeight="540.0" prefWidth="700.0" />
-        <AnchorPane layoutX="240.0" prefHeight="100.0" prefWidth="720.0">
+        <AnchorPane layoutX="250.0" layoutY="90.0" prefHeight="540.0" prefWidth="700.0" visible="false" />
+        <AnchorPane layoutX="240.0" prefHeight="100.0" prefWidth="520.0">
             <children>
                 <AnchorPane layoutX="28.0" layoutY="29.0" prefHeight="42.0" prefWidth="480.0">
                     <children>
@@ -31,48 +31,6 @@
                                 <FontAwesomeIcon glyphName="SEARCH" />
                             </graphic>
                         </Button>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="533.0" layoutY="5.0" prefHeight="90.0" prefWidth="174.0">
-                    <children>
-                        <Button layoutY="1.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="173.0" text="View your profile">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="USER" size="1.5em" />
-                            </graphic>
-                        </Button>
-                        <Button layoutY="46.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="174.0" text="Setting">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="COG" size="1.6em" />
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="520.0" layoutY="6.0" prefHeight="75.0" prefWidth="200.0" styleClass="individual-bar" stylesheets="@../StyleSheets/Style.css">
-                    <children>
-                        <Label layoutX="21.0" layoutY="8.0" prefHeight="20.0" prefWidth="100.0" text="Welcome friend">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Label>
-                        <Pane layoutX="132.0" layoutY="8.0" prefHeight="60.0" prefWidth="60.0">
-                            <children>
-                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../Images/LightLibraryLogo.png" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </Pane>
-                        <Label layoutX="21.0" layoutY="28.0" prefHeight="20.0" prefWidth="100.0" text="Name">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="21.0" layoutY="47.0" prefHeight="20.0" prefWidth="100.0" text="ID: #">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Label>
                     </children>
                 </AnchorPane>
             </children>
@@ -139,5 +97,61 @@
                 </AnchorPane>
             </children>
         </AnchorPane>
+      <AnchorPane layoutX="760.0" prefHeight="165.0" prefWidth="200.0">
+         <children>
+                <AnchorPane fx:id="individualButtonContainer" layoutY="-35.0" prefHeight="110.0" prefWidth="200.0" styleClass="individual-button-container" stylesheets="@../StyleSheets/Style.css">
+               <children>
+                        <Button layoutX="12.0" layoutY="9.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="175.0" text="View your profile" textFill="WHITE">
+                            <graphic>
+                                <FontAwesomeIcon fill="WHITE" glyphName="USER" size="1.5em" />
+                            </graphic>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                        </Button>
+                        <Button layoutX="12.0" layoutY="55.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="175.0" text="Setting" textFill="WHITE">
+                            <graphic>
+                                <FontAwesomeIcon fill="WHITE" glyphName="COG" size="1.6em" />
+                            </graphic>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                        </Button>
+               </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="75.0" prefWidth="200.0" styleClass="individual-bar" stylesheets="@../StyleSheets/Style.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Label layoutX="21.0" layoutY="8.0" prefHeight="20.0" prefWidth="100.0" text="Welcome friend">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="21.0" layoutY="28.0" prefHeight="20.0" prefWidth="100.0" text="Name">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="21.0" layoutY="47.0" prefHeight="20.0" prefWidth="100.0" text="ID: #">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                  <Pane fx:id="avatarContainer" layoutX="130.0" layoutY="10.0" prefHeight="56.0" prefWidth="56.0">
+                     <children>
+                        <Button layoutX="-8.0" layoutY="-4.0" mnemonicParsing="false" onAction="#handleIndividualBarAction" prefHeight="56.0" prefWidth="56.0" styleClass="avatar" stylesheets="@../StyleSheets/Style.css">
+                           <graphic>
+                              <ImageView fx:id="avatarImage" fitHeight="56.0" fitWidth="56.0" focusTraversable="true" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../Images/LightLibraryLogo.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </Pane>
+                    </children>
+                </AnchorPane>
+         </children>
+      </AnchorPane>
     </children>
 </AnchorPane>

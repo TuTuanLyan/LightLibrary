@@ -115,10 +115,36 @@
 
 .individual-bar {
     -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
-    -fx-border-radius: 25px 0px 0px 25px;
-    -fx-background-radius: 025px 0px 0px 25px;
+    -fx-border-radius: 0px 0px 0px 25px;
+    -fx-background-radius: 0px 0px 0px 25px;
 }
 
 .individual-bar Label {
     -fx-text-fill: #ffffff;
+}
+
+.individual-button-container {
+    -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
+    -fx-border-radius: 25px 0px 25px 25px;
+    -fx-background-radius: 25px 0px 25px 25px;
+}
+
+.individual-button-container Button {
+    -fx-background-color: transparent;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px;
+    -fx-text-fill: #ffffff;
+}
+
+.individual-button-container Button:hover{
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 25px;
+    -fx-border-width: 3px;
+    -fx-border-color: linear-gradient(to bottom right, #8becb4, #cef4c7);
+    -fx-background-radius: 25px;
+}
+
+.avatar {
+    -fx-background-color: transparent;
 }
