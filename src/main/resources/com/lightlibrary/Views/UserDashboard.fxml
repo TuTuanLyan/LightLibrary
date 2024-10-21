@@ -14,7 +14,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@../StyleSheets/Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.UserDashboardController">
     <children>
         <AnchorPane layoutX="250.0" layoutY="90.0" prefHeight="540.0" prefWidth="700.0" visible="false" />
-        <AnchorPane layoutX="240.0" prefHeight="100.0" prefWidth="520.0">
+        <AnchorPane layoutX="200.0" prefHeight="100.0" prefWidth="520.0">
             <children>
                 <AnchorPane layoutX="28.0" layoutY="29.0" prefHeight="42.0" prefWidth="480.0">
                     <children>
@@ -35,66 +35,42 @@
                 </AnchorPane>
             </children>
         </AnchorPane>
-        <AnchorPane prefHeight="640.0" prefWidth="240.0" styleClass="navigation-bar" stylesheets="@../StyleSheets/Style.css">
+        <AnchorPane prefHeight="640.0" prefWidth="200.0" styleClass="navigation-bar" stylesheets="@../StyleSheets/Style.css">
             <children>
-                <ImageView fitHeight="160.0" fitWidth="160.0" layoutX="40.0" layoutY="-29.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="160.0" fitWidth="160.0" layoutX="20.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../Images/NonBgLightLibraryLogo.png" />
                     </image>
                 </ImageView>
-                <AnchorPane layoutX="15.0" layoutY="150.0" prefHeight="62.0" prefWidth="225.0">
-                    <children>
-                        <Button alignment="CENTER_RIGHT" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="210.0" text="Available Books" textAlignment="CENTER">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="1.2em" />
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-                <Button layoutX="15.0" layoutY="550.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0">
+                <Button layoutX="15.0" layoutY="571.0" mnemonicParsing="false" onAction="#handleLogoutAction" prefHeight="54.0" prefWidth="175.0" text="Log out">
                     <graphic>
-                        <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" rotate="180.0" size="50px" />
+                        <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" rotate="180.0" size="30px50px" />
                     </graphic>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
                 </Button>
-                <AnchorPane layoutX="15.0" layoutY="223.0" prefHeight="62.0" prefWidth="225.0">
-                    <children>
-                        <Button alignment="CENTER_RIGHT" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="210.0" text="Available Books" textAlignment="CENTER">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="1.2em" />
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="15.0" layoutY="299.0" prefHeight="62.0" prefWidth="225.0">
-                    <children>
-                        <Button alignment="CENTER_RIGHT" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="210.0" text="Available Books" textAlignment="CENTER">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="1.2em" />
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="15.0" layoutY="371.0" prefHeight="62.0" prefWidth="225.0">
-                    <children>
-                        <Button alignment="CENTER_RIGHT" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="210.0" text="Available Books" textAlignment="CENTER">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="1.2em" />
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
+                <AnchorPane fx:id="navigationButtonBorder" layoutX="12.0" layoutY="160.0" prefHeight="54.0" prefWidth="188.0" styleClass="navigation-button-border" stylesheets="@../StyleSheets/Style.css" />
+            <Button fx:id="dashboardButton" alignment="CENTER" layoutX="12.0" layoutY="160.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="175.0" text="Dashboard" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="issueBookButton" alignment="CENTER" layoutX="12.0" layoutY="240.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="175.0" text="Issue Book" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="returnBookButton" alignment="CENTER" layoutX="12.0" layoutY="320.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="175.0" text="Return Book" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+                  <Button fx:id="supportButton" alignment="CENTER" layoutX="12.0" layoutY="400.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="175.0" text="Support" textAlignment="CENTER">
+                      <font>
+                          <Font size="20.0" />
+                      </font>
+                  </Button>
             </children>
         </AnchorPane>
       <AnchorPane layoutX="760.0" prefHeight="165.0" prefWidth="200.0">
