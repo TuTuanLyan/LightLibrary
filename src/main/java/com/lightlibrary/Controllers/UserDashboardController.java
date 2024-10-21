@@ -48,6 +48,9 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Button supportButton;
 
+    /**
+     * Enum representing the active navigation button on the dashboard.
+     */
     enum ActiveButton {
         DASHBOARD,
         ISSUE_BOOK,
@@ -55,6 +58,11 @@ public class UserDashboardController implements Initializable {
         SUPPORT
     }
 
+    private static ActiveButton activeButton = ActiveButton.DASHBOARD;
+
+    /**
+     * Initializes the User Dashboard controller, setting up event handlers and UI elements.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         individualButtonContainer.setVisible(false);
@@ -63,12 +71,29 @@ public class UserDashboardController implements Initializable {
 
         dashboardButton.getStyleClass().add("selected");
 
-        dashboardButton.setOnAction(e -> handleNavigationButtonBorder(dashboardButton));
-        issueBookButton.setOnAction(e -> handleNavigationButtonBorder(issueBookButton));
-        returnBookButton.setOnAction(e -> handleNavigationButtonBorder(returnBookButton));
-        supportButton.setOnAction(e -> handleNavigationButtonBorder(supportButton));
+        dashboardButton.setOnAction(e -> {
+            handleNavigationButtonBorder(dashboardButton);
+            activeButton = ActiveButton.DASHBOARD;
+        });
+        issueBookButton.setOnAction(e -> {
+            handleNavigationButtonBorder(issueBookButton);
+            activeButton = ActiveButton.ISSUE_BOOK;
+        });
+        returnBookButton.setOnAction(e -> {
+            handleNavigationButtonBorder(returnBookButton);
+            activeButton = ActiveButton.RETURN_BOOK;
+        });
+        supportButton.setOnAction(e -> {
+            handleNavigationButtonBorder(supportButton);
+            activeButton = ActiveButton.SUPPORT;
+        });
     }
 
+    /**
+     * Handles the visibility of the individual button bar and animates its sliding action.
+     *
+     * @param event the ActionEvent triggered by clicking the button
+     */
     @FXML
     protected void handleIndividualBarAction(ActionEvent event) {
         TranslateTransition individualBarTransition = new TranslateTransition();
@@ -90,6 +115,11 @@ public class UserDashboardController implements Initializable {
         individualBarTransition.play();
     }
 
+    /**
+     * Handles the movement of the navigation button border and updates the selected button's style.
+     *
+     * @param activeButton the button that was clicked and is now active
+     */
     private void handleNavigationButtonBorder(Button activeButton) {
         TranslateTransition navigationBarTransition = new TranslateTransition();
         navigationBarTransition.setNode(navigationButtonBorder);
@@ -105,6 +135,12 @@ public class UserDashboardController implements Initializable {
         activeButton.getStyleClass().add("selected");
     }
 
+    /**
+     * Logs the user out and switches the scene back to the Login and Register view.
+     *
+     * @param event the ActionEvent triggered by clicking the logout button
+     * @throws IOException if the Login and Register FXML file cannot be loaded
+     */
     @FXML
     protected void handleLogoutAction(ActionEvent event) throws IOException {
         Parent login = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));
