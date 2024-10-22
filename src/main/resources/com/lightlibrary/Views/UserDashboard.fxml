@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@../StyleSheets/Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.UserDashboardController">
     <children>
-        <AnchorPane layoutX="250.0" layoutY="90.0" prefHeight="540.0" prefWidth="700.0" visible="false" />
+      <Pane fx:id="subButtonBorder" layoutX="200.0" layoutY="160.0" prefHeight="54.0" prefWidth="12.0" styleClass="sub-button-border" />
         <AnchorPane layoutX="200.0" prefHeight="100.0" prefWidth="520.0">
             <children>
                 <AnchorPane layoutX="28.0" layoutY="29.0" prefHeight="42.0" prefWidth="480.0">
@@ -129,5 +129,6 @@
                 </AnchorPane>
          </children>
       </AnchorPane>
+      <AnchorPane layoutX="210.0" layoutY="100.0" prefHeight="530.0" prefWidth="740.0" visible="false" />
     </children>
 </AnchorPane>

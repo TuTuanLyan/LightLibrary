@@ -38,6 +38,8 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private AnchorPane navigationButtonBorder;
+    @FXML
+    private Pane subButtonBorder;
 
     @FXML
     private Button issueBookButton;
@@ -126,6 +128,12 @@ public class UserDashboardController implements Initializable {
         navigationBarTransition.setDuration(Duration.seconds(0.2));
         navigationBarTransition.setToY(activeButton.getLayoutY() - navigationButtonBorder.getLayoutY());
         navigationBarTransition.play();
+
+        TranslateTransition subButtonBorderTransition = new TranslateTransition();
+        subButtonBorderTransition.setNode(subButtonBorder);
+        subButtonBorderTransition.setDuration(Duration.seconds(0.2));
+        subButtonBorderTransition.setToY(activeButton.getLayoutY() - subButtonBorder.getLayoutY());
+        subButtonBorderTransition.play();
 
         dashboardButton.getStyleClass().remove("selected");
         issueBookButton.getStyleClass().remove("selected");
