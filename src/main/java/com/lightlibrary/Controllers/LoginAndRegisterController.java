@@ -144,7 +144,7 @@ public class LoginAndRegisterController implements Initializable {
             return null;
         }
 
-        String connectQuery = "SELECT role FROM users WHERE username = ? AND password = ?";
+        String connectQuery = "SELECT role FROM users WHERE BINARY username = ? AND BINARY password = ?";
 
         try {
             PreparedStatement preparedStatement = connectDB.prepareStatement(connectQuery);
@@ -174,6 +174,12 @@ public class LoginAndRegisterController implements Initializable {
     @FXML
     protected void handleRegisterAction(ActionEvent event) {
         boolean valid = true;
+
+        fullNameNotificationLabel.setText("");
+        usernameNotificationLabel.setText("");
+        passwordNotificationLabel.setText("");
+        confirmPasswordNotificationLabel.setText("");
+        registerNotificationLabel.setText("");
 
         if (registerFullName.getText().isEmpty()) {
             fullNameNotificationLabel.setText("* Full Name is required");
@@ -252,7 +258,7 @@ public class LoginAndRegisterController implements Initializable {
      */
     private boolean checkUsernameAvailable(String username) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String query = "SELECT username FROM users WHERE username = ?";
+            String query = "SELECT username FROM users WHERE BINARY username = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
