@@ -77,7 +77,7 @@ public class UserDashboardController implements Initializable {
         SUPPORT
     }
 
-    private static ActiveButton activeButton = ActiveButton.DASHBOARD;
+    private static ActiveButton activeButton;
 
     /**
      * Initializes the User Dashboard controller, setting up event handlers and UI elements.
@@ -89,6 +89,7 @@ public class UserDashboardController implements Initializable {
         avatarContainer.setClip(avatarClip);
 
         dashboardButton.getStyleClass().add("selected");
+        activeButton = ActiveButton.DASHBOARD;
 
         dashboardButton.setOnAction(e -> {
             handleNavigationButtonBorder(dashboardButton);
