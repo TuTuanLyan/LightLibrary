@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -50,6 +51,9 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Button supportButton;
 
+    @FXML
+    private AnchorPane mainContentContainer;
+
     /**
      * Enum representing the active navigation button on the dashboard.
      */
@@ -70,6 +74,11 @@ public class UserDashboardController implements Initializable {
         individualButtonContainer.setVisible(false);
         Circle avatarClip = new Circle(28, 28, 28);
         avatarContainer.setClip(avatarClip);
+
+        Rectangle mainContentContainerClip = new Rectangle(740, 545);
+        mainContentContainerClip.setLayoutX(0);
+        mainContentContainerClip.setLayoutY(0);
+        mainContentContainer.setClip(mainContentContainerClip);
 
         dashboardButton.getStyleClass().add("selected");
 
@@ -100,7 +109,7 @@ public class UserDashboardController implements Initializable {
     protected void handleIndividualBarAction(ActionEvent event) {
         TranslateTransition individualBarTransition = new TranslateTransition();
         individualBarTransition.setNode(individualButtonContainer);
-        individualBarTransition.setDuration(Duration.seconds(0.5));
+        individualBarTransition.setDuration(Duration.seconds(0.35));
 
         if (!individualBarShown) {
             individualButtonContainer.setVisible(true);
@@ -151,7 +160,8 @@ public class UserDashboardController implements Initializable {
      */
     @FXML
     protected void handleLogoutAction(ActionEvent event) throws IOException {
-        Parent login = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));
+        Parent login = FXMLLoader.load(Objects.requireNonNull(getClass()
+                .getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(login, 960, 640));
         stage.show();

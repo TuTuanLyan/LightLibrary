@@ -108,7 +108,8 @@ public class LoginAndRegisterController implements Initializable {
                 //loginNotificationLabel.setText("Login Success!");
                 if (role.equalsIgnoreCase("CUSTOMER")) {
                     try {
-                        Parent dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml")));
+                        Parent dashboard = FXMLLoader.load(Objects.requireNonNull(getClass()
+                                .getResource("/com/lightlibrary/Views/UserDashboard.fxml")));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         stage.setScene(new Scene(dashboard, 960, 640));
                         stage.show();

@@ -67,8 +67,8 @@
 /*Dashboard*/
 .navigation-bar {
     -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
-    -fx-border-radius: 0px 25px 25px 0px;
-    -fx-background-radius: 0px 25px 25px 0px;
+    -fx-border-radius: 0px 15px 15px 0px;
+    -fx-background-radius: 0px 15px 15px 0px;
 }
 
 .navigation-bar Button {
@@ -115,8 +115,8 @@
 
 .individual-bar {
     -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
-    -fx-border-radius: 0px 0px 0px 25px;
-    -fx-background-radius: 0px 0px 0px 25px;
+    -fx-border-radius: 0px 0px 0px 15px;
+    -fx-background-radius: 0px 0px 0px 15px;
 }
 
 .individual-bar Label {
@@ -125,8 +125,8 @@
 
 .individual-button-container {
     -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
-    -fx-border-radius: 25px 0px 25px 25px;
-    -fx-background-radius: 25px 0px 25px 25px;
+    -fx-border-radius: 15px 0px 15px 15px;
+    -fx-background-radius: 15px 0px 15px 15px;
 }
 
 .individual-button-container Button {
@@ -151,12 +151,16 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 28px 0px 0px 28px;
     -fx-border-radius: 28px 0px 0px 28px;
+    -fx-border-width: 5px 0px 5px 5px;
+    -fx-border-color: linear-gradient(to right, #93f1ba, #b7fbaa) transparent
+    linear-gradient(to right, #93f1ba, #b7fbaa) #93f1ba;
     -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 0, -5, 5);
 }
 
 .sub-button-border {
     -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, -5, 0, 0), dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 5, 0, 0);
+    -fx-border-width: 5px 0px 5px 0px;
+    -fx-border-color: #b7fbaa;
 }
 
 .selected {
@@ -173,4 +177,16 @@
     -fx-text-fill: #000000;
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+}
+
+.main-content-container {
+    -fx-border-color: linear-gradient(to bottom right, #b7fbaa, #93f1ba);
+    -fx-background-radius: 15px;
+    -fx-background-color: #ffffff;
+    -fx-border-width: 5px;
+    -fx-border-radius: 15px;
+}
+
+.main-content-container-children {
+    -fx-background-color: transparent;
 }
