@@ -185,8 +185,5 @@
     -fx-background-color: #ffffff;
     -fx-border-width: 5px;
     -fx-border-radius: 15px;
-}
-
-.main-content-container-children {
-    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 0, -5, 5);
 }

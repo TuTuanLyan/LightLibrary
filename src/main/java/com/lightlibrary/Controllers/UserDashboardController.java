@@ -1,5 +1,6 @@
 package com.lightlibrary.Controllers;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,6 +55,18 @@ public class UserDashboardController implements Initializable {
     @FXML
     private AnchorPane mainContentContainer;
 
+    @FXML
+    private Pane dashboardContent;
+
+    @FXML
+    private Pane issueBookContent;
+
+    @FXML
+    private Pane returnBookContent;
+
+    @FXML
+    private Pane supportContent;
+
     /**
      * Enum representing the active navigation button on the dashboard.
      */
@@ -75,27 +88,26 @@ public class UserDashboardController implements Initializable {
         Circle avatarClip = new Circle(28, 28, 28);
         avatarContainer.setClip(avatarClip);
 
-        Rectangle mainContentContainerClip = new Rectangle(740, 545);
-        mainContentContainerClip.setLayoutX(0);
-        mainContentContainerClip.setLayoutY(0);
-        mainContentContainer.setClip(mainContentContainerClip);
-
         dashboardButton.getStyleClass().add("selected");
 
         dashboardButton.setOnAction(e -> {
             handleNavigationButtonBorder(dashboardButton);
+            swapMainContentAnimation(dashboardContent);
             activeButton = ActiveButton.DASHBOARD;
         });
         issueBookButton.setOnAction(e -> {
             handleNavigationButtonBorder(issueBookButton);
+            swapMainContentAnimation(issueBookContent);
             activeButton = ActiveButton.ISSUE_BOOK;
         });
         returnBookButton.setOnAction(e -> {
             handleNavigationButtonBorder(returnBookButton);
+            swapMainContentAnimation(returnBookContent);
             activeButton = ActiveButton.RETURN_BOOK;
         });
         supportButton.setOnAction(e -> {
             handleNavigationButtonBorder(supportButton);
+            swapMainContentAnimation(supportContent);
             activeButton = ActiveButton.SUPPORT;
         });
     }
@@ -165,5 +177,36 @@ public class UserDashboardController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(login, 960, 640));
         stage.show();
+    }
+
+    /**
+     * Handle Animation in main content when swapped.
+     * @param newContent is the new content Pane user want to go.
+     */
+    private void swapMainContentAnimation(Pane newContent) {
+        Pane currentContent = switch (activeButton) {
+            case DASHBOARD -> dashboardContent;
+            case ISSUE_BOOK -> issueBookContent;
+            case RETURN_BOOK -> returnBookContent;
+            case SUPPORT -> supportContent;
+        };
+
+        if (currentContent == newContent) {
+            return;
+        }
+
+        FadeTransition currentContentTransition = new FadeTransition(Duration.seconds(0.3), currentContent);
+        currentContentTransition.setFromValue(1.0);
+        currentContentTransition.setToValue(0.0);
+        currentContentTransition.play();
+        currentContentTransition.setOnFinished(e -> {
+           currentContent.setVisible(false);
+        });
+
+        newContent.setVisible(true);
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.3), newContent);
+        fadeTransition.setFromValue(0.0);
+        fadeTransition.setToValue(1.0);
+        fadeTransition.play();
     }
 }

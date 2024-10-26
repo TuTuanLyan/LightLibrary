@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,7 +15,42 @@
     <children>
       <AnchorPane fx:id="mainContentContainer" layoutX="210.0" layoutY="85.0" prefHeight="545.0" prefWidth="740.0" styleClass="main-content-container">
          <children>
-            <ScrollPane layoutX="10.0" layoutY="11.0" prefHeight="525.0" prefWidth="720.0" styleClass="main-content-container-children" stylesheets="@../StyleSheets/Style.css" />
+            <Pane fx:id="dashboardContent" layoutX="171.0" layoutY="92.0" prefHeight="385.0" prefWidth="398.0">
+               <children>
+                  <Label layoutX="74.0" layoutY="86.0" prefHeight="177.0" prefWidth="266.0" text="This is dash board">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="issueBookContent" layoutX="161.0" layoutY="80.0" prefHeight="385.0" prefWidth="398.0" visible="false">
+               <children>
+                  <Label layoutX="74.0" layoutY="86.0" prefHeight="177.0" prefWidth="274.0" text="This is issue book">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="returnBookContent" layoutX="148.0" layoutY="103.0" prefHeight="385.0" prefWidth="398.0" visible="false">
+               <children>
+                  <Label layoutX="74.0" layoutY="86.0" prefHeight="177.0" prefWidth="266.0" text="This is return Book">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="supportContent" layoutX="171.0" layoutY="80.0" prefHeight="385.0" prefWidth="398.0" visible="false">
+               <children>
+                  <Label layoutX="74.0" layoutY="86.0" prefHeight="177.0" prefWidth="266.0" text="This is Support">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
          </children></AnchorPane>
       <Pane fx:id="subButtonBorder" layoutX="200.0" layoutY="160.0" prefHeight="54.0" prefWidth="15.0" styleClass="sub-button-border" />
           <AnchorPane layoutX="240.0" layoutY="19.0" prefHeight="42.0" prefWidth="480.0">
