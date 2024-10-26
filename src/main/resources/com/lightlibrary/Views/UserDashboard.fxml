@@ -63,7 +63,7 @@
                           <Insets left="15.0" />
                       </padding>
                   </TextField>
-                  <Button layoutX="438.0" layoutY="7.0" mnemonicParsing="false" styleClass="search-bar-element" stylesheets="@../StyleSheets/Style.css">
+                  <Button layoutX="444.0" layoutY="10.0" mnemonicParsing="false" styleClass="search-bar-element" stylesheets="@../StyleSheets/Style.css">
                       <graphic>
                           <FontAwesomeIcon glyphName="SEARCH" />
                       </graphic>
