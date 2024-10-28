@@ -4,153 +4,290 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0"
-            prefWidth="960.0" stylesheets="@../StyleSheets/Style.css" xmlns="http://javafx.com/javafx/22"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <AnchorPane layoutX="250.0" layoutY="90.0" prefHeight="540.0" prefWidth="700.0"/>
-        <AnchorPane layoutX="240.0" prefHeight="100.0" prefWidth="720.0">
-            <children>
-                <AnchorPane layoutX="28.0" layoutY="29.0" prefHeight="42.0" prefWidth="480.0">
-                    <children>
-                        <TextField layoutY="-2.0" prefHeight="42.0" prefWidth="480.0" promptText="Search here"
-                                   styleClass="search-bar" stylesheets="@../StyleSheets/Style.css">
-                            <font>
-                                <Font size="15.0"/>
-                            </font>
-                            <padding>
-                                <Insets left="15.0"/>
-                            </padding>
-                        </TextField>
-                        <Button layoutX="438.0" layoutY="7.0" mnemonicParsing="false" styleClass="search-bar-element"
-                                stylesheets="@../StyleSheets/Style.css">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="SEARCH"/>
-                            </graphic>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@../StyleSheets/Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.UserDashboardController">
+   <children>
+      <AnchorPane fx:id="mainContentContainer" layoutX="210.0" layoutY="90.0" prefHeight="540.0" prefWidth="740.0" styleClass="main-content-container">
+         <children>
+            <ScrollPane fx:id="dashBoard" layoutX="8.0" layoutY="13.0" prefHeight="516.0" prefWidth="719.0">
+               <content>
+                  <HBox fx:id="HBox1" alignment="CENTER" fillHeight="false" prefHeight="208.0" prefWidth="695.0" spacing="10.0">
+                     <children>
+                        <AnchorPane fx:id="paneBook1" prefHeight="200.0" prefWidth="200.0" styleClass="background" stylesheets="@../StyleSheets/Style.css">
+                           <children>
+                              <ImageView fx:id="imageView1" fitHeight="134.0" fitWidth="157.0" layoutX="33.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="27.0" AnchorPane.topAnchor="27.0">
+                                 <image>
+                                    <Image url="@../Images/nclie1y3vyzb1.gif" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="nameBook1" alignment="CENTER" layoutX="63.0" layoutY="180.0" prefHeight="43.0" prefWidth="94.0" styleClass="login-and-register-text-field" text="Label" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </AnchorPane>
+                        <AnchorPane fx:id="paneBook2" prefHeight="200.0" prefWidth="200.0" styleClass="background" stylesheets="@../StyleSheets/Style.css">
+                           <children>
+                              <ImageView fx:id="imageView2" fitHeight="134.0" fitWidth="157.0" layoutX="33.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="27.0" AnchorPane.topAnchor="27.0">
+                                 <image>
+                                    <Image url="@../Images/nclie1y3vyzb1.gif" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="nameBook2" alignment="CENTER" layoutX="63.0" layoutY="179.0" prefHeight="43.0" prefWidth="94.0" styleClass="login-and-register-text-field" text="Label" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </AnchorPane>
+                        <AnchorPane fx:id="paneBook3" prefHeight="200.0" prefWidth="200.0" styleClass="background" stylesheets="@../StyleSheets/Style.css">
+                           <children>
+                              <ImageView fx:id="imageView3" fitHeight="134.0" fitWidth="157.0" layoutX="33.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="27.0" AnchorPane.topAnchor="27.0">
+                                 <image>
+                                    <Image url="@../Images/nclie1y3vyzb1.gif" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="nameBook3" alignment="CENTER" layoutX="63.0" layoutY="179.0" prefHeight="43.0" prefWidth="94.0" styleClass="login-and-register-text-field" text="Label" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </AnchorPane>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </content>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </ScrollPane>
+            <Pane fx:id="issueBookContent" layoutX="161.0" layoutY="80.0" prefHeight="385.0" prefWidth="398.0" visible="false">
+               <children>
+                  <Label layoutX="74.0" layoutY="86.0" prefHeight="177.0" prefWidth="274.0" text="This is issue book">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="returnBookContent" layoutX="148.0" layoutY="103.0" prefHeight="385.0" prefWidth="398.0" visible="false">
+               <children>
+                  <Label layoutX="74.0" layoutY="86.0" prefHeight="177.0" prefWidth="266.0" text="This is return Book">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="supportContent" layoutX="171.0" layoutY="80.0" prefHeight="385.0" prefWidth="398.0" visible="false">
+               <children>
+                  <Label layoutX="74.0" layoutY="86.0" prefHeight="177.0" prefWidth="266.0" text="This is Support">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <AnchorPane fx:id="searchResult_AnchorPane" layoutX="26.0" layoutY="-22.0" prefHeight="322.0" prefWidth="480.0" visible="false">
+               <children>
+                  <ScrollPane fx:id="searchResult_ScrollPane" focusTraversable="false" prefHeight="318.0" prefWidth="520.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                        <VBox fx:id="searchResult_VBox" prefHeight="318.0" prefWidth="475.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+         </children></AnchorPane>
+      <Pane fx:id="subButtonBorder" layoutX="200.0" layoutY="160.0" prefHeight="54.0" prefWidth="15.0" styleClass="sub-button-border" />
+      <AnchorPane layoutX="240.0" layoutY="15.0" prefHeight="42.0" prefWidth="480.0">
+         <children>
+            <TextField fx:id="searchBar" layoutY="1.0" onAction="#search" prefHeight="42.0" prefWidth="480.0" promptText="Search here" styleClass="search-bar" stylesheets="@../StyleSheets/Style.css">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
+            </TextField>
+            <Button layoutX="444.0" layoutY="10.0" mnemonicParsing="false" styleClass="search-bar-element" stylesheets="@../StyleSheets/Style.css">
+               <graphic>
+                  <FontAwesomeIcon glyphName="SEARCH" />
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="640.0" prefWidth="200.0" styleClass="navigation-bar" stylesheets="@../StyleSheets/Style.css">
+         <children>
+            <ImageView fitHeight="160.0" fitWidth="160.0" layoutX="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/NonBgLightLibraryLogo.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="15.0" layoutY="571.0" mnemonicParsing="false" onAction="#handleLogoutAction" prefHeight="54.0" prefWidth="175.0" text="Log out">
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" rotate="180.0" size="30px50px" />
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <AnchorPane fx:id="navigationButtonBorder" layoutX="12.0" layoutY="160.0" prefHeight="54.0" prefWidth="188.0" styleClass="navigation-button-border" stylesheets="@../StyleSheets/Style.css" />
+            <Button fx:id="dashboardButton" alignment="CENTER" layoutX="12.0" layoutY="160.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="175.0" text="Dashboard" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="issueBookButton" alignment="CENTER" layoutX="12.0" layoutY="240.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="175.0" text="Issue Book" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="returnBookButton" alignment="CENTER" layoutX="12.0" layoutY="320.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="175.0" text="Return Book" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="supportButton" alignment="CENTER" layoutX="12.0" layoutY="400.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="175.0" text="Support" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="760.0" prefHeight="165.0" prefWidth="200.0">
+         <children>
+            <AnchorPane fx:id="individualButtonContainer" layoutY="-35.0" prefHeight="110.0" prefWidth="200.0" styleClass="individual-button-container" stylesheets="@../StyleSheets/Style.css">
+               <children>
+                  <Button layoutX="12.0" layoutY="9.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="175.0" text="View your profile" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="USER" size="1.5em" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="12.0" layoutY="55.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="175.0" text="Setting" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="COG" size="1.6em" />
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="75.0" prefWidth="200.0" styleClass="individual-bar" stylesheets="@../StyleSheets/Style.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="21.0" layoutY="8.0" prefHeight="20.0" prefWidth="100.0" text="Welcome friend">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="28.0" prefHeight="20.0" prefWidth="100.0" text="Name">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="47.0" prefHeight="20.0" prefWidth="100.0" text="ID: #">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Pane fx:id="avatarContainer" layoutX="130.0" layoutY="10.0" prefHeight="56.0" prefWidth="56.0">
+                     <children>
+                        <Button layoutX="-8.0" layoutY="-4.0" mnemonicParsing="false" onAction="#handleIndividualBarAction" prefHeight="56.0" prefWidth="56.0" styleClass="avatar" stylesheets="@../StyleSheets/Style.css">
+                           <graphic>
+                              <ImageView fx:id="avatarImage" fitHeight="56.0" fitWidth="56.0" focusTraversable="true" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../Images/LightLibraryLogo.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="533.0" layoutY="5.0" prefHeight="90.0" prefWidth="174.0">
-                    <children>
-                        <Button layoutY="1.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="173.0"
-                                text="View your profile">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="USER" size="1.5em"/>
-                            </graphic>
-                        </Button>
-                        <Button layoutY="46.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="174.0"
-                                text="Setting">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="COG" size="1.6em"/>
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="520.0" layoutY="6.0" prefHeight="75.0" prefWidth="200.0"
-                            styleClass="individual-bar" stylesheets="@../StyleSheets/Style.css">
-                    <children>
-                        <Label layoutX="21.0" layoutY="8.0" prefHeight="20.0" prefWidth="100.0" text="Welcome friend">
-                            <font>
-                                <Font name="System Bold" size="12.0"/>
-                            </font>
-                        </Label>
-                        <Pane layoutX="132.0" layoutY="8.0" prefHeight="60.0" prefWidth="60.0">
-                            <children>
-                                <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../Images/LightLibraryLogo.png"/>
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </Pane>
-                        <Label layoutX="21.0" layoutY="28.0" prefHeight="20.0" prefWidth="100.0" text="Name">
-                            <font>
-                                <Font name="System Bold" size="12.0"/>
-                            </font>
-                        </Label>
-                        <Label layoutX="21.0" layoutY="47.0" prefHeight="20.0" prefWidth="100.0" text="ID: #">
-                            <font>
-                                <Font name="System Bold" size="12.0"/>
-                            </font>
-                        </Label>
-                    </children>
-                </AnchorPane>
-            </children>
-        </AnchorPane>
-        <AnchorPane prefHeight="640.0" prefWidth="240.0" styleClass="navigation-bar"
-                    stylesheets="@../StyleSheets/Style.css">
-            <children>
-                <ImageView fitHeight="160.0" fitWidth="160.0" layoutX="40.0" layoutY="-29.0" pickOnBounds="true"
-                           preserveRatio="true">
-                    <image>
-                        <Image url="@../Images/NonBgLightLibraryLogo.png"/>
-                    </image>
-                </ImageView>
-                <AnchorPane layoutX="15.0" layoutY="150.0" prefHeight="62.0" prefWidth="225.0">
-                    <children>
-                        <Button alignment="CENTER_RIGHT" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0"
-                                prefWidth="210.0" text="Available Books" textAlignment="CENTER">
-                            <font>
-                                <Font size="20.0"/>
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="1.2em"/>
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-                <Button layoutX="15.0" layoutY="550.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0">
-                    <graphic>
-                        <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" rotate="180.0" size="50px"/>
-                    </graphic>
-                </Button>
-                <AnchorPane layoutX="15.0" layoutY="223.0" prefHeight="62.0" prefWidth="225.0">
-                    <children>
-                        <Button alignment="CENTER_RIGHT" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0"
-                                prefWidth="210.0" text="Available Books" textAlignment="CENTER">
-                            <font>
-                                <Font size="20.0"/>
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="1.2em"/>
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="15.0" layoutY="299.0" prefHeight="62.0" prefWidth="225.0">
-                    <children>
-                        <Button alignment="CENTER_RIGHT" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0"
-                                prefWidth="210.0" text="Available Books" textAlignment="CENTER">
-                            <font>
-                                <Font size="20.0"/>
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="1.2em"/>
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-                <AnchorPane layoutX="15.0" layoutY="371.0" prefHeight="62.0" prefWidth="225.0">
-                    <children>
-                        <Button alignment="CENTER_RIGHT" layoutY="4.0" mnemonicParsing="false" prefHeight="54.0"
-                                prefWidth="210.0" text="Available Books" textAlignment="CENTER">
-                            <font>
-                                <Font size="20.0"/>
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon fill="WHITE" glyphName="BOOK" size="1.2em"/>
-                            </graphic>
-                        </Button>
-                    </children>
-                </AnchorPane>
-            </children>
-        </AnchorPane>
-    </children>
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="332.0" layoutY="61.0" prefHeight="42.0" prefWidth="295.0" visible="false">
+         <children>
+            <Label alignment="CENTER" layoutX="1.0" layoutY="4.0" prefHeight="35.0" prefWidth="251.0" text="Searching. Please wait">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.125490203499794" green="0.5843137502670288" blue="0.4941176474094391" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.239215686917305" green="0.6235294342041016" blue="0.29019609093666077" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+            </Label>
+            <Circle fx:id="searchLoadingDot1" fill="#3d9f4a" layoutX="261.0" layoutY="28.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
+            <Circle fx:id="searchLoadingDot2" fill="#3d9f4a" layoutX="273.0" layoutY="28.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
+            <Circle fx:id="searchLoadingDot3" fill="#3d9f4a" layoutX="285.0" layoutY="28.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="inforBook" layoutX="220.0" layoutY="105.0" prefHeight="510.0" prefWidth="713.0" styleClass="background" stylesheets="@../StyleSheets/Style.css" visible="false">
+         <children>
+            <Pane prefHeight="500.0" prefWidth="719.0" styleClass="dashboard-background" AnchorPane.bottomAnchor="-11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button layoutX="687.0" layoutY="2.0" mnemonicParsing="false" onAction="#exitInforBookAction" text="X" />
+                  <ImageView fx:id="inforImage" fitHeight="201.0" fitWidth="223.0" layoutX="35.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="inforTitle" layoutX="292.0" layoutY="64.0" prefHeight="51.0" prefWidth="327.0" text="title">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="inforTitle1" layoutX="292.0" layoutY="134.0" prefHeight="51.0" prefWidth="327.0" text="author">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="inforTitle2" layoutX="292.0" layoutY="202.0" prefHeight="51.0" prefWidth="327.0" text="publisher">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="inforTitle3" layoutX="292.0" layoutY="279.0" prefHeight="51.0" prefWidth="327.0" text="publishdate">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <Button layoutX="657.0" layoutY="2.0" mnemonicParsing="false" onAction="#returnSearchResult" text="&lt;-" />
+                  <Button fx:id="addbutton" layoutX="552.0" layoutY="418.0" mnemonicParsing="false" text="Add" />
+                  <TextField fx:id="number" alignment="CENTER_RIGHT" layoutX="456.0" layoutY="418.0" prefHeight="25.0" prefWidth="68.0" promptText="1" />
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </children>
 </AnchorPane>
