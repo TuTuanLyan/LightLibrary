@@ -168,7 +168,7 @@
                 </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="332.0" layoutY="61.0" prefHeight="42.0" prefWidth="295.0" visible="false">
+      <AnchorPane layoutX="332.0" layoutY="61.0" prefHeight="42.0" prefWidth="295.0">
          <children>
             <Label alignment="CENTER" layoutX="1.0" layoutY="4.0" prefHeight="35.0" prefWidth="251.0" text="Searching. Please wait">
                <font>

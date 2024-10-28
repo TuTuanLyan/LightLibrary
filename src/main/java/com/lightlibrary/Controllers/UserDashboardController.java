@@ -119,6 +119,8 @@ public class UserDashboardController implements Initializable {
             swapMainContentAnimation(supportContent);
             activeButton = ActiveButton.SUPPORT;
         });
+
+        loadingAction();
     }
 
     /**
@@ -219,27 +221,45 @@ public class UserDashboardController implements Initializable {
         fadeTransition.play();
     }
 
+    /**
+     * Create animation loading when do long time task.
+     */
     private void loadingAction() {
-        animateDot(searchLoadingDot1, 0);
-        animateDot(searchLoadingDot2, 200);
-        animateDot(searchLoadingDot3, 400);
+        SequentialTransition dot1Animation = createDotAnimation(searchLoadingDot1, 0);
+        SequentialTransition dot2Animation = createDotAnimation(searchLoadingDot2, 250);
+        SequentialTransition dot3Animation = createDotAnimation(searchLoadingDot3, 500);
+
+        dot3Animation.setOnFinished(e-> {
+            dot1Animation.playFromStart();
+            dot2Animation.playFromStart();
+            dot3Animation.playFromStart();
+        });
+
+        dot1Animation.play();
+        dot2Animation.play();
+        dot3Animation.play();
     }
 
-    private void animateDot(Circle dot, int initialDelay) {
+    /**
+     * Create animation for each dot.
+     * @param dot is the dot to create animation.
+     * @param initialDelay is delay time between two dots animation.
+     * @return a SequentialTransition is a cycle of dot animation.
+     */
+    private SequentialTransition createDotAnimation(Circle dot, int initialDelay) {
         Timeline movement = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(dot.translateYProperty(), 0)),
                 new KeyFrame(Duration.millis(250), new KeyValue(dot.translateYProperty(), -5)),
                 new KeyFrame(Duration.millis(500), new KeyValue(dot.translateYProperty(), 0))
         );
 
-        PauseTransition pause = new PauseTransition(Duration.millis(200));
+        PauseTransition pause = new PauseTransition(Duration.millis(250));
 
-        SequentialTransition fullCycle = new SequentialTransition(movement, pause);
-        fullCycle.setCycleCount(SequentialTransition.INDEFINITE);
+        SequentialTransition fullCycle = new SequentialTransition(new PauseTransition(Duration.millis(initialDelay)),
+                movement, pause);
 
-        PauseTransition initialPause = new PauseTransition(Duration.millis(initialDelay));
-        initialPause.setOnFinished(e -> fullCycle.play());
+        fullCycle.setCycleCount(1);
 
-        initialPause.play();
+        return fullCycle;
     }
 }
