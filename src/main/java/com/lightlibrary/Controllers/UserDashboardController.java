@@ -13,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -50,9 +49,6 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private Button supportButton;
-
-    @FXML
-    private AnchorPane mainContentContainer;
 
     @FXML
     private Pane dashboardContent;
@@ -119,8 +115,6 @@ public class UserDashboardController implements Initializable {
             swapMainContentAnimation(supportContent);
             activeButton = ActiveButton.SUPPORT;
         });
-
-        loadingAction();
     }
 
     /**

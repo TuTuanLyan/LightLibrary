@@ -17,7 +17,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@../StyleSheets/Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.UserDashboardController">
     <children>
-      <AnchorPane fx:id="mainContentContainer" layoutX="210.0" layoutY="90.0" prefHeight="540.0" prefWidth="740.0" styleClass="main-content-container">
+      <AnchorPane layoutX="210.0" layoutY="90.0" prefHeight="540.0" prefWidth="740.0" styleClass="main-content-container">
          <children>
             <Pane fx:id="dashboardContent" layoutX="171.0" layoutY="92.0" prefHeight="385.0" prefWidth="398.0">
                <children>
@@ -168,7 +168,7 @@
                 </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="332.0" layoutY="61.0" prefHeight="42.0" prefWidth="295.0">
+      <AnchorPane layoutX="332.0" layoutY="61.0" prefHeight="42.0" prefWidth="295.0" visible="false">
          <children>
             <Label alignment="CENTER" layoutX="1.0" layoutY="4.0" prefHeight="35.0" prefWidth="251.0" text="Searching. Please wait">
                <font>

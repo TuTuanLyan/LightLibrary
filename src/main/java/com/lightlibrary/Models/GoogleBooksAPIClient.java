@@ -10,15 +10,12 @@ import java.util.List;
 
 public class GoogleBooksAPIClient {
 
-    private static final String APPLICATION_NAME = "Library App";
-    private static final String API_KEY = "API_KEY";
-
-    public List<Volume> searchBooks(String query) throws IOException {
+    public static List<Volume> searchBooks(String query) throws IOException {
         // Tạo đối tượng Books với API key
         Books books = new Books.Builder(new com.google.api.client.http.javanet.NetHttpTransport(),
                 new com.google.api.client.json.gson.GsonFactory(), null)
-                .setApplicationName(APPLICATION_NAME)
-                .setGoogleClientRequestInitializer(new BooksRequestInitializer(API_KEY))
+                .setApplicationName(LibraryEnvironment.APPLICATION_NAME)
+                .setGoogleClientRequestInitializer(new BooksRequestInitializer(LibraryEnvironment.API_KEY))
                 .build();
 
         Books.Volumes.List volumesList = books.volumes().list(query);
@@ -27,7 +24,7 @@ public class GoogleBooksAPIClient {
         return volumes.getItems();
     }
 
-    public void printBookInfo(List<Volume> volumes) {
+    public static void printBookInfo(List<Volume> volumes) {
         if (volumes != null && !volumes.isEmpty()) {
             for (Volume volume : volumes) {
                 Volume.VolumeInfo volumeInfo = volume.getVolumeInfo();
@@ -44,7 +41,7 @@ public class GoogleBooksAPIClient {
         }
     }
 
-    private String getISBN(Volume.VolumeInfo volumeInfo) {
+    private static String getISBN(Volume.VolumeInfo volumeInfo) {
         if (volumeInfo.getIndustryIdentifiers() != null) {
             for (Volume.VolumeInfo.IndustryIdentifiers identifier : volumeInfo.getIndustryIdentifiers()) {
                 if ("ISBN_13".equals(identifier.getType())) {
