@@ -1,7 +1,6 @@
 package com.lightlibrary.Controllers;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,6 +65,15 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private Pane supportContent;
+
+    @FXML
+    private Circle searchLoadingDot1;
+
+    @FXML
+    private Circle searchLoadingDot2;
+
+    @FXML
+    private Circle searchLoadingDot3;
 
     /**
      * Enum representing the active navigation button on the dashboard.
@@ -181,7 +189,7 @@ public class UserDashboardController implements Initializable {
     }
 
     /**
-     * Handle Animation in main content when swapped.
+     * Handle animation in main content when swapped.
      * @param newContent is the new content Pane user want to go.
      */
     private void swapMainContentAnimation(Pane newContent) {
@@ -209,5 +217,29 @@ public class UserDashboardController implements Initializable {
         fadeTransition.setFromValue(0.0);
         fadeTransition.setToValue(1.0);
         fadeTransition.play();
+    }
+
+    private void loadingAction() {
+        animateDot(searchLoadingDot1, 0);
+        animateDot(searchLoadingDot2, 200);
+        animateDot(searchLoadingDot3, 400);
+    }
+
+    private void animateDot(Circle dot, int initialDelay) {
+        Timeline movement = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(dot.translateYProperty(), 0)),
+                new KeyFrame(Duration.millis(250), new KeyValue(dot.translateYProperty(), -5)),
+                new KeyFrame(Duration.millis(500), new KeyValue(dot.translateYProperty(), 0))
+        );
+
+        PauseTransition pause = new PauseTransition(Duration.millis(200));
+
+        SequentialTransition fullCycle = new SequentialTransition(movement, pause);
+        fullCycle.setCycleCount(SequentialTransition.INDEFINITE);
+
+        PauseTransition initialPause = new PauseTransition(Duration.millis(initialDelay));
+        initialPause.setOnFinished(e -> fullCycle.play());
+
+        initialPause.play();
     }
 }
