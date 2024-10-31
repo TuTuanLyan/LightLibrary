@@ -1,6 +1,8 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.Customer;
 import com.lightlibrary.Models.DatabaseConnection;
+import com.lightlibrary.Models.User;
 import javafx.animation.TranslateTransition;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -95,18 +97,35 @@ public class LoginAndRegisterController implements Initializable {
 
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        Task<String> loginTask = new Task<>() {
+        Task<User> loginTask = new Task<>() {
             @Override
-            protected String call() {
+            protected User call() {
                 return checkLoginValidity(username, password);
             }
         };
 
         loginTask.setOnSucceeded(e -> {
-            String role = loginTask.getValue();
-            if (role != null) {
-                //loginNotificationLabel.setText("Login Success!");
-                if (role.equalsIgnoreCase("CUSTOMER")) {
+            User user = loginTask.getValue();
+            if (user != null) {
+                loginNotificationLabel.setText("Login Success!");
+                if (user instanceof Customer) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml"));
+                        Parent dashboard = loader.load();
+
+                        // Chuyển đối tượng Customer vào controller của UserDashboard
+                        UserDashboardController controller = loader.getController();
+                        controller.setCustomer((Customer) user);
+
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(new Scene(dashboard, 960, 640));
+                        stage.show();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+
+                /*if (role.equalsIgnoreCase("CUSTOMER")) {
                     try {
                         Parent dashboard = FXMLLoader.load(Objects.requireNonNull(getClass()
                                 .getResource("/com/lightlibrary/Views/UserDashboard.fxml")));
@@ -118,7 +137,7 @@ public class LoginAndRegisterController implements Initializable {
                     }
                 } else if (role.equalsIgnoreCase("ADMIN")) {
                     loginNotificationLabel.setText("Welcome Admin!");
-                }
+                }*/
                 executorService.shutdown();
             } else {
                 loginPassword.clear();
@@ -137,7 +156,7 @@ public class LoginAndRegisterController implements Initializable {
      * @param password user account password.
      * @return "CUSTOMER", "ADMIN" if valid login; null if login fails.
      */
-    private String checkLoginValidity(String username, String password) {
+    private User checkLoginValidity(String username, String password) {
         Connection connectDB = DatabaseConnection.getConnection();
 
         if (connectDB == null) {
@@ -145,7 +164,7 @@ public class LoginAndRegisterController implements Initializable {
             return null;
         }
 
-        String connectQuery = "SELECT role FROM users WHERE BINARY username = ? AND BINARY password = ?";
+        String connectQuery = "SELECT * FROM users WHERE BINARY username = ? AND BINARY password = ?";
 
         try {
             PreparedStatement preparedStatement = connectDB.prepareStatement(connectQuery);
@@ -155,7 +174,18 @@ public class LoginAndRegisterController implements Initializable {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                return resultSet.getString("role");
+                String role = resultSet.getString("role");
+                if (role.equalsIgnoreCase("CUSTOMER")) {
+                    Customer customer = new Customer();
+                    customer.setRole(User.Role.CUSTOMER);
+                    customer.setUserID(resultSet.getInt("userID"));
+                    customer.setFullName(resultSet.getString("fullName"));
+                    customer.setUsername(resultSet.getString("username"));
+                    customer.setPassword(resultSet.getString("password"));
+                    return customer;
+                } else if (role.equalsIgnoreCase("ADMIN")) {
+
+                }
             }
 
         } catch (SQLException e) {

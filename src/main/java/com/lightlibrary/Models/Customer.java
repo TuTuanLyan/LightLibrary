@@ -27,4 +27,17 @@ public class Customer extends User {
      *
      */
     public void returnBook() {}
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "userID=" + userID +
+                ", fullName='" + fullName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

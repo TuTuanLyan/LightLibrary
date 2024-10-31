@@ -1,5 +1,6 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.Customer;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -82,6 +83,17 @@ public class UserDashboardController implements Initializable {
     }
 
     private static ActiveButton activeButton;
+
+    private Customer customer;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        System.out.println(customer);
+    }
 
     /**
      * Initializes the User Dashboard controller, setting up event handlers and UI elements.

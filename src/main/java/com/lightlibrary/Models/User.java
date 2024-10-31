@@ -36,11 +36,11 @@ public class User {
         this.email = email;
     }
 
-    public int getID() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setID(int ID) {
+    public void setUserID(int ID) {
         this.userID = ID;
     }
 

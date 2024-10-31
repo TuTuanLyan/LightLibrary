@@ -12,5 +12,6 @@ module com.lightlibrary {
     opens com.lightlibrary to javafx.fxml;
     exports com.lightlibrary;
     exports com.lightlibrary.Controllers;
+    exports com.lightlibrary.Models;
     opens com.lightlibrary.Controllers to javafx.fxml;
 }
