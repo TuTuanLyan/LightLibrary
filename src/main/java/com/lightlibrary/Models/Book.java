@@ -3,6 +3,7 @@ package com.lightlibrary.Models;
 public class Book {
 
     private int totalNumber;
+    private int availableNumber;
     private String title;
     private String author;
     private String publisher;
@@ -18,6 +19,7 @@ public class Book {
 
     public Book(Book book) {
         this.totalNumber = book.getTotalNumber();
+        this.availableNumber = book.getAvailableNumber();
         this.title = book.getTitle();
         this.author = book.getAuthor();
         this.publisher = book.getPublisher();
@@ -56,6 +58,14 @@ public class Book {
 
     public int getTotalNumber() {
         return totalNumber;
+    }
+
+    public int getAvailableNumber() {
+        return availableNumber;
+    }
+
+    public void setAvailableNumber(int availableNumber) {
+        this.availableNumber = availableNumber;
     }
 
     public void setTotalNumber(int totalNumber) {
@@ -130,6 +140,7 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "totalNumber=" + totalNumber +
+                ", availableNumber=" + availableNumber +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +

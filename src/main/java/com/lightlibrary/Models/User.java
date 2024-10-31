@@ -18,14 +18,16 @@ public class User {
 
     }
 
-    public User(int userID, String fullName, String username, String password) {
+    public User(int userID, String fullName,
+                String username, String password) {
         this.userID = userID;
         this.fullName = fullName;
         this.username = username;
         this.password = password;
     }
 
-    public User(int userID, String fullName, String username, String password, String phoneNumber, String email) {
+    public User(int userID, String fullName, String username,
+                String password, String phoneNumber, String email) {
         this.userID = userID;
         this.fullName = fullName;
         this.username = username;

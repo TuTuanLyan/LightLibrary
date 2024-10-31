@@ -154,7 +154,7 @@ public class LoginAndRegisterController implements Initializable {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) { // result is not null
+            if (resultSet.next()) {
                 return resultSet.getString("role");
             }
 
