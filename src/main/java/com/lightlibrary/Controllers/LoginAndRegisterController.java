@@ -1,5 +1,6 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.Admin;
 import com.lightlibrary.Models.Customer;
 import com.lightlibrary.Models.DatabaseConnection;
 import com.lightlibrary.Models.User;
@@ -123,6 +124,21 @@ public class LoginAndRegisterController implements Initializable {
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
+                } else if (user instanceof Admin) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/lightlibrary/Views/AdminDashboard.fxml"));
+                        Parent dashboard = loader.load();
+
+                        // Chuyển đối tượng Customer vào controller của UserDashboard
+                        /*UserDashboardController controller = loader.getController();
+                        controller.setCustomer((Customer) user);*/
+
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(new Scene(dashboard, 960, 640));
+                        stage.show();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
 
                 /*if (role.equalsIgnoreCase("CUSTOMER")) {
@@ -184,7 +200,13 @@ public class LoginAndRegisterController implements Initializable {
                     customer.setPassword(resultSet.getString("password"));
                     return customer;
                 } else if (role.equalsIgnoreCase("ADMIN")) {
-
+                    Admin admin = new Admin();
+                    admin.setRole(User.Role.ADMIN);
+                    admin.setUserID(resultSet.getInt("userID"));
+                    admin.setFullName(resultSet.getString("fullName"));
+                    admin.setUsername(resultSet.getString("username"));
+                    admin.setPassword(resultSet.getString("password"));
+                    return admin;
                 }
             }
 
