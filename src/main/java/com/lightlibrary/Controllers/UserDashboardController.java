@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -72,6 +73,12 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Circle searchLoadingDot3;
 
+    @FXML
+    private Label customerFullNameField;
+
+    @FXML
+    private Label customerUserIDField;
+
     /**
      * Enum representing the active navigation button on the dashboard.
      */
@@ -92,7 +99,7 @@ public class UserDashboardController implements Initializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-        System.out.println(customer);
+        displayCustomerInformation();
     }
 
     /**
@@ -100,10 +107,13 @@ public class UserDashboardController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // Set view individual bar.
         individualButtonContainer.setVisible(false);
         Circle avatarClip = new Circle(28, 28, 28);
         avatarContainer.setClip(avatarClip);
 
+        // Set animation and handle action navigation bar.
         dashboardButton.getStyleClass().add("selected");
         activeButton = ActiveButton.DASHBOARD;
 
@@ -267,5 +277,16 @@ public class UserDashboardController implements Initializable {
         fullCycle.setCycleCount(1);
 
         return fullCycle;
+    }
+
+    /**
+     * Display customer information in dashboard scene when customer log in.
+     */
+    private void displayCustomerInformation() {
+        if (customer != null) {
+            customerFullNameField.setText(customer.getFullName());
+            customerUserIDField.setText(customerUserIDField.getText()
+                    + String.format("%08d", customer.getUserID()));
+        }
     }
 }
