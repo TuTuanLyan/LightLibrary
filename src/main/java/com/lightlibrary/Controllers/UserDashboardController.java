@@ -105,6 +105,8 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private AnchorPane inforBook;
+
+    private String check_changed="";
     /**
      * Enum representing the active navigation button on the dashboard.
      */
@@ -131,7 +133,7 @@ public class UserDashboardController implements Initializable {
 
         dashboardButton.setOnAction(e -> {
             handleNavigationButtonBorder(dashboardButton);
-            swapMainContentAnimation(dashboardContent);
+            //swapMainContentAnimation(dashboardContent);
             activeButton = ActiveButton.DASHBOARD;
         });
         issueBookButton.setOnAction(e -> {
@@ -225,7 +227,7 @@ public class UserDashboardController implements Initializable {
      */
     private void swapMainContentAnimation(Pane newContent) {
         Pane currentContent = switch (activeButton) {
-            case DASHBOARD -> dashboardContent;
+            case DASHBOARD -> issueBookContent;
             case ISSUE_BOOK -> issueBookContent;
             case RETURN_BOOK -> returnBookContent;
             case SUPPORT -> supportContent;
@@ -312,88 +314,107 @@ public class UserDashboardController implements Initializable {
     }
 
 
+
     public void search() {
+        String input = searchBar.getText();
         searchBar.setOnMouseClicked(mouseEvent -> {
             inforBook.setDisable(true);
             inforBook.setVisible(false);
+            if(searchBar.getText().equals(check_changed) && !searchResult_AnchorPane.isVisible()){
+                searchResult_AnchorPane.setVisible(true);
+            }
+            handleNavigationButtonBorder(dashboardButton);
+            //swapMainContentAnimation(dashboardContent);
+            activeButton = ActiveButton.DASHBOARD;
         });
-        String input = searchBar.getText();
+        searchBar.setOnKeyTyped(keyEvent -> {
+            if(!searchBar.getText().equals(check_changed) && searchResult_AnchorPane.isVisible()){
+                searchResult_AnchorPane.setVisible(false);
+            }
+        });
         if (input.isEmpty()) {
             searchResult_AnchorPane.setVisible(false);
             return;
         }
-        GoogleBooksAPIClient googleBooksAPIClient = new GoogleBooksAPIClient();
-        try {
-            // Tìm kiếm sách với từ khóa
-            List<Volume> books = googleBooksAPIClient.searchBooks(input);
+        if(!searchBar.getText().equals(check_changed)){
+            check_changed = input;
+            GoogleBooksAPIClient googleBooksAPIClient = new GoogleBooksAPIClient();
+            try {
+                // Tìm kiếm sách với từ khóa
+                List<Volume> books = googleBooksAPIClient.searchBooks(input);
 
-            ScrollPane searchResult_ScrollPane = (ScrollPane) searchResult_AnchorPane.getChildren().getFirst();
-            VBox searchResult_VBox = (VBox) searchResult_ScrollPane.getContent();
+                ScrollPane searchResult_ScrollPane = (ScrollPane) searchResult_AnchorPane.getChildren().getFirst();
+                VBox searchResult_VBox = (VBox) searchResult_ScrollPane.getContent();
 
-            // câu lệnh này để xóa các kết quả đã được gọi về từ trước, clear lại để hiển thị lượt kết quả mới
-            searchResult_VBox.getChildren().clear();
-            for (int i = 0; i < books.size(); i++) {
-                // Tạo 1 AnchorPane lưu kết quả trả về từ apis và nhét vào ScrollPane
-                {
-                    //title
-                    Label title = new Label("Name: " + books.get(i).getVolumeInfo().getTitle());
-                    title.setFont(new Font("Arial", 12));
+                // câu lệnh này để xóa các kết quả đã được gọi về từ trước, clear lại để hiển thị lượt kết quả mới
+                searchResult_VBox.getChildren().clear();
+                for (int i = 0; i < books.size(); i++) {
+                    // Tạo 1 AnchorPane lưu kết quả trả về từ apis và nhét vào ScrollPane
+                    {
+                        //title
+                        Label title = new Label("Name: " + books.get(i).getVolumeInfo().getTitle());
+                        title.setFont(new Font("Arial", 12));
 
-                    //author
-                    String s_author = "Author: ";
-                    for (int j = 0; j < books.get(i).getVolumeInfo().getAuthors().size(); j++) {
-                        s_author += books.get(i).getVolumeInfo().getAuthors().get(j) + ", ";
+                        //author
+                        String s_author = "Author: ";
+                        if(books.get(i).getVolumeInfo().getAuthors() == null){
+                            s_author += "null";
+                        }
+                        else {
+                            for (int j = 0; j < books.get(i).getVolumeInfo().getAuthors().size(); j++) {
+                                s_author += books.get(i).getVolumeInfo().getAuthors().get(j) + ", ";
+                            }
+
+                            s_author = s_author.substring(0, s_author.length() - 2);
+                        }
+                        Label author = new Label(s_author);
+                        author.setFont(new Font("Arial", 12));
+
+                        //img
+                        Image img = new Image(books.get(i).getVolumeInfo().getImageLinks().getThumbnail());
+                        ImageView imgView = new ImageView(img);
+
+                        //anchorpane, anh chỉ cần biết đây là setup vị trí cho img, title và author là được
+                        AnchorPane anchorPane = new AnchorPane();
+                        anchorPane.setStyle("-fx-background-color:lightblue;");
+                        anchorPane.setPrefSize(searchResult_VBox.getPrefWidth(), imgView.getFitHeight());
+
+                        AnchorPane.setLeftAnchor(imgView, 10.0);
+                        AnchorPane.setTopAnchor(imgView, 10.0);
+
+                        AnchorPane.setLeftAnchor(title, img.getWidth() + 30.0);
+                        AnchorPane.setTopAnchor(title, 30.0);
+
+
+                        AnchorPane.setLeftAnchor(author, img.getWidth() + 30.0);
+                        AnchorPane.setTopAnchor(author, 30 + title.getPrefHeight() + 30);
+
+                        anchorPane.getChildren().addAll(imgView, title, author);
+
+                        searchResult_VBox.getChildren().add(anchorPane);
+                        //buộc phải để như này nhé, nếu truyền (Volume) books.get(i) vô hàm render sẽ lỗi nha
+                        Volume volume = books.get(i);
+                        anchorPane.setOnMouseClicked(event -> {
+                            System.out.println(inforBook.getChildren().getFirst());
+                            RenderBook(inforBook,volume);
+                        });
                     }
-                    s_author = s_author.substring(0, s_author.length() - 2);
-                    Label author = new Label(s_author);
-                    author.setFont(new Font("Arial", 12));
-
-                    //img
-                    Image img = new Image(books.get(i).getVolumeInfo().getImageLinks().getThumbnail());
-                    ImageView imgView = new ImageView(img);
-
-                    //anchorpane, anh chỉ cần biết đây là setup vị trí cho img, title và author là được
-                    AnchorPane anchorPane = new AnchorPane();
-                    anchorPane.setStyle("-fx-background-color:lightblue;");
-                    anchorPane.setPrefSize(searchResult_VBox.getPrefWidth(), imgView.getFitHeight());
-
-                    AnchorPane.setLeftAnchor(imgView, 10.0);
-                    AnchorPane.setTopAnchor(imgView, 10.0);
-
-                    AnchorPane.setLeftAnchor(title, img.getWidth() + 30.0);
-                    AnchorPane.setTopAnchor(title, 30.0);
-
-
-                    AnchorPane.setLeftAnchor(author, img.getWidth() + 30.0);
-                    AnchorPane.setTopAnchor(author, 30 + title.getPrefHeight() + 30);
-
-                    anchorPane.getChildren().addAll(imgView, title, author);
-
-                    searchResult_VBox.getChildren().add(anchorPane);
-                    //buộc phải để như này nhé, nếu truyền (Volume) books.get(i) vô hàm render sẽ lỗi nha
-                    Volume volume = books.get(i);
-                    anchorPane.setOnMouseClicked(event -> {
-                        System.out.println(inforBook.getChildren().getFirst());
-                        RenderBook(inforBook,volume);
-                    });
                 }
+                searchResult_AnchorPane.setVisible(true);
+                System.out.println(inforBook);
+                // Hiển thị thông tin sách, không cần thiết lắm nhưng tôi vẫn giữ
+                googleBooksAPIClient.printBookInfo(books);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            searchResult_AnchorPane.setVisible(true);
-            System.out.println(inforBook);
-            // Hiển thị thông tin sách, không cần thiết lắm nhưng tôi vẫn giữ
-            googleBooksAPIClient.printBookInfo(books);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return;
+        else {
+            searchResult_AnchorPane.setVisible(true);
+        }
     }
 
     public void RenderBook(AnchorPane inforBook,Volume volume) {
         //Gọi các phần tử có trong inforBook
-        handleNavigationButtonBorder(issueBookButton);
-        swapMainContentAnimation(issueBookContent);
-        activeButton = ActiveButton.ISSUE_BOOK;
-
         Pane pane = (Pane) inforBook.getChildren().getFirst();
         pane.setStyle("-fx-background-color:lightblue;");
         ImageView imgView = (ImageView) pane.getChildren().get(1);
@@ -419,10 +440,16 @@ public class UserDashboardController implements Initializable {
 
         //author
         String s_author = "Author: ";
-        for (int j = 0; j < volume.getVolumeInfo().getAuthors().size(); j++) {
-            s_author += volume.getVolumeInfo().getAuthors().get(j) + ", ";
+        if(volume.getVolumeInfo().getAuthors() == null){
+            s_author += "null";
         }
-        s_author = s_author.substring(0, s_author.length() - 2);
+        else {
+            for (int j = 0; j < volume.getVolumeInfo().getAuthors().size(); j++) {
+                s_author += volume.getVolumeInfo().getAuthors().get(j) + ", ";
+            }
+
+            s_author = s_author.substring(0, s_author.length() - 2);
+        }
         authorLabel.setText(s_author);
         authorLabel.setFont(font);
 
@@ -440,11 +467,15 @@ public class UserDashboardController implements Initializable {
         /*addbutton.setOnMouseClicked(mouseEvent -> {
             addBook(Integer.getInteger(number),volume);
         });*/
+        handleNavigationButtonBorder(issueBookButton);
+        swapMainContentAnimation(issueBookContent);
+        activeButton = ActiveButton.ISSUE_BOOK;
+
     }
 
     public void returnSearchResult() {
-        handleNavigationButtonBorder(issueBookButton);
-        swapMainContentAnimation(issueBookContent);
+        handleNavigationButtonBorder(dashboardButton);
+        //swapMainContentAnimation(dashboardContent);
         activeButton = ActiveButton.DASHBOARD;
         inforBook.setDisable(true);
         inforBook.setVisible(false);
@@ -452,8 +483,8 @@ public class UserDashboardController implements Initializable {
 
     }
     public void exitInforBookAction() {
-        handleNavigationButtonBorder(issueBookButton);
-        swapMainContentAnimation(issueBookContent);
+        handleNavigationButtonBorder(dashboardButton);
+        //swapMainContentAnimation(dashboardContent);
         activeButton = ActiveButton.DASHBOARD;
         inforBook.setVisible(false);
         inforBook.setDisable(true);
