@@ -1,7 +1,9 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.Customer;
+import com.lightlibrary.Models.DatabaseConnection;
 import javafx.animation.*;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,15 +13,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -54,6 +60,8 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private Pane dashboardContent;
+    @FXML
+    private HBox topBookDisplayBox;
 
     @FXML
     private Pane issueBookContent;
@@ -137,6 +145,8 @@ public class UserDashboardController implements Initializable {
             swapMainContentAnimation(historyContent);
             activeButton = ActiveButton.HISTORY;
         });
+
+        displayTopBook(topBookDisplayBox);
     }
 
     /**
@@ -288,5 +298,65 @@ public class UserDashboardController implements Initializable {
             customerUserIDField.setText(customerUserIDField.getText()
                     + String.format("%08d", customer.getUserID()));
         }
+    }
+
+    private void displayTopBook(HBox topBookDisplayBox) {
+        topBookDisplayBox.setSpacing(15);
+        Task<Void> loadTopBooksTask = new Task<>() {
+            @Override
+            protected Void call() throws SQLException {
+                Connection connectDB = DatabaseConnection.getConnection();
+
+                if (connectDB == null) {
+                    throw new SQLException("Connection is null");
+                }
+
+                String query = "SELECT COUNT(b.title AND t.isbn) AS readed, b.title, t.isbn, b.thumbnail "
+                        + "FROM transactions t "
+                        + "JOIN books b ON t.isbn = b.isbn "
+                        + "GROUP BY t.isbn "
+                        + "ORDER BY readed DESC;";
+
+                try (PreparedStatement preparedStatement = connectDB.prepareStatement(query);
+                     ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                    while (resultSet.next()) {
+                        String title = resultSet.getString("title");
+                        String thumbnailUrl = resultSet.getString("thumbnail");
+                        int readCount = resultSet.getInt("readed");
+
+                        // Create UI components for each book
+                        Label titleLabel = new Label(title);
+                        titleLabel.setLayoutX(95);
+                        titleLabel.setLayoutY(20);
+
+                        Label readCountLabel = new Label("Read Count: " + readCount);
+                        readCountLabel.setLayoutX(95);
+                        readCountLabel.setLayoutY(40);
+
+                        ImageView thumbnailView = new ImageView(new Image(thumbnailUrl));
+                        thumbnailView.setLayoutX(0);
+                        thumbnailView.setLayoutY(20);
+                        thumbnailView.setFitWidth(90);
+                        thumbnailView.setFitHeight(120);
+
+                        Pane bookBox = new Pane(thumbnailView, titleLabel, readCountLabel);
+
+                        // Update the UI on the JavaFX Application Thread
+                        javafx.application.Platform.runLater(() -> topBookDisplayBox.getChildren().add(bookBox));
+                    }
+                }
+
+                return null;
+            }
+        };
+
+        loadTopBooksTask.setOnFailed(event -> {
+            System.err.println("Failed to load top books: " + loadTopBooksTask.getException().getMessage());
+        });
+
+        Thread thread = new Thread(loadTopBooksTask);
+        thread.setDaemon(true); // Ensure thread exits when the application closes
+        thread.start();
     }
 }
