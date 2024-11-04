@@ -62,7 +62,7 @@ public class UserDashboardController implements Initializable {
     private Pane returnBookContent;
 
     @FXML
-    private Pane supportContent;
+    private Pane historyContent;
 
     @FXML
     private Circle searchLoadingDot1;
@@ -86,7 +86,7 @@ public class UserDashboardController implements Initializable {
         DASHBOARD,
         ISSUE_BOOK,
         RETURN_BOOK,
-        SUPPORT
+        HISTORY
     }
 
     private static ActiveButton activeButton;
@@ -134,8 +134,8 @@ public class UserDashboardController implements Initializable {
         });
         supportButton.setOnAction(e -> {
             handleNavigationButtonBorder(supportButton);
-            swapMainContentAnimation(supportContent);
-            activeButton = ActiveButton.SUPPORT;
+            swapMainContentAnimation(historyContent);
+            activeButton = ActiveButton.HISTORY;
         });
     }
 
@@ -215,7 +215,7 @@ public class UserDashboardController implements Initializable {
             case DASHBOARD -> dashboardContent;
             case ISSUE_BOOK -> issueBookContent;
             case RETURN_BOOK -> returnBookContent;
-            case SUPPORT -> supportContent;
+            case HISTORY -> historyContent;
         };
 
         if (currentContent == newContent) {
