@@ -11,10 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -27,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.xml.transform.Result;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
@@ -106,7 +104,9 @@ public class UserDashboardController implements Initializable {
     @FXML
     private AnchorPane inforBook;
 
-    private String check_changed="";
+    private String lastInput = "";
+
+
     /**
      * Enum representing the active navigation button on the dashboard.
      */
@@ -223,6 +223,7 @@ public class UserDashboardController implements Initializable {
 
     /**
      * Handle animation in main content when swapped.
+     *
      * @param newContent is the new content Pane user want to go.
      */
     private void swapMainContentAnimation(Pane newContent) {
@@ -276,6 +277,37 @@ public class UserDashboardController implements Initializable {
         initialPause.play();
     }
 
+    private String getISBN(Volume.VolumeInfo volumeInfo) {
+        if (volumeInfo.getIndustryIdentifiers() != null) {
+            for (Volume.VolumeInfo.IndustryIdentifiers identifier : volumeInfo.getIndustryIdentifiers()) {
+                if ("ISBN_13".equals(identifier.getType())) {
+                    return identifier.getIdentifier();
+                }
+            }
+        }
+        return "N/A";
+    }
+
+    public void returnSearchResult() {
+        handleNavigationButtonBorder(dashboardButton);
+        //swapMainContentAnimation(dashboardContent);
+        activeButton = ActiveButton.DASHBOARD;
+        inforBook.setDisable(true);
+        inforBook.setVisible(false);
+        searchResult_AnchorPane.setVisible(true);
+
+    }
+
+    public void exitInfoBookAction() {
+        handleNavigationButtonBorder(dashboardButton);
+        //swapMainContentAnimation(dashboardContent);
+        activeButton = ActiveButton.DASHBOARD;
+        inforBook.setVisible(false);
+        inforBook.setDisable(true);
+
+    }
+
+
 
     public void AutoLoadTopRead(HBox hBox) {
         Connection connection = DatabaseConnection.getConnection();
@@ -289,7 +321,7 @@ public class UserDashboardController implements Initializable {
                     "select count(b.title and t.isbn) as readed, b.title, t.isbn,b.thumbnail from transactions t " +
                             "join books b on t.isbn = b.isbn " +
                             "group by t.isbn " +
-                            "order by readed desc";
+                            "order by readed desc limit 3";
             PreparedStatement preparedStatement = connection.prepareStatement(connectQuery);
             ResultSet resultSet = preparedStatement.executeQuery();
             int index = 0;
@@ -298,7 +330,7 @@ public class UserDashboardController implements Initializable {
 
                 Image image = new Image(resultSet.getString("thumbnail"));
                 ImageView imgView = (ImageView) anchorPane.getChildren().get(0);
-                imgView.setX((anchorPane.getLayoutX()/ + imgView.getLayoutX()));
+                imgView.setX((anchorPane.getLayoutX() / +imgView.getLayoutX()));
                 imgView.setImage(image);
 
                 Label titleLabel = (Label) anchorPane.getChildren().get(1);
@@ -314,30 +346,44 @@ public class UserDashboardController implements Initializable {
     }
 
 
-
     public void search() {
         String input = searchBar.getText();
+
+        // Xử lí va chạm, chưa có thay đổi button, lưu để để còn chuyển cảnh button hợp lí
+
+        // Xử lí onClicked với mouse, nếu như lastInput chưa thay đổi, và thay kết quả đang ẩn, thì hiển thị lại
         searchBar.setOnMouseClicked(mouseEvent -> {
             inforBook.setDisable(true);
             inforBook.setVisible(false);
-            if(searchBar.getText().equals(check_changed) && !searchResult_AnchorPane.isVisible()){
+            if (searchBar.getText().equals(lastInput) && !searchResult_AnchorPane.isVisible()) {
                 searchResult_AnchorPane.setVisible(true);
             }
             handleNavigationButtonBorder(dashboardButton);
             //swapMainContentAnimation(dashboardContent);
             activeButton = ActiveButton.DASHBOARD;
         });
+
+        // Xử lí Type, nếu như bàn phím được bấm(type) thì tự động ẩn thanh kết quả
         searchBar.setOnKeyTyped(keyEvent -> {
-            if(!searchBar.getText().equals(check_changed) && searchResult_AnchorPane.isVisible()){
+            if (!searchBar.getText().equals(lastInput) && searchResult_AnchorPane.isVisible()) {
                 searchResult_AnchorPane.setVisible(false);
             }
         });
+
+        searchBar.setOnKeyPressed(keyEvent -> {
+            if (searchBar.getText().equals(lastInput)) {
+                if (inforBook.isVisible()) {
+                    inforBook.setVisible(false);
+                }
+            }
+        });
+
         if (input.isEmpty()) {
             searchResult_AnchorPane.setVisible(false);
             return;
         }
-        if(!searchBar.getText().equals(check_changed)){
-            check_changed = input;
+        if (!searchBar.getText().equals(lastInput)) {
+            lastInput = input;
             GoogleBooksAPIClient googleBooksAPIClient = new GoogleBooksAPIClient();
             try {
                 // Tìm kiếm sách với từ khóa
@@ -357,10 +403,9 @@ public class UserDashboardController implements Initializable {
 
                         //author
                         String s_author = "Author: ";
-                        if(books.get(i).getVolumeInfo().getAuthors() == null){
+                        if (books.get(i).getVolumeInfo().getAuthors() == null) {
                             s_author += "null";
-                        }
-                        else {
+                        } else {
                             for (int j = 0; j < books.get(i).getVolumeInfo().getAuthors().size(); j++) {
                                 s_author += books.get(i).getVolumeInfo().getAuthors().get(j) + ", ";
                             }
@@ -392,12 +437,19 @@ public class UserDashboardController implements Initializable {
                         anchorPane.getChildren().addAll(imgView, title, author);
 
                         searchResult_VBox.getChildren().add(anchorPane);
+
+                        // Chỗ này dùng để hiển thị infoBook nhé, sau khi render InfoBook xong thì bản thân nó sẽ có các hàm kế tiếp
+
                         //buộc phải để như này nhé, nếu truyền (Volume) books.get(i) vô hàm render sẽ lỗi nha
                         Volume volume = books.get(i);
                         anchorPane.setOnMouseClicked(event -> {
                             System.out.println(inforBook.getChildren().getFirst());
-                            RenderBook(inforBook,volume);
+                            RenderBook(inforBook, volume);
                         });
+
+
+
+
                     }
                 }
                 searchResult_AnchorPane.setVisible(true);
@@ -407,13 +459,12 @@ public class UserDashboardController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             searchResult_AnchorPane.setVisible(true);
         }
     }
 
-    public void RenderBook(AnchorPane inforBook,Volume volume) {
+    public void RenderBook(AnchorPane inforBook, Volume volume) {
         //Gọi các phần tử có trong inforBook
         Pane pane = (Pane) inforBook.getChildren().getFirst();
         pane.setStyle("-fx-background-color:lightblue;");
@@ -423,15 +474,15 @@ public class UserDashboardController implements Initializable {
         Label publisherLabel = (Label) pane.getChildren().get(4);
         Label publishDateLabel = (Label) pane.getChildren().get(5);
         Button addbutton = (Button) pane.getChildren().get(7);
-        String number = pane.getChildren().get(8).toString();
-        Font font = new Font("Arial", 12);
+        Button borrowbutton = (Button) pane.getChildren().get(9);
+        Font font = new Font("Arial", 12);                  //cái này để setFont, nếu dùng css thì bỏ đi cũng được
 
 
         // Bắt đầu ghi đè thông tin
         //image
         Image image = new Image(volume.getVolumeInfo().getImageLinks().getThumbnail());
-        imgView.setFitHeight(image.getHeight()*1.5);
-        imgView.setFitWidth(image.getWidth()*1.5);
+        imgView.setFitHeight(image.getHeight() * 1.5);
+        imgView.setFitWidth(image.getWidth() * 1.5);
         imgView.setImage(image);
 
         //title
@@ -440,7 +491,7 @@ public class UserDashboardController implements Initializable {
 
         //author
         String s_author = "Author: ";
-        if(volume.getVolumeInfo().getAuthors() == null){
+        if (volume.getVolumeInfo().getAuthors() == null) {
             s_author += "null";
         }
         else {
@@ -461,44 +512,114 @@ public class UserDashboardController implements Initializable {
         publishDateLabel.setText("PublishDate: " + volume.getVolumeInfo().getPublishedDate());
         publishDateLabel.setFont(font);
 
+        // Ban đầu InfoBook bị ẩn, hiển thị nó,đồng thời ẩn thanh kết quả tìm kiếm đi.
         inforBook.setDisable(false);
         inforBook.setVisible(true);
         searchResult_AnchorPane.setVisible(false);
-        /*addbutton.setOnMouseClicked(mouseEvent -> {
-            addBook(Integer.getInteger(number),volume);
-        });*/
+
+        // Set OnClicked cho AddButton, khi bấm vào thì gọi Func add().
+        addbutton.setOnMouseClicked(mouseEvent -> {
+            // Lấy data từ thanh số lượng, nếu đang để rỗng thì mặc định sẽ là 1.
+            TextField numberTextField = (TextField) pane.getChildren().get(8);
+            String number = numberTextField.getText();
+            if (number.isEmpty()) number = "1";
+            try {
+                int num = Integer.parseInt(number);
+                add(volume, num);
+            } catch (NumberFormatException e) {
+                // input không phải số thì cảnh báo
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Warning");
+                alert.setHeaderText(null);
+                alert.setContentText("Wrong input number!");
+                alert.showAndWait();
+            }
+            numberTextField.clear(); // sau khi add xong thì tự động clear thanh input.
+        });
+
+        // borrow, hiện tại chưa có gì.
+        borrowbutton.setOnMouseClicked(mouseEvent -> {
+            borrow(volume);
+        });
         handleNavigationButtonBorder(issueBookButton);
         swapMainContentAnimation(issueBookContent);
         activeButton = ActiveButton.ISSUE_BOOK;
 
-    }
-
-    public void returnSearchResult() {
-        handleNavigationButtonBorder(dashboardButton);
-        //swapMainContentAnimation(dashboardContent);
-        activeButton = ActiveButton.DASHBOARD;
-        inforBook.setDisable(true);
-        inforBook.setVisible(false);
-        searchResult_AnchorPane.setVisible(true);
 
     }
-    public void exitInforBookAction() {
-        handleNavigationButtonBorder(dashboardButton);
-        //swapMainContentAnimation(dashboardContent);
-        activeButton = ActiveButton.DASHBOARD;
-        inforBook.setVisible(false);
-        inforBook.setDisable(true);
 
-    }
-    private String getISBN(Volume.VolumeInfo volumeInfo) {
-        if (volumeInfo.getIndustryIdentifiers() != null) {
-            for (Volume.VolumeInfo.IndustryIdentifiers identifier : volumeInfo.getIndustryIdentifiers()) {
-                if ("ISBN_13".equals(identifier.getType())) {
-                    return identifier.getIdentifier();
-                }
-            }
+
+
+
+    /**
+     * New func for adding book.
+     * @param volume select the book you want to add.
+     * @param number fill numbers of book.
+     */
+    public void add(Volume volume, int number) {
+        String isbn = getISBN(volume.getVolumeInfo());
+        // Xử lí Author
+        String strAuthor = "";
+        if (volume.getVolumeInfo().getAuthors() == null) {
+            strAuthor += "null";
         }
-        return "N/A";
+        else {
+            for (int j = 0; j < volume.getVolumeInfo().getAuthors().size(); j++) {
+                strAuthor += volume.getVolumeInfo().getAuthors().get(j) + ", ";
+            }
+
+            strAuthor = strAuthor.substring(0, strAuthor.length() - 2);
+        }
+
+        // Chỉ dùng để test InfoBook hiện tại, không quan trọng
+        System.out.println("Isbn: " + isbn);
+        System.out.println("number: " + number);
+
+        Connection connection = DatabaseConnection.getConnection();
+
+        if (connection == null) {
+            System.out.println("Something were wrong connectDB is null!");
+        }
+
+        try {
+            String selectQuery = "SELECT * FROM books WHERE isbn = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+            preparedStatement.setString(1, isbn);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // Kiểm tra xem đã có sách có mã isbn này chưa, nếu đã có thì chỉ cần update, nếu chưa có thì insert
+            if (resultSet.next()) {
+                String addQuery = "UPDATE books SET total_number = total_number + ? WHERE isbn = ?";
+                PreparedStatement preparedStatementAdd = connection.prepareStatement(addQuery);
+                preparedStatementAdd.setInt(1, number);
+                preparedStatementAdd.setString(2, isbn);
+                int requiredUpdate = preparedStatementAdd.executeUpdate();
+                if (requiredUpdate > 0) {
+                    System.out.println("Update Successes");
+                } else System.out.println("Update Failed");
+
+            } else {
+                String addQuery =
+                        "INSERT into books (title,author,publisher,publishedDate,thumbnail,isbn,total_number) values (?,?,?,?,?,?,?);";
+                PreparedStatement preparedStatementAdd = connection.prepareStatement(addQuery);
+                preparedStatementAdd.setString(1, volume.getVolumeInfo().getTitle());
+                preparedStatementAdd.setString(2, strAuthor);
+                preparedStatementAdd.setString(3, volume.getVolumeInfo().getPublisher());
+                preparedStatementAdd.setString(4, volume.getVolumeInfo().getPublishedDate());
+                preparedStatementAdd.setString(5, volume.getSelfLink());
+                preparedStatementAdd.setString(6, getISBN(volume.getVolumeInfo()));
+                preparedStatementAdd.setInt(7, number);
+                int requiredInsert = preparedStatementAdd.executeUpdate();
+                if (requiredInsert > 0) {
+                    System.out.println("Add Successes");
+                } else System.out.println("Add Failed");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
+    public void borrow(Volume volume) {
+
+    }
 }
