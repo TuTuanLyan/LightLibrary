@@ -6,12 +6,12 @@ import com.google.api.services.books.v1.model.Volume;
 import com.google.api.services.books.v1.model.Volumes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleBooksAPIClient {
 
     public static List<Volume> searchBooks(String query) throws IOException {
-        // Tạo đối tượng Books với API key
         Books books = new Books.Builder(new com.google.api.client.http.javanet.NetHttpTransport(),
                 new com.google.api.client.json.gson.GsonFactory(), null)
                 .setApplicationName(LibraryEnvironment.APPLICATION_NAME)
@@ -19,9 +19,24 @@ public class GoogleBooksAPIClient {
                 .build();
 
         Books.Volumes.List volumesList = books.volumes().list(query);
+        volumesList.setMaxResults(20L);
         Volumes volumes = volumesList.execute();
 
-        return volumes.getItems();
+        List<Volume> validBooks = new ArrayList<>();
+        for (Volume volume : volumes.getItems()) {
+            Volume.VolumeInfo volumeInfo = volume.getVolumeInfo();
+
+            String isbn = getISBN(volumeInfo);
+            if (isbn != null) {
+                validBooks.add(volume);
+            }
+
+            if (validBooks.size() >= 10) {
+                break;
+            }
+        }
+
+        return validBooks;
     }
 
     public static void printBookInfo(List<Volume> volumes) {
@@ -41,14 +56,14 @@ public class GoogleBooksAPIClient {
         }
     }
 
-    private static String getISBN(Volume.VolumeInfo volumeInfo) {
+    public static String getISBN(Volume.VolumeInfo volumeInfo) {
         if (volumeInfo.getIndustryIdentifiers() != null) {
             for (Volume.VolumeInfo.IndustryIdentifiers identifier : volumeInfo.getIndustryIdentifiers()) {
-                if ("ISBN_13".equals(identifier.getType())) {
+                if ("ISBN_13".equals(identifier.getType()) || "ISBN_10".equals(identifier.getType())) {
                     return identifier.getIdentifier();
                 }
             }
         }
-        return "N/A";
+        return null;
     }
 }
