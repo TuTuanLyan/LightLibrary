@@ -194,7 +194,7 @@
     -fx-border-radius: 15px;
     -fx-border-width: 5px;
     -fx-border-color: linear-gradient(to right, #93f1ba, #b7fbaa);
-    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 0, -5, 5);
+    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 7, 0, -5, 5);
 }
 
 .dashboard-content-title {
@@ -204,4 +204,30 @@
     -fx-text-fill: linear-gradient(to bottom right, #509a93, #89be94);
 }
 
+.dashboard-book-block {
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-background-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-color: linear-gradient(to bottom right, #20957e, #3d9f4a);
+    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 5, 0, -3, 3);
+}
 
+.dashboard-book-block Button {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 15px;
+    -fx-border-width: 3px;
+    -fx-border-color: linear-gradient(to bottom right, #509a93, #89be94);
+    -fx-text-fill: linear-gradient(to bottom right, #509a93, #89be94);
+}
+
+.dashboard-book-block Button:hover {
+    -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
+    -fx-border-radius: 12px;
+    -fx-background-radius: 15px;
+    -fx-border-width: 3px;
+    -fx-border-color: linear-gradient(to bottom right, #509a93, #89be94);
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(14, 13, 13, 0.5), 5, 0, -2, 2);
+}

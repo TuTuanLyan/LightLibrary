@@ -61,7 +61,7 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Pane dashboardContent;
     @FXML
-    private HBox topBookDisplayBox;
+    private AnchorPane topBookDisplayBox;
 
     @FXML
     private Pane issueBookContent;
@@ -300,8 +300,7 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    private void displayTopBook(HBox topBookDisplayBox) {
-        topBookDisplayBox.setSpacing(15);
+    private void displayTopBook(AnchorPane topBookDisplayBox) {
         Task<Void> loadTopBooksTask = new Task<>() {
             @Override
             protected Void call() throws SQLException {
@@ -311,40 +310,35 @@ public class UserDashboardController implements Initializable {
                     throw new SQLException("Connection is null");
                 }
 
-                String query = "SELECT COUNT(b.title AND t.isbn) AS readed, b.title, t.isbn, b.thumbnail "
-                        + "FROM transactions t "
-                        + "JOIN books b ON t.isbn = b.isbn "
-                        + "GROUP BY t.isbn "
-                        + "ORDER BY readed DESC;";
+                String query = "SELECT b.title, b.author, t.isbn, b.thumbnail\n" +
+                        "FROM transactions t\n" +
+                        "JOIN books b ON t.isbn = b.isbn\n" +
+                        "GROUP BY t.isbn\n" +
+                        "ORDER BY COUNT(b.title and t.isbn) DESC;";
 
                 try (PreparedStatement preparedStatement = connectDB.prepareStatement(query);
                      ResultSet resultSet = preparedStatement.executeQuery()) {
-
+                    int index = 0;
                     while (resultSet.next()) {
+                        if (index > 10) break;
+
                         String title = resultSet.getString("title");
+                        String author = resultSet.getString("author");
                         String thumbnailUrl = resultSet.getString("thumbnail");
-                        int readCount = resultSet.getInt("readed");
+                        String ISBN = "ISBN: " + resultSet.getString("isbn");
 
                         // Create UI components for each book
-                        Label titleLabel = new Label(title);
-                        titleLabel.setLayoutX(95);
-                        titleLabel.setLayoutY(20);
-
-                        Label readCountLabel = new Label("Read Count: " + readCount);
-                        readCountLabel.setLayoutX(95);
-                        readCountLabel.setLayoutY(40);
-
-                        ImageView thumbnailView = new ImageView(new Image(thumbnailUrl));
-                        thumbnailView.setLayoutX(0);
-                        thumbnailView.setLayoutY(20);
-                        thumbnailView.setFitWidth(90);
-                        thumbnailView.setFitHeight(120);
-
-                        Pane bookBox = new Pane(thumbnailView, titleLabel, readCountLabel);
+                        Pane bookBox = createBookBlock(thumbnailUrl, title, author, ISBN);
+                        bookBox.setPrefSize(240, 160);
+                        bookBox.setLayoutX(index * 250 + 10);
+                        bookBox.setLayoutY(7);
 
                         // Update the UI on the JavaFX Application Thread
                         javafx.application.Platform.runLater(() -> topBookDisplayBox.getChildren().add(bookBox));
+
+                        index++;
                     }
+                    topBookDisplayBox.setPrefWidth(index *  250 + 30);
                 }
 
                 return null;
@@ -358,5 +352,53 @@ public class UserDashboardController implements Initializable {
         Thread thread = new Thread(loadTopBooksTask);
         thread.setDaemon(true); // Ensure thread exits when the application closes
         thread.start();
+    }
+
+    private Pane createBookBlock(String thumbnailUrl, String title, String author, String ISBN) {
+        Label titleLabel = new Label(title);
+        titleLabel.setWrapText(true);
+        titleLabel.setPrefSize(140, 50);
+        titleLabel.setLayoutX(100);
+        titleLabel.setLayoutY(5);
+        titleLabel.setStyle("-fx-text-fill: #000000;"
+                + "-fx-font-size: 16px;"
+                + "-fx-font-weight: bold;"
+                + "-fx-font-style: italic;"
+                + "-fx-text-alignment: center;");
+
+        Label authorLabel = new Label(author);
+        authorLabel.setWrapText(true);
+        authorLabel.setPrefSize(85, 35);
+        authorLabel.setLayoutX(10);
+        authorLabel.setLayoutY(115);
+        authorLabel.setStyle("-fx-text-fill: #000000;"
+                + "-fx-font-size: 12px;"
+                + "-fx-font-style: italic;"
+                + "-fx-text-alignment: center;"
+                + "-fx-alignment: center;");
+
+        Label ISBNLabel = new Label(ISBN);
+        ISBNLabel.setWrapText(true);
+        ISBNLabel.setPrefSize(140, 7);
+        ISBNLabel.setLayoutX(100);
+        ISBNLabel.setLayoutY(75);
+
+        Button viewButton = new Button("View");
+        viewButton.setPrefSize(115, 40);
+        viewButton.setLayoutX(112);
+        viewButton.setLayoutY(110);
+        viewButton.setStyle("-fx-font-size: 16px;");
+
+        ImageView thumbnailImage= new ImageView(new Image(thumbnailUrl));
+        thumbnailImage.setPreserveRatio(false);
+        thumbnailImage.setFitHeight(100);
+        thumbnailImage.setFitWidth(85);
+        thumbnailImage.setLayoutX(10);
+        thumbnailImage.setLayoutY(10);
+
+        Pane bookBlock = new Pane(thumbnailImage, titleLabel, authorLabel, ISBNLabel, viewButton);
+        bookBlock.getStyleClass().add("dashboard-book-block");
+
+        return bookBlock;
     }
 }
