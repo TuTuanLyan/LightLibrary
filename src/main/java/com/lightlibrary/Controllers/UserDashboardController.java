@@ -122,30 +122,9 @@ public class UserDashboardController implements Initializable {
         avatarContainer.setClip(avatarClip);
 
         // Set animation and handle action navigation bar.
-        dashboardButton.getStyleClass().add("selected");
-        activeButton = ActiveButton.DASHBOARD;
+        handleNavigationBarAction();
 
-        dashboardButton.setOnAction(e -> {
-            handleNavigationButtonBorder(dashboardButton);
-            swapMainContentAnimation(dashboardContent);
-            activeButton = ActiveButton.DASHBOARD;
-        });
-        issueBookButton.setOnAction(e -> {
-            handleNavigationButtonBorder(issueBookButton);
-            swapMainContentAnimation(issueBookContent);
-            activeButton = ActiveButton.ISSUE_BOOK;
-        });
-        returnBookButton.setOnAction(e -> {
-            handleNavigationButtonBorder(returnBookButton);
-            swapMainContentAnimation(returnBookContent);
-            activeButton = ActiveButton.RETURN_BOOK;
-        });
-        supportButton.setOnAction(e -> {
-            handleNavigationButtonBorder(supportButton);
-            swapMainContentAnimation(historyContent);
-            activeButton = ActiveButton.HISTORY;
-        });
-
+        // Display Top book when Dashboard initial.
         displayTopBook(topBookDisplayBox);
     }
 
@@ -300,6 +279,35 @@ public class UserDashboardController implements Initializable {
         }
     }
 
+    /**
+     * Handle animation when swap page on Navigation bar.
+     */
+    private void handleNavigationBarAction() {
+        dashboardButton.getStyleClass().add("selected");
+        activeButton = ActiveButton.DASHBOARD;
+
+        dashboardButton.setOnAction(e -> {
+            handleNavigationButtonBorder(dashboardButton);
+            swapMainContentAnimation(dashboardContent);
+            activeButton = ActiveButton.DASHBOARD;
+        });
+        issueBookButton.setOnAction(e -> {
+            handleNavigationButtonBorder(issueBookButton);
+            swapMainContentAnimation(issueBookContent);
+            activeButton = ActiveButton.ISSUE_BOOK;
+        });
+        returnBookButton.setOnAction(e -> {
+            handleNavigationButtonBorder(returnBookButton);
+            swapMainContentAnimation(returnBookContent);
+            activeButton = ActiveButton.RETURN_BOOK;
+        });
+        supportButton.setOnAction(e -> {
+            handleNavigationButtonBorder(supportButton);
+            swapMainContentAnimation(historyContent);
+            activeButton = ActiveButton.HISTORY;
+        });
+    }
+
     private void displayTopBook(AnchorPane topBookDisplayBox) {
         Task<Void> loadTopBooksTask = new Task<>() {
             @Override
@@ -364,7 +372,8 @@ public class UserDashboardController implements Initializable {
                 + "-fx-font-size: 16px;"
                 + "-fx-font-weight: bold;"
                 + "-fx-font-style: italic;"
-                + "-fx-text-alignment: center;");
+                + "-fx-text-alignment: center;"
+                + "-fx-alignment: center;");
 
         Label authorLabel = new Label(author);
         authorLabel.setWrapText(true);
@@ -382,6 +391,7 @@ public class UserDashboardController implements Initializable {
         ISBNLabel.setPrefSize(140, 7);
         ISBNLabel.setLayoutX(100);
         ISBNLabel.setLayoutY(75);
+        ISBNLabel.setStyle("-fx-alignment: center;");
 
         Button viewButton = new Button("View");
         viewButton.setPrefSize(115, 40);
