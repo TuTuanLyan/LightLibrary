@@ -527,8 +527,15 @@ public class UserDashboardController implements Initializable {
         return bookBlock;
     }
 
+    /**
+     * Display result when customer search. Result will get from Books API.
+     * @param resultSearchPane is container of result blocks.
+     * @param query is query which customer want to search.
+     */
     private void displayResultSearch(AnchorPane resultSearchPane, String query) {
         searchingAnimationPane.setVisible(true);
+        loadingAction();
+
         resultAPISearchScrollPane.setVisible(false);
         resultSearchPane.getChildren().clear();
 
@@ -544,7 +551,6 @@ public class UserDashboardController implements Initializable {
 
             searchingAnimationPane.setVisible(false);
             resultAPISearchScrollPane.setVisible(true);
-            loadingAction();
 
             if (volumes != null && !volumes.isEmpty()) {
                 int blockWidth = 325;
@@ -582,6 +588,12 @@ public class UserDashboardController implements Initializable {
                         Platform.runLater(() -> resultSearchPane.getChildren().add(resultBlock));
                     });
 
+                    int finalIndex = index;
+                    blockTask.setOnFailed(blockWorker -> {
+                        System.out.println("Error occurred during create result block where index = " + finalIndex);
+                        System.out.println(searchTask.getException().getMessage());
+                    });
+
                     Thread blockThread = new Thread(blockTask);
                     blockThread.setDaemon(true);
                     blockThread.start();
@@ -602,6 +614,12 @@ public class UserDashboardController implements Initializable {
             }
         });
 
+        searchTask.setOnFailed(workerStateEvent -> {
+            searchingAnimationPane.setVisible(false);
+            resultAPISearchScrollPane.setVisible(false);
+            System.out.println("Error occurred during search.");
+            System.out.println(searchTask.getException().getMessage());
+        });
 
         Thread searchThread = new Thread(searchTask);
         searchThread.setDaemon(true);
