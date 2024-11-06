@@ -5,6 +5,7 @@ import com.lightlibrary.Models.Customer;
 import com.lightlibrary.Models.DatabaseConnection;
 import com.lightlibrary.Models.GoogleBooksAPIClient;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -144,8 +145,13 @@ public class UserDashboardController implements Initializable {
         // Display Top book when Dashboard initial.
         displayTopBook(topBookDisplayBox);
 
+        // Search Action.
         searchBar.setOnAction(event -> {
-            System.out.println("On action here.");
+            AnchorPane resultSearchBar = (AnchorPane) resultAPISearchScrollPane.getContent();
+            displayResultSearch(resultSearchBar, searchBar.getText());
+        });
+
+        searchButton.setOnAction(event -> {
             AnchorPane resultSearchBar = (AnchorPane) resultAPISearchScrollPane.getContent();
             displayResultSearch(resultSearchBar, searchBar.getText());
         });
@@ -451,6 +457,16 @@ public class UserDashboardController implements Initializable {
         return bookBlock;
     }
 
+    /**
+     * Create a book block contain thumbnail, title,
+     * author name, isbn with a button go to view detail of this.
+     * @param thumbnailUrl is a String thumbnail image link to display.
+     * @param title is title String of book.
+     * @param author is name of author.
+     * @param ISBN is book's ISBN String.
+     * @param description is book's description String.
+     * @return a Pane is container of all element.
+     */
     private Pane createBookBlock(String thumbnailUrl, String title,
                                  String author, String ISBN, String description) {
         Label titleLabel = new Label(title);
@@ -525,14 +541,19 @@ public class UserDashboardController implements Initializable {
 
         searchTask.setOnSucceeded(workerStateEvent -> {
             List<Volume> volumes = searchTask.getValue();
+
+            searchingAnimationPane.setVisible(false);
+            resultAPISearchScrollPane.setVisible(true);
+            loadingAction();
+
             if (volumes != null && !volumes.isEmpty()) {
-                int index = 0;
                 int blockWidth = 325;
                 int blockHeight = 200;
                 int padding = 15;
                 int spacing = 20;
 
-                for (Volume volume : volumes) {
+                for (int index = 0; index < volumes.size(); index++) {
+                    Volume volume = volumes.get(index);
                     Volume.VolumeInfo volumeInfo = volume.getVolumeInfo();
 
                     String thumbnailURL = volumeInfo.getImageLinks() != null ?
@@ -543,40 +564,44 @@ public class UserDashboardController implements Initializable {
                     String ISBN = "ISBN: " + GoogleBooksAPIClient.getISBN(volumeInfo);
                     String description = volumeInfo.getDescription();
 
-                    Pane resultBlock = createBookBlock(thumbnailURL, title, authors, ISBN, description);
-                    resultBlock.setPrefSize(blockWidth, blockHeight);
+                    int col = index % 2;
+                    int row = index / 2;
+                    Task<Pane> blockTask = new Task<Pane>() {
+                        @Override
+                        protected Pane call() throws Exception {
+                            Pane resultBlock = createBookBlock(thumbnailURL, title, authors, ISBN, description);
+                            resultBlock.setPrefSize(blockWidth, blockHeight);
+                            resultBlock.setLayoutX(padding + col * (blockWidth + spacing));
+                            resultBlock.setLayoutY(padding + row * (blockHeight + spacing));
+                            return resultBlock;
+                        }
+                    };
 
-                    // Tính toán vị trí cho từng block
-                    int col = index % 2; // Cột (0 hoặc 1)
-                    int row = index / 2; // Hàng
+                    blockTask.setOnSucceeded(blockWorker -> {
+                        Pane resultBlock = blockTask.getValue();
+                        Platform.runLater(() -> resultSearchPane.getChildren().add(resultBlock));
+                    });
 
-                    resultBlock.setLayoutX(padding + col * (blockWidth + spacing));
-                    resultBlock.setLayoutY(padding + row * (blockHeight + spacing));
-
-                    resultSearchPane.getChildren().add(resultBlock);
-
-                    index++;
+                    Thread blockThread = new Thread(blockTask);
+                    blockThread.setDaemon(true);
+                    blockThread.start();
                 }
 
-                resultSearchPane.setPrefHeight(index / 2.0 * (blockHeight + spacing + padding));
+                resultSearchPane.setPrefHeight((volumes.size() / 2.0) * (blockHeight + spacing + padding));
             } else {
-                Label notFoundLabel = new Label("No results found");
-                notFoundLabel.setPrefSize(700, 50);
-                notFoundLabel.setLayoutX(100);
-                notFoundLabel.setLayoutY(0);
-                notFoundLabel.setStyle("-fx-font-size: 30px;"
-                        + "-fx-text-alignment: center;"
-                        + "-fx-alignment: center;");
-                resultSearchPane.getChildren().add(notFoundLabel);
+                Platform.runLater(() -> {
+                    Label notFoundLabel = new Label("No results found");
+                    notFoundLabel.setPrefSize(700, 50);
+                    notFoundLabel.setLayoutX(100);
+                    notFoundLabel.setLayoutY(0);
+                    notFoundLabel.setStyle("-fx-font-size: 30px;"
+                            + "-fx-text-alignment: center;"
+                            + "-fx-alignment: center;");
+                    resultSearchPane.getChildren().add(notFoundLabel);
+                });
             }
-            resultAPISearchScrollPane.setVisible(true);
-            searchingAnimationPane.setVisible(false);
         });
 
-        searchTask.setOnFailed(workerStateEvent -> {
-            System.out.println("Error occurred during search.");
-            searchingAnimationPane.setVisible(false); // Ẩn nhãn nếu có lỗi
-        });
 
         Thread searchThread = new Thread(searchTask);
         searchThread.setDaemon(true);
