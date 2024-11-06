@@ -76,13 +76,110 @@
                   </Label>
                </children>
             </Pane>
-            <Pane fx:id="issueBookContent" layoutX="161.0" layoutY="80.0" prefHeight="385.0" prefWidth="398.0" visible="false">
+            <Pane fx:id="issueBookContent" layoutX="161.0" layoutY="80.0" prefHeight="540.0" prefWidth="740.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label layoutX="74.0" layoutY="86.0" prefHeight="177.0" prefWidth="274.0" text="This is issue book">
+                  <Label layoutX="74.0" layoutY="86.0" prefHeight="386.0" prefWidth="611.0" text="This is issue book" visible="false">
                      <font>
                         <Font size="32.0" />
                      </font>
                   </Label>
+                  <Pane fx:id="searchingAnimationPane" layoutX="215.0" layoutY="72.0" prefHeight="340.0" prefWidth="300.0" visible="false">
+                     <children>
+                        <Pane layoutY="300.0" prefHeight="36.0" prefWidth="300.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="35.0" prefWidth="251.0" text="Searching. Please wait">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                                 <textFill>
+                                    <LinearGradient endX="1.0" endY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.125490203499794" green="0.5843137502670288" blue="0.4941176474094391" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.239215686917305" green="0.6235294342041016" blue="0.29019609093666077" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </textFill>
+                              </Label>
+                              <Circle fx:id="searchLoadingDot1" fill="#3d9f4a" layoutX="284.0" layoutY="24.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
+                              <Circle fx:id="searchLoadingDot2" fill="#3d9f4a" layoutX="271.0" layoutY="24.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
+                              <Circle fx:id="searchLoadingDot3" fill="#3d9f4a" layoutX="259.0" layoutY="24.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
+                           </children>
+                        </Pane>
+                        <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/SearchingGif.gif" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <ScrollPane fx:id="resultAPISearchScrollPane" layoutX="5.0" layoutY="5.0" prefHeight="520.0" prefWidth="720.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="700.0">
+                           <children>
+                              <Pane layoutX="15.0" layoutY="15.0" prefHeight="200.0" prefWidth="325.0" styleClass="dashboard-book-block" visible="false">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="85.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../Images/LightLibraryLogo.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="115.0" layoutY="10.0" prefHeight="45.0" prefWidth="200.0" text="This the name of the book when result search" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="112.0" prefHeight="35.0" prefWidth="85.0" text="Author name here and some thing" textAlignment="CENTER" wrapText="true" />
+                                    <Button layoutX="10.0" layoutY="150.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="View">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Label alignment="CENTER" layoutX="115.0" layoutY="60.0" prefHeight="100.0" prefWidth="200.0" text="cisaida jasn ask aiskdje ajsd jasdjjakkd asd" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" layoutX="115.0" layoutY="160.0" prefHeight="20.0" prefWidth="200.0" text="ISBN: 1732184829323" />
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="15.0" layoutY="230.0" prefHeight="200.0" prefWidth="325.0" styleClass="dashboard-book-block" visible="false">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="85.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true">
+                                       <image>
+                                          <Image url="@../Images/LightLibraryLogo.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="115.0" layoutY="10.0" prefHeight="45.0" prefWidth="200.0" text="This the name of the book when result search" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="112.0" prefHeight="35.0" prefWidth="85.0" text="Author name here and some thing" textAlignment="CENTER" wrapText="true" />
+                                    <Button layoutX="10.0" layoutY="150.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="View">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Label alignment="CENTER" layoutX="115.0" layoutY="60.0" prefHeight="100.0" prefWidth="200.0" text="cisaida jasn ask aiskdje ajsd jasdjjakkd asd" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" layoutX="115.0" layoutY="160.0" prefHeight="20.0" prefWidth="200.0" text="ISBN: 1732184829323" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
                </children>
             </Pane>
             <Pane fx:id="returnBookContent" layoutX="148.0" layoutY="103.0" prefHeight="385.0" prefWidth="398.0" visible="false">
@@ -107,7 +204,7 @@
       <Pane fx:id="subButtonBorder" layoutX="200.0" layoutY="160.0" prefHeight="54.0" prefWidth="15.0" styleClass="sub-button-border" />
           <AnchorPane layoutX="240.0" layoutY="15.0" prefHeight="42.0" prefWidth="480.0">
               <children>
-                  <TextField layoutY="1.0" prefHeight="42.0" prefWidth="480.0" promptText="Search here" styleClass="search-bar" stylesheets="@../StyleSheets/Style.css">
+                  <TextField fx:id="searchBar" layoutY="1.0" prefHeight="42.0" prefWidth="480.0" promptText="Search here" styleClass="search-bar" stylesheets="@../StyleSheets/Style.css">
                       <font>
                           <Font size="15.0" />
                       </font>
@@ -115,7 +212,7 @@
                           <Insets left="15.0" />
                       </padding>
                   </TextField>
-                  <Button layoutX="444.0" layoutY="10.0" mnemonicParsing="false" styleClass="search-bar-element" stylesheets="@../StyleSheets/Style.css">
+                  <Button fx:id="searchButton" layoutX="444.0" layoutY="10.0" mnemonicParsing="false" styleClass="search-bar-element" stylesheets="@../StyleSheets/Style.css">
                       <graphic>
                           <FontAwesomeIcon glyphName="SEARCH" />
                       </graphic>
@@ -214,34 +311,6 @@
                   </Pane>
                     </children>
                 </AnchorPane>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="332.0" layoutY="61.0" prefHeight="42.0" prefWidth="295.0" visible="false">
-         <children>
-            <Label alignment="CENTER" layoutX="1.0" layoutY="4.0" prefHeight="35.0" prefWidth="251.0" text="Searching. Please wait">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-               <textFill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="0.125490203499794" green="0.5843137502670288" blue="0.4941176474094391" />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color red="0.239215686917305" green="0.6235294342041016" blue="0.29019609093666077" />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </textFill>
-            </Label>
-            <Circle fx:id="searchLoadingDot1" fill="#3d9f4a" layoutX="261.0" layoutY="28.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
-            <Circle fx:id="searchLoadingDot2" fill="#3d9f4a" layoutX="273.0" layoutY="28.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
-            <Circle fx:id="searchLoadingDot3" fill="#3d9f4a" layoutX="285.0" layoutY="28.0" radius="3.0" stroke="#3d9f4a" strokeType="INSIDE" />
          </children>
       </AnchorPane>
     </children>

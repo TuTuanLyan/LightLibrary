@@ -1,7 +1,9 @@
 package com.lightlibrary.Controllers;
 
+import com.google.api.services.books.v1.model.Volume;
 import com.lightlibrary.Models.Customer;
 import com.lightlibrary.Models.DatabaseConnection;
+import com.lightlibrary.Models.GoogleBooksAPIClient;
 import javafx.animation.*;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -13,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +30,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -36,6 +41,12 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private ImageView avatarImage;
+
+    @FXML
+    private TextField searchBar;
+
+    @FXML
+    private Button searchButton;
 
     @FXML
     private AnchorPane individualButtonContainer;
@@ -87,6 +98,12 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Label customerUserIDField;
 
+    @FXML
+    private Pane searchingAnimationPane;
+
+    @FXML
+    private ScrollPane resultAPISearchScrollPane;
+
     /**
      * Enum representing the active navigation button on the dashboard.
      */
@@ -126,6 +143,12 @@ public class UserDashboardController implements Initializable {
 
         // Display Top book when Dashboard initial.
         displayTopBook(topBookDisplayBox);
+
+        searchBar.setOnAction(event -> {
+            System.out.println("On action here.");
+            AnchorPane resultSearchBar = (AnchorPane) resultAPISearchScrollPane.getContent();
+            displayResultSearch(resultSearchBar, searchBar.getText());
+        });
     }
 
     /**
@@ -308,6 +331,10 @@ public class UserDashboardController implements Initializable {
         });
     }
 
+    /**
+     * Display top book from database when dashboard initialize.
+     * @param topBookDisplayBox container where top book content displayed.
+     */
     private void displayTopBook(AnchorPane topBookDisplayBox) {
         Task<Void> loadTopBooksTask = new Task<>() {
             @Override
@@ -362,6 +389,15 @@ public class UserDashboardController implements Initializable {
         thread.start();
     }
 
+    /**
+     * Create a book block contain thumbnail, title,
+     * author name, isbn with a button go to view detail of this.
+     * @param thumbnailUrl is a String thumbnail image link to display.
+     * @param title is title String of book.
+     * @param author is name of author.
+     * @param ISBN is book's ISBN String.
+     * @return a Pane is container of all element.
+     */
     private Pane createBookBlock(String thumbnailUrl, String title, String author, String ISBN) {
         Label titleLabel = new Label(title);
         titleLabel.setWrapText(true);
@@ -397,18 +433,153 @@ public class UserDashboardController implements Initializable {
         viewButton.setPrefSize(115, 40);
         viewButton.setLayoutX(112);
         viewButton.setLayoutY(110);
-        viewButton.setStyle("-fx-font-size: 16px;");
+        viewButton.setStyle("-fx-font-size: 15px;" + "-fx-font-weight: bold;");
 
-        ImageView thumbnailImage= new ImageView(new Image(thumbnailUrl));
-        thumbnailImage.setPreserveRatio(false);
-        thumbnailImage.setFitHeight(100);
-        thumbnailImage.setFitWidth(85);
-        thumbnailImage.setLayoutX(10);
-        thumbnailImage.setLayoutY(10);
+        ImageView thumbnailImage = new ImageView();
+        if (thumbnailUrl != null) {
+            thumbnailImage.setImage(new Image(thumbnailUrl));
+            thumbnailImage.setPreserveRatio(false);
+            thumbnailImage.setFitHeight(100);
+            thumbnailImage.setFitWidth(85);
+            thumbnailImage.setLayoutX(10);
+            thumbnailImage.setLayoutY(10);
+        }
 
         Pane bookBlock = new Pane(thumbnailImage, titleLabel, authorLabel, ISBNLabel, viewButton);
         bookBlock.getStyleClass().add("dashboard-book-block");
 
         return bookBlock;
+    }
+
+    private Pane createBookBlock(String thumbnailUrl, String title,
+                                 String author, String ISBN, String description) {
+        Label titleLabel = new Label(title);
+        titleLabel.setWrapText(true);
+        titleLabel.setPrefSize(200, 50);
+        titleLabel.setLayoutX(115);
+        titleLabel.setLayoutY(10);
+        titleLabel.setStyle("-fx-text-fill: #000000;"
+                + "-fx-font-size: 16px;"
+                + "-fx-font-weight: bold;"
+                + "-fx-font-style: italic;"
+                + "-fx-text-alignment: center;"
+                + "-fx-alignment: center;");
+
+        Label authorLabel = new Label(author);
+        authorLabel.setWrapText(true);
+        authorLabel.setPrefSize(85, 35);
+        authorLabel.setLayoutX(10);
+        authorLabel.setLayoutY(112);
+        authorLabel.setStyle("-fx-text-fill: #000000;"
+                + "-fx-font-size: 12px;"
+                + "-fx-font-style: italic;"
+                + "-fx-text-alignment: center;"
+                + "-fx-alignment: center;");
+
+        Label ISBNLabel = new Label(ISBN);
+        ISBNLabel.setWrapText(true);
+        ISBNLabel.setPrefSize(200, 20);
+        ISBNLabel.setLayoutX(115);
+        ISBNLabel.setLayoutY(160);
+        ISBNLabel.setStyle("-fx-alignment: center;");
+
+        Label descriptionLabel = new Label(description);
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setPrefSize(200, 100);
+        descriptionLabel.setLayoutX(115);
+        descriptionLabel.setLayoutY(60);
+        ISBNLabel.setStyle("-fx-alignment: center;" + "-fx-text-alignment: center;");
+
+        Button viewButton = new Button("View");
+        viewButton.setPrefSize(85, 40);
+        viewButton.setLayoutX(10);
+        viewButton.setLayoutY(150);
+        viewButton.setStyle("-fx-font-size: 15px;" + "-fx-font-weight: bold;");
+
+        ImageView thumbnailImage = new ImageView();
+        if (thumbnailUrl != null) {
+            thumbnailImage.setImage(new Image(thumbnailUrl));
+            thumbnailImage.setPreserveRatio(false);
+            thumbnailImage.setFitHeight(100);
+            thumbnailImage.setFitWidth(85);
+            thumbnailImage.setLayoutX(10);
+            thumbnailImage.setLayoutY(10);
+        }
+
+        Pane bookBlock = new Pane(thumbnailImage, titleLabel, authorLabel, ISBNLabel, descriptionLabel, viewButton);
+        bookBlock.getStyleClass().add("dashboard-book-block");
+        return bookBlock;
+    }
+
+    private void displayResultSearch(AnchorPane resultSearchPane, String query) {
+        searchingAnimationPane.setVisible(true);
+        resultAPISearchScrollPane.setVisible(false);
+        resultSearchPane.getChildren().clear();
+
+        Task<List<Volume>> searchTask = new Task<List<Volume>>() {
+            @Override
+            protected List<Volume> call() throws Exception {
+                return GoogleBooksAPIClient.searchBooks(query);
+            }
+        };
+
+        searchTask.setOnSucceeded(workerStateEvent -> {
+            List<Volume> volumes = searchTask.getValue();
+            if (volumes != null && !volumes.isEmpty()) {
+                int index = 0;
+                int blockWidth = 325;
+                int blockHeight = 200;
+                int padding = 15;
+                int spacing = 20;
+
+                for (Volume volume : volumes) {
+                    Volume.VolumeInfo volumeInfo = volume.getVolumeInfo();
+
+                    String thumbnailURL = volumeInfo.getImageLinks() != null ?
+                            volumeInfo.getImageLinks().getThumbnail() : null;
+                    String title = volumeInfo.getTitle();
+                    String authors = volumeInfo.getAuthors() != null ?
+                            String.join(", ", volumeInfo.getAuthors()) : "Unknown Author";
+                    String ISBN = "ISBN: " + GoogleBooksAPIClient.getISBN(volumeInfo);
+                    String description = volumeInfo.getDescription();
+
+                    Pane resultBlock = createBookBlock(thumbnailURL, title, authors, ISBN, description);
+                    resultBlock.setPrefSize(blockWidth, blockHeight);
+
+                    // Tính toán vị trí cho từng block
+                    int col = index % 2; // Cột (0 hoặc 1)
+                    int row = index / 2; // Hàng
+
+                    resultBlock.setLayoutX(padding + col * (blockWidth + spacing));
+                    resultBlock.setLayoutY(padding + row * (blockHeight + spacing));
+
+                    resultSearchPane.getChildren().add(resultBlock);
+
+                    index++;
+                }
+
+                resultSearchPane.setPrefHeight(index / 2.0 * (blockHeight + spacing + padding));
+            } else {
+                Label notFoundLabel = new Label("No results found");
+                notFoundLabel.setPrefSize(700, 50);
+                notFoundLabel.setLayoutX(100);
+                notFoundLabel.setLayoutY(0);
+                notFoundLabel.setStyle("-fx-font-size: 30px;"
+                        + "-fx-text-alignment: center;"
+                        + "-fx-alignment: center;");
+                resultSearchPane.getChildren().add(notFoundLabel);
+            }
+            resultAPISearchScrollPane.setVisible(true);
+            searchingAnimationPane.setVisible(false);
+        });
+
+        searchTask.setOnFailed(workerStateEvent -> {
+            System.out.println("Error occurred during search.");
+            searchingAnimationPane.setVisible(false); // Ẩn nhãn nếu có lỗi
+        });
+
+        Thread searchThread = new Thread(searchTask);
+        searchThread.setDaemon(true);
+        searchThread.start();
     }
 }
