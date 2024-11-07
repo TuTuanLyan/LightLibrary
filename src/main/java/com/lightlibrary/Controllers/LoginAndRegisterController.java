@@ -105,12 +105,11 @@ public class LoginAndRegisterController implements Initializable {
         loginTask.setOnSucceeded(e -> {
             String role = loginTask.getValue();
             if (role != null) {
-                //loginNotificationLabel.setText("Login Success!");
                 if (role.equalsIgnoreCase("CUSTOMER")) {
                     try {
                         Parent dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml")));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(new Scene(dashboard, 960, 640));
+                        stage.setScene(new Scene(dashboard, 1280, 820));
                         stage.show();
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
