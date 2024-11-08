@@ -1,0 +1,15 @@
+.parent-container {
+    -fx-background-color: #ffffff;
+}
+
+.main-content-container {
+    -fx-background-color: #e4e4e4;
+    -fx-background-radius: 25px 0px 0px 0px;
+    -fx-border-radius: 25px 0px 0px 0px;
+}
+
+.page-content-container {
+    -fx-background-color: #e4e4e4;
+    -fx-background-radius: 25px 0px 0px 0px;
+    -fx-border-radius: 25px 0px 0px 0px;
+}

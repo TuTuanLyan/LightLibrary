@@ -1,8 +1,12 @@
 package com.lightlibrary.Models;
 
+import java.util.List;
+
 public class Customer extends User {
 
     private long coins;
+    private String avatarImageUrl;
+    private List<Book> listFavouriteBooks;
 
     public Customer() {
         super();
@@ -24,6 +28,22 @@ public class Customer extends User {
 
     public void setCoins(long coins) {
         this.coins = coins;
+    }
+
+    public String getAvatarImageUrl() {
+        return avatarImageUrl;
+    }
+
+    public void setAvatarImageUrl(String avatarImageUrl) {
+        this.avatarImageUrl = avatarImageUrl;
+    }
+
+    public List<Book> getListFavouriteBooks() {
+        return listFavouriteBooks;
+    }
+
+    public void setListFavouriteBooks(List<Book> listFavouriteBooks) {
+        this.listFavouriteBooks = listFavouriteBooks;
     }
 
     /**

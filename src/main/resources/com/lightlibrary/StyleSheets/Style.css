@@ -38,7 +38,7 @@
 }
 
 .background {
-    -fx-background-color: linear-gradient(to bottom right, #a1f3c5, #f4f4c4);
+    -fx-background-color: linear-gradient(to bottom right, #08d792, #7096ff);
 }
 
 .login-register-background-container Button {
@@ -64,7 +64,8 @@
 }
 
 
-/*Dashboard*/
+/*
+!*Dashboard*!
 .navigation-bar {
     -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
     -fx-border-radius: 0px 25px 25px 0px;
@@ -121,4 +122,4 @@
 
 .individual-bar Label {
     -fx-text-fill: #ffffff;
-}
+}*/

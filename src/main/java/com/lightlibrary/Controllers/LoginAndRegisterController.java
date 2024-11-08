@@ -1,7 +1,11 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.Admin;
+import com.lightlibrary.Models.Customer;
 import com.lightlibrary.Models.DatabaseConnection;
+import com.lightlibrary.Models.User;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +28,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -81,6 +84,15 @@ public class LoginAndRegisterController implements Initializable {
         clip.setLayoutX(0);
         clip.setLayoutY(0);
         sliderContainer.setClip(clip);
+
+        loginUsername.setOnAction(this::handleLoginAction);
+        loginPassword.setOnAction(this::handleLoginAction);
+
+        registerFullName.setOnAction(this::handleRegisterAction);
+        registerUsername.setOnAction(this::handleRegisterAction);
+        registerPassword.setOnAction(this::handleRegisterAction);
+        registerConfirmPassword.setOnAction(this::handleRegisterAction);
+
     }
 
     /**
@@ -95,27 +107,31 @@ public class LoginAndRegisterController implements Initializable {
 
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-        Task<String> loginTask = new Task<>() {
+        Task<User> loginTask = new Task<>() {
             @Override
-            protected String call() {
+            protected User call() {
                 return checkLoginValidity(username, password);
             }
         };
 
         loginTask.setOnSucceeded(e -> {
-            String role = loginTask.getValue();
-            if (role != null) {
-                if (role.equalsIgnoreCase("CUSTOMER")) {
+            User user = loginTask.getValue();
+            if (user != null) {
+                loginNotificationLabel.setText("Login Success!");
+                if (user instanceof Customer) {
                     try {
-                        Parent dashboard = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml")));
+                        FXMLLoader loader = new FXMLLoader(getClass()
+                                .getResource("/com/lightlibrary/Views/CustomerDashboard.fxml"));
+                        Parent dashboard = loader.load();
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(new Scene(dashboard, 1280, 820));
+                        Platform.runLater(stage::centerOnScreen);
+                        stage.setScene(new Scene(dashboard, 1440, 900));
                         stage.show();
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                } else if (role.equalsIgnoreCase("ADMIN")) {
-                    loginNotificationLabel.setText("Welcome Admin!");
+                } else if (user instanceof Admin) {
+                    loginNotificationLabel.setText("Admin Login Success!");
                 }
                 executorService.shutdown();
             } else {
@@ -135,7 +151,7 @@ public class LoginAndRegisterController implements Initializable {
      * @param password user account password.
      * @return "CUSTOMER", "ADMIN" if valid login; null if login fails.
      */
-    private String checkLoginValidity(String username, String password) {
+    private User checkLoginValidity(String username, String password) {
         Connection connectDB = DatabaseConnection.getConnection();
 
         if (connectDB == null) {
@@ -143,7 +159,7 @@ public class LoginAndRegisterController implements Initializable {
             return null;
         }
 
-        String connectQuery = "SELECT role FROM users WHERE username = ? AND password = ?";
+        String connectQuery = "SELECT * FROM users WHERE BINARY username = ? AND BINARY password = ?";
 
         try {
             PreparedStatement preparedStatement = connectDB.prepareStatement(connectQuery);
@@ -152,8 +168,25 @@ public class LoginAndRegisterController implements Initializable {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) { // result is not null
-                return resultSet.getString("role");
+            if (resultSet.next()) {
+                String role = resultSet.getString("role");
+                if (role.equalsIgnoreCase("CUSTOMER")) {
+                    Customer customer = new Customer();
+                    customer.setRole(User.Role.CUSTOMER);
+                    customer.setUserID(resultSet.getInt("userID"));
+                    customer.setFullName(resultSet.getString("fullName"));
+                    customer.setUsername(resultSet.getString("username"));
+                    customer.setPassword(resultSet.getString("password"));
+                    return customer;
+                } else if (role.equalsIgnoreCase("ADMIN")) {
+                    Admin admin = new Admin();
+                    admin.setRole(User.Role.ADMIN);
+                    admin.setUserID(resultSet.getInt("userID"));
+                    admin.setFullName(resultSet.getString("fullName"));
+                    admin.setUsername(resultSet.getString("username"));
+                    admin.setPassword(resultSet.getString("password"));
+                    return admin;
+                }
             }
 
         } catch (SQLException e) {
@@ -173,6 +206,12 @@ public class LoginAndRegisterController implements Initializable {
     @FXML
     protected void handleRegisterAction(ActionEvent event) {
         boolean valid = true;
+
+        fullNameNotificationLabel.setText("");
+        usernameNotificationLabel.setText("");
+        passwordNotificationLabel.setText("");
+        confirmPasswordNotificationLabel.setText("");
+        registerNotificationLabel.setText("");
 
         if (registerFullName.getText().isEmpty()) {
             fullNameNotificationLabel.setText("* Full Name is required");
@@ -251,7 +290,7 @@ public class LoginAndRegisterController implements Initializable {
      */
     private boolean checkUsernameAvailable(String username) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String query = "SELECT username FROM users WHERE username = ?";
+            String query = "SELECT username FROM users WHERE BINARY username = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
