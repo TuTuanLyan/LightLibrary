@@ -28,10 +28,8 @@ import javax.xml.transform.Result;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -308,7 +306,6 @@ public class UserDashboardController implements Initializable {
     }
 
 
-
     public void AutoLoadTopRead(HBox hBox) {
         Connection connection = DatabaseConnection.getConnection();
 
@@ -448,8 +445,6 @@ public class UserDashboardController implements Initializable {
                         });
 
 
-
-
                     }
                 }
                 searchResult_AnchorPane.setVisible(true);
@@ -493,8 +488,7 @@ public class UserDashboardController implements Initializable {
         String s_author = "Author: ";
         if (volume.getVolumeInfo().getAuthors() == null) {
             s_author += "null";
-        }
-        else {
+        } else {
             for (int j = 0; j < volume.getVolumeInfo().getAuthors().size(); j++) {
                 s_author += volume.getVolumeInfo().getAuthors().get(j) + ", ";
             }
@@ -518,6 +512,7 @@ public class UserDashboardController implements Initializable {
         searchResult_AnchorPane.setVisible(false);
 
         // Set OnClicked cho AddButton, khi bấm vào thì gọi Func add().
+
         addbutton.setOnMouseClicked(mouseEvent -> {
             // Lấy data từ thanh số lượng, nếu đang để rỗng thì mặc định sẽ là 1.
             TextField numberTextField = (TextField) pane.getChildren().get(8);
@@ -539,7 +534,32 @@ public class UserDashboardController implements Initializable {
 
         // borrow, hiện tại chưa có gì.
         borrowbutton.setOnMouseClicked(mouseEvent -> {
-            borrow(volume);
+            TextField numberTextField = (TextField) pane.getChildren().get(8);
+            String number = numberTextField.getText();
+            // mặc định thời gian hạn mượn sách là 7 ngày nếu không có nhập gì đầu vào cả.
+            if (number.isEmpty()) number = "7";
+            try {
+                int num = Integer.parseInt(number);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Warning");
+                alert.setHeaderText(null);
+                alert.setContentText("You want to borrow this books due to: " + LocalDate.now().plusDays(num).toString() + "?");
+                alert.showAndWait();
+                // nếu button.ok được bấm thì mới chạy hàm borrow, còn không thì sẽ không mượn.
+                if (alert.getResult() == ButtonType.OK) {
+                    borrow(2, volume, num);
+                }
+
+            } catch (NumberFormatException e) {
+                // input không phải số thì cảnh báo
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Warning");
+                alert.setHeaderText(null);
+                alert.setContentText("Wrong input number!");
+                alert.showAndWait();
+            }
+
+            numberTextField.clear(); // sau khi add xong thì tự động clear thanh input.
         });
         handleNavigationButtonBorder(issueBookButton);
         swapMainContentAnimation(issueBookContent);
@@ -549,10 +569,9 @@ public class UserDashboardController implements Initializable {
     }
 
 
-
-
     /**
      * New func for adding book.
+     *
      * @param volume select the book you want to add.
      * @param number fill numbers of book.
      */
@@ -562,8 +581,7 @@ public class UserDashboardController implements Initializable {
         String strAuthor = "";
         if (volume.getVolumeInfo().getAuthors() == null) {
             strAuthor += "null";
-        }
-        else {
+        } else {
             for (int j = 0; j < volume.getVolumeInfo().getAuthors().size(); j++) {
                 strAuthor += volume.getVolumeInfo().getAuthors().get(j) + ", ";
             }
@@ -582,13 +600,13 @@ public class UserDashboardController implements Initializable {
         }
 
         try {
-            String selectQuery = "SELECT * FROM books WHERE isbn = ?";
+            String selectQuery = "SELECT * FROM books WHERE ISBN = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
             preparedStatement.setString(1, isbn);
             ResultSet resultSet = preparedStatement.executeQuery();
             // Kiểm tra xem đã có sách có mã isbn này chưa, nếu đã có thì chỉ cần update, nếu chưa có thì insert
             if (resultSet.next()) {
-                String addQuery = "UPDATE books SET total_number = total_number + ? WHERE isbn = ?";
+                String addQuery = "UPDATE books SET totalNumber = totalNumber + ? WHERE ISBN = ?";
                 PreparedStatement preparedStatementAdd = connection.prepareStatement(addQuery);
                 preparedStatementAdd.setInt(1, number);
                 preparedStatementAdd.setString(2, isbn);
@@ -599,7 +617,7 @@ public class UserDashboardController implements Initializable {
 
             } else {
                 String addQuery =
-                        "INSERT into books (title,author,publisher,publishedDate,thumbnail,isbn,total_number) values (?,?,?,?,?,?,?);";
+                        "INSERT into books (title,author,publisher,publishedDate,thumbnail,ISBN,totalNumber) values (?,?,?,?,?,?,?);";
                 PreparedStatement preparedStatementAdd = connection.prepareStatement(addQuery);
                 preparedStatementAdd.setString(1, volume.getVolumeInfo().getTitle());
                 preparedStatementAdd.setString(2, strAuthor);
@@ -619,7 +637,52 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    public void borrow(Volume volume) {
+    /**
+     * borrow books. userID get from class Customer.
+     *
+     * @param userID  userID.
+     * @param volume  book.
+     * @param addDate date from currentDate to return.
+     */
+    public void borrow(int userID, Volume volume, int addDate) {
+        String ISBN = getISBN(volume.getVolumeInfo());
 
+        Connection connection = DatabaseConnection.getConnection();
+
+        if (connection == null) {
+            System.out.println("Something were wrong connectDB is null!");
+        }
+
+        try {
+            String selectQuery = "SELECT * FROM transactions WHERE userID = ? AND ISBN = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setString(2, ISBN);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // Kiểm tra xem đã có sách có mã isbn này chưa, nếu đã có thì chỉ cần update, nếu chưa có thì insert
+            if (resultSet.next()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Warning");
+                alert.setHeaderText(null);
+                alert.setContentText("Book is already borrowed!");
+                alert.showAndWait();
+            } else {
+                String addQuery =
+                        "INSERT into transactions (userID,ISBN,dueDate) values (?,?,?);";
+                PreparedStatement preparedStatementBorrow = connection.prepareStatement(addQuery);
+                preparedStatementBorrow.setInt(1, userID);
+                preparedStatementBorrow.setString(2, ISBN);
+                preparedStatementBorrow.setDate(3, Date.valueOf(LocalDate.now().plusDays(addDate)));
+                int requiredInsert = preparedStatementBorrow.executeUpdate();
+                if (requiredInsert > 0) {
+                    System.out.println("Borrowed Successes");
+                } else System.out.println("Borrowed Failed");
+
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+            System.out.println("Foreign Key is null, this book does not exist in Library");
+
+        }
     }
 }
