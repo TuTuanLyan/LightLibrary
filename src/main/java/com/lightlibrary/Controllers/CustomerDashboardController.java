@@ -2,14 +2,19 @@ package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.Customer;
 import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +32,21 @@ public class CustomerDashboardController implements Initializable {
     private AnchorPane mainContentContainer;
 
     @FXML
+    private Label currentPageNameLabel;
+
+    @FXML
+    private Button homeButton;
+
+    @FXML
+    private Button issueBookButton;
+
+    @FXML
+    private Button returnBookButton;
+
+    @FXML
+    private Button historyButton;
+
+    @FXML
     private ImageView homeImage;
 
     @FXML
@@ -37,6 +57,9 @@ public class CustomerDashboardController implements Initializable {
 
     @FXML
     private ImageView historyImage;
+
+    @FXML
+    private Pane navigationBorderPane;
 
     private Node currentNode;
     private final Map<String, Node> paneCache = new HashMap<>();
@@ -74,6 +97,8 @@ public class CustomerDashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadPane("/com/lightlibrary/Views/CustomerHome.fxml");
         activeButton = ActiveButton.HOME;
+        currentPageNameLabel.setText("Dashboard");
+        navigationButtonAction();
         setTheme(darkMode);
     }
 
@@ -135,6 +160,7 @@ public class CustomerDashboardController implements Initializable {
     public void goToHomePage() {
         if (activeButton != ActiveButton.HOME) {
             loadPane("/com/lightlibrary/Views/CustomerHome.fxml");
+            currentPageNameLabel.setText("Home");
             activeButton = ActiveButton.HOME;
         }
     }
@@ -142,6 +168,7 @@ public class CustomerDashboardController implements Initializable {
     public void goToIssueBookPage() {
         if (activeButton != ActiveButton.ISSUE_BOOK) {
             loadPane("/com/lightlibrary/Views/CustomerIssueBook.fxml");
+            currentPageNameLabel.setText("Issue Book");
             activeButton = ActiveButton.ISSUE_BOOK;
         }
     }
@@ -149,6 +176,7 @@ public class CustomerDashboardController implements Initializable {
     public void goToReturnBookPage() {
         if (activeButton != ActiveButton.RETURN_BOOK) {
             loadPane("/com/lightlibrary/Views/CustomerReturnBook.fxml");
+            currentPageNameLabel.setText("Return Book");
             activeButton = ActiveButton.RETURN_BOOK;
         }
     }
@@ -156,6 +184,7 @@ public class CustomerDashboardController implements Initializable {
     public void goToHistoryPage() {
         if (activeButton != ActiveButton.HISTORY) {
             loadPane("/com/lightlibrary/Views/CustomerHistory.fxml");
+            currentPageNameLabel.setText("History");
             activeButton = ActiveButton.HISTORY;
         }
     }
@@ -168,17 +197,56 @@ public class CustomerDashboardController implements Initializable {
 
     private void setTheme(boolean darkMode) {
         if (darkMode) {
-            dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
-            homeImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/light-home.png")).toExternalForm()));
-            issueBookImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/light-book-issue.png")).toExternalForm()));
-            returnBookImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/light-return.png")).toExternalForm()));
-            historyImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/light-history.png")).toExternalForm()));
+            dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
+            homeImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/light-home.png")).toExternalForm()));
+            issueBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/light-book-issue.png")).toExternalForm()));
+            returnBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/light-return.png")).toExternalForm()));
+            historyImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/light-history.png")).toExternalForm()));
         } else {
-            dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
-            homeImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/dark-home.png")).toExternalForm()));
-            issueBookImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/dark-book-issue.png")).toExternalForm()));
-            returnBookImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/dark-return.png")).toExternalForm()));
-            historyImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/dark-history.png")).toExternalForm()));
+            dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
+            homeImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/dark-home.png")).toExternalForm()));
+            issueBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/dark-book-issue.png")).toExternalForm()));
+            returnBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/dark-return.png")).toExternalForm()));
+            historyImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/dark-history.png")).toExternalForm()));
         }
+    }
+
+    private void navigationButtonAction() {
+        homeButton.setOnAction(event -> {
+            navigationBorderAnimation(homeButton);
+            goToHomePage();
+        });
+
+        issueBookButton.setOnAction(event -> {
+            navigationBorderAnimation(issueBookButton);
+            goToIssueBookPage();
+        });
+
+        returnBookButton.setOnAction(event -> {
+            navigationBorderAnimation(returnBookButton);
+            goToReturnBookPage();
+        });
+
+        historyButton.setOnAction(event -> {
+            navigationBorderAnimation(historyButton);
+            goToHistoryPage();
+        });
+    }
+
+    private void navigationBorderAnimation(Button activeButton) {
+        TranslateTransition navigationButtonBorderTransition = new TranslateTransition(Duration.seconds(0.2),
+                navigationBorderPane);
+        navigationButtonBorderTransition.setToY(activeButton.getLayoutY() - 10 - navigationBorderPane.getLayoutY());
+        navigationButtonBorderTransition.play();
     }
 }

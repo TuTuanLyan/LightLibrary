@@ -1,5 +1,5 @@
 .parent-container {
-    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-background-color: rgba(0, 0, 0, 0.7);
 }
 
 .main-content-container {
@@ -13,8 +13,26 @@
     -fx-text-fill: #ffffff;
 }
 
+.navigation-border {
+    -fx-background-color: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.logo-container {
+    -fx-background-color: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.page-title {
+    -fx-fill: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
 .page-content-container {
-    -fx-background-color: #e4e4e4;
+    -fx-background-color: #151515;
     -fx-background-radius: 25px 0px 0px 0px;
     -fx-border-radius: 25px 0px 0px 0px;
 }
