@@ -10,6 +10,7 @@
 
 .navigation-button {
     -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
 }
 
 .page-content-container {

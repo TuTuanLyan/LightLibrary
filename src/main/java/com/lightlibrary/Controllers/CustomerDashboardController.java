@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -19,12 +21,38 @@ import java.util.ResourceBundle;
 public class CustomerDashboardController implements Initializable {
 
     @FXML
+    private AnchorPane dashBoardRoot;
+
+    @FXML
     private AnchorPane mainContentContainer;
+
+    @FXML
+    private ImageView homeImage;
+
+    @FXML
+    private ImageView issueBookImage;
+
+    @FXML
+    private ImageView returnBookImage;
+
+    @FXML
+    private ImageView historyImage;
 
     private Node currentNode;
     private final Map<String, Node> paneCache = new HashMap<>();
 
+    public enum ActiveButton {
+        HOME,
+        ISSUE_BOOK,
+        RETURN_BOOK,
+        HISTORY
+    }
+
+    public ActiveButton activeButton;
+
     private Customer customer;
+
+    private boolean darkMode = false;
 
     public Customer getCustomer() {
         return customer;
@@ -34,9 +62,19 @@ public class CustomerDashboardController implements Initializable {
         this.customer = customer;
     }
 
+    public boolean isDarkMode() {
+        return darkMode;
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadPane("/com/lightlibrary/Views/CustomerHome.fxml");
+        activeButton = ActiveButton.HOME;
+        setTheme(darkMode);
     }
 
     /**
@@ -95,18 +133,52 @@ public class CustomerDashboardController implements Initializable {
     }
 
     public void goToHomePage() {
-        loadPane("/com/lightlibrary/Views/CustomerHome.fxml");
+        if (activeButton != ActiveButton.HOME) {
+            loadPane("/com/lightlibrary/Views/CustomerHome.fxml");
+            activeButton = ActiveButton.HOME;
+        }
     }
 
     public void goToIssueBookPage() {
-        loadPane("/com/lightlibrary/Views/CustomerIssueBook.fxml");
+        if (activeButton != ActiveButton.ISSUE_BOOK) {
+            loadPane("/com/lightlibrary/Views/CustomerIssueBook.fxml");
+            activeButton = ActiveButton.ISSUE_BOOK;
+        }
     }
 
     public void goToReturnBookPage() {
-        loadPane("/com/lightlibrary/Views/CustomerReturnBook.fxml");
+        if (activeButton != ActiveButton.RETURN_BOOK) {
+            loadPane("/com/lightlibrary/Views/CustomerReturnBook.fxml");
+            activeButton = ActiveButton.RETURN_BOOK;
+        }
     }
 
     public void goToHistoryPage() {
-        loadPane("/com/lightlibrary/Views/CustomerHistory.fxml");
+        if (activeButton != ActiveButton.HISTORY) {
+            loadPane("/com/lightlibrary/Views/CustomerHistory.fxml");
+            activeButton = ActiveButton.HISTORY;
+        }
+    }
+
+    public void changeTheme() {
+        this.darkMode = !this.darkMode;
+        dashBoardRoot.getStylesheets().clear();
+        setTheme(this.darkMode);
+    }
+
+    private void setTheme(boolean darkMode) {
+        if (darkMode) {
+            dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
+            homeImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/light-home.png")).toExternalForm()));
+            issueBookImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/light-book-issue.png")).toExternalForm()));
+            returnBookImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/light-return.png")).toExternalForm()));
+            historyImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/light-history.png")).toExternalForm()));
+        } else {
+            dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
+            homeImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/dark-home.png")).toExternalForm()));
+            issueBookImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/dark-book-issue.png")).toExternalForm()));
+            returnBookImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/dark-return.png")).toExternalForm()));
+            historyImage.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/dark-history.png")).toExternalForm()));
+        }
     }
 }

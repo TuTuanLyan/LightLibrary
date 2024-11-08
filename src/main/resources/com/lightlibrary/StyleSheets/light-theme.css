@@ -8,6 +8,11 @@
     -fx-border-radius: 25px 0px 0px 0px;
 }
 
+.navigation-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
 .page-content-container {
     -fx-background-color: #e4e4e4;
     -fx-background-radius: 25px 0px 0px 0px;
