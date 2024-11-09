@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -33,6 +34,15 @@ public class CustomerDashboardController implements Initializable {
 
     @FXML
     private Label currentPageNameLabel;
+
+    @FXML
+    private Pane avatarImageContainer;
+
+    @FXML
+    private Label customerNameLabel;
+
+    @FXML
+    private Label customerCoinAmoutLabel;
 
     @FXML
     private Button homeButton;
@@ -83,6 +93,7 @@ public class CustomerDashboardController implements Initializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+        displayCustomerInformation();
     }
 
     public boolean isDarkMode() {
@@ -218,6 +229,16 @@ public class CustomerDashboardController implements Initializable {
                     .getResource("/com/lightlibrary/Images/dark-return.png")).toExternalForm()));
             historyImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/dark-history.png")).toExternalForm()));
+        }
+    }
+
+    private void displayCustomerInformation() {
+        Circle avatarClip = new Circle(35, 35, 35);
+        avatarImageContainer.setClip(avatarClip);
+
+        if (customer != null) {
+            customerNameLabel.setText(this.customer.getFullName() == null ? "Name of customer" : this.customer.getFullName());
+            customerCoinAmoutLabel.setText(this.customer.getCoins() + "");
         }
     }
 

@@ -6,6 +6,7 @@
     -fx-background-color: #181818;
     -fx-background-radius: 25px 0px 0px 0px;
     -fx-border-radius: 25px 0px 0px 0px;
+    -fx-effect: dropshadow(gaussian, rgba(160, 160, 160, 0.5), 8, 0, -3, -3);
 }
 
 .navigation-button {
@@ -19,6 +20,18 @@
     -fx-border-radius: 15px;
 }
 
+.special-scene-navigation-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.special-scene-navigation-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
 .logo-container {
     -fx-background-color: linear-gradient(to bottom right, #08d792, #7096ff);
     -fx-background-radius: 15px;
@@ -29,6 +42,36 @@
     -fx-fill: #ffffff;
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
+}
+
+.customer-info-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.search-bar {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+
+.search-bar:focused {
+    -fx-background-color: #f4f4f4;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(160, 160, 160, 0.5), 8, 0, -3, 3);
+}
+
+.search-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.search-button:hover {
+    -fx-background-color: rgba(160, 160, 160, 0.5);
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
 }
 
 .page-content-container {
