@@ -66,7 +66,7 @@
       </Label>
       <Pane fx:id="avatarImageContainer" layoutX="1345.0" layoutY="10.0" prefHeight="70.0" prefWidth="70.0">
          <children>
-            <Button layoutX="-8.0" layoutY="-4.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: transparent;">
+            <Button layoutX="-8.0" layoutY="-4.0" mnemonicParsing="false" onAction="#goToSetting" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: transparent;">
                <graphic>
                   <ImageView fitHeight="70.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -127,7 +127,7 @@
             </FontAwesomeIcon>
          </graphic>
       </Button>
-      <Button layoutX="24.0" layoutY="637.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
+      <Button layoutX="24.0" layoutY="637.0" mnemonicParsing="false" onAction="#goToSetting" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
          <graphic>
             <FontAwesomeIcon glyphName="COG" size="3em" textAlignment="CENTER">
                <fill>

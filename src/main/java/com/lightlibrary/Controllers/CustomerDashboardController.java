@@ -3,11 +3,15 @@ package com.lightlibrary.Controllers;
 import com.lightlibrary.Models.Customer;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -15,14 +19,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class CustomerDashboardController implements Initializable {
 
@@ -253,5 +257,25 @@ public class CustomerDashboardController implements Initializable {
                 navigationBorderPane);
         navigationButtonBorderTransition.setToY(activeButton.getLayoutY() - 10 - navigationBorderPane.getLayoutY());
         navigationButtonBorderTransition.play();
+    }
+
+    public String getSearchQuery() {
+        return null;
+    }
+
+    public void goToSetting(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/com/lightlibrary/Views/Setting.fxml"));
+            Parent setting = (Parent) loader.load();
+            SettingController controller = loader.getController();
+            controller.setCustomerDashboardController(CustomerDashboardController.this);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Platform.runLater(stage::centerOnScreen);
+            stage.setScene(new Scene(setting, 960, 640));
+            stage.show();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
