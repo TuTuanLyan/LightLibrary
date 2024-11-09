@@ -79,3 +79,11 @@
     -fx-background-radius: 25px 0px 0px 0px;
     -fx-border-radius: 25px 0px 0px 0px;
 }
+
+
+
+
+/*Setting fxml css*/
+.setting-root {
+    -fx-background-color: #181818;
+}

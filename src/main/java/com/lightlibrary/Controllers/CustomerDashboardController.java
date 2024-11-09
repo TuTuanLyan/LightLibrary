@@ -72,7 +72,6 @@ public class CustomerDashboardController implements Initializable {
     private Pane navigationBorderPane;
 
     private Node currentNode;
-    private final Map<String, Node> paneCache = new HashMap<>();
 
     public enum ActiveButton {
         HOME,
@@ -85,8 +84,6 @@ public class CustomerDashboardController implements Initializable {
 
     private Customer customer;
 
-    private boolean darkMode = false;
-
     public Customer getCustomer() {
         return customer;
     }
@@ -94,14 +91,7 @@ public class CustomerDashboardController implements Initializable {
     public void setCustomer(Customer customer) {
         this.customer = customer;
         displayCustomerInformation();
-    }
-
-    public boolean isDarkMode() {
-        return darkMode;
-    }
-
-    public void setDarkMode(boolean darkMode) {
-        this.darkMode = darkMode;
+        setTheme(customer.isDarkMode());
     }
 
     @Override
@@ -110,7 +100,6 @@ public class CustomerDashboardController implements Initializable {
         activeButton = ActiveButton.HOME;
         currentPageNameLabel.setText("Dashboard");
         navigationButtonAction();
-        setTheme(darkMode);
     }
 
     /**
@@ -118,30 +107,25 @@ public class CustomerDashboardController implements Initializable {
      * @param fxmlPath is the path to scene which customer want to go.
      */
     private void loadPane(final String fxmlPath) {
-        if (paneCache.containsKey(fxmlPath)) {
-            setPaneWithAnimation(paneCache.get(fxmlPath));
-        } else {
-            Task<Node> loadTask = new Task<>() {
-                @Override
-                protected Node call() throws IOException {
-                    return FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
-                }
-            };
+        Task<Node> loadTask = new Task<>() {
+            @Override
+            protected Node call() throws IOException {
+                return FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
+            }
+        };
 
-            loadTask.setOnSucceeded(event -> {
-                Node pane = loadTask.getValue();
-                pane.setLayoutX(0);
-                pane.setLayoutY(0);
-                paneCache.put(fxmlPath, pane);
-                setPaneWithAnimation(pane);
-            });
+        loadTask.setOnSucceeded(event -> {
+            Node pane = loadTask.getValue();
+            pane.setLayoutX(0);
+            pane.setLayoutY(0);
+            setPaneWithAnimation(pane);
+        });
 
-            loadTask.setOnFailed(event -> loadTask.getException().printStackTrace());
+        loadTask.setOnFailed(event -> loadTask.getException().printStackTrace());
 
-            Thread loadPaneThread = new Thread(loadTask);
-            loadPaneThread.setDaemon(true);
-            loadPaneThread.start();
-        }
+        Thread loadPaneThread = new Thread(loadTask);
+        loadPaneThread.setDaemon(true);
+        loadPaneThread.start();
     }
 
     /**
@@ -201,9 +185,9 @@ public class CustomerDashboardController implements Initializable {
     }
 
     public void changeTheme() {
-        this.darkMode = !this.darkMode;
+        this.customer.setDarkMode(!this.customer.isDarkMode());
         dashBoardRoot.getStylesheets().clear();
-        setTheme(this.darkMode);
+        setTheme(this.customer.isDarkMode());
     }
 
     private void setTheme(boolean darkMode) {

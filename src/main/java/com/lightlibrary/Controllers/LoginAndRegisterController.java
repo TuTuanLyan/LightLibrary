@@ -179,6 +179,10 @@ public class LoginAndRegisterController implements Initializable {
                     customer.setFullName(resultSet.getString("fullName"));
                     customer.setUsername(resultSet.getString("username"));
                     customer.setPassword(resultSet.getString("password"));
+                    customer.setDarkMode(resultSet.getBoolean("darkMode"));
+                    customer.setEmail(resultSet.getString("email"));
+                    customer.setPhoneNumber(resultSet.getString("phoneNumber"));
+                    customer.setCoins(resultSet.getLong("coin"));
                     return customer;
                 } else if (role.equalsIgnoreCase("ADMIN")) {
                     Admin admin = new Admin();
@@ -187,6 +191,9 @@ public class LoginAndRegisterController implements Initializable {
                     admin.setFullName(resultSet.getString("fullName"));
                     admin.setUsername(resultSet.getString("username"));
                     admin.setPassword(resultSet.getString("password"));
+                    admin.setDarkMode(resultSet.getBoolean("darkMode"));
+                    admin.setEmail(resultSet.getString("email"));
+                    admin.setPhoneNumber(resultSet.getString("phoneNumber"));
                     return admin;
                 }
             }

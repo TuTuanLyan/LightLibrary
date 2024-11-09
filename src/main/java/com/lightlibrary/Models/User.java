@@ -8,6 +8,7 @@ public class User {
     protected String phoneNumber;
     protected String email;
     protected Role role;
+    protected boolean darkMode;
 
     public enum Role {
         CUSTOMER,
@@ -90,6 +91,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public boolean isDarkMode() {
+        return darkMode;
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
     }
 
     public boolean checkEmailValidation(String email) {
