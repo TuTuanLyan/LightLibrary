@@ -274,6 +274,17 @@ public class CustomerDashboardController implements Initializable {
             historyImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/dark-history.png")).toExternalForm()));
         }
+
+        updateChildThemes(darkMode);
+    }
+
+    private void updateChildThemes(boolean darkMode) {
+        cache.values().forEach(loader -> {
+            Object controller = loader.getController();
+            if (controller instanceof ThemeAction) {
+                ((ThemeAction) controller).setTheme(darkMode);
+            }
+        });
     }
 
     private void displayCustomerInformation() {
