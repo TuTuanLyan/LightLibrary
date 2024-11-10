@@ -32,8 +32,10 @@ public class SettingController {
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/com/lightlibrary/Views/CustomerDashboard.fxml"));
             Parent dashboard = (Parent) loader.load();
-            CustomerDashboardController controller = loader.getController();
-            controller.setCustomer(this.getCustomerDashboardController().getCustomer());
+            if (this.getCustomerDashboardController().getCustomer() != null) {
+                CustomerDashboardController controller = loader.getController();
+                controller.setCustomer(this.getCustomerDashboardController().getCustomer());
+            }
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Platform.runLater(stage::centerOnScreen);
             stage.setScene(new Scene(dashboard, 1440, 900));

@@ -171,7 +171,7 @@
             </FontAwesomeIcon>
          </graphic>
       </Button>
-      <TextField layoutX="449.0" layoutY="23.0" prefHeight="42.0" prefWidth="580.0" promptText="Search here ..." styleClass="search-bar">
+      <TextField fx:id="searchBar" layoutX="449.0" layoutY="23.0" prefHeight="42.0" prefWidth="580.0" promptText="Search here ..." styleClass="search-bar">
          <padding>
             <Insets left="15.0" />
          </padding>
@@ -179,7 +179,7 @@
             <Font size="16.0" />
          </font>
       </TextField>
-      <Button layoutX="993.0" layoutY="32.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="search-button">
+      <Button fx:id="searchButton" layoutX="993.0" layoutY="32.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="search-button">
          <graphic>
             <FontAwesomeIcon glyphName="SEARCH" />
          </graphic>

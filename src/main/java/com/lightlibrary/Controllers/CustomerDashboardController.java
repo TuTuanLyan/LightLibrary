@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -24,9 +25,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 public class CustomerDashboardController implements Initializable {
 
@@ -35,6 +34,7 @@ public class CustomerDashboardController implements Initializable {
 
     @FXML
     private AnchorPane mainContentContainer;
+    private Map<String, FXMLLoader> cache = new HashMap<>();
 
     @FXML
     private Label currentPageNameLabel;
@@ -47,6 +47,11 @@ public class CustomerDashboardController implements Initializable {
 
     @FXML
     private Label customerCoinAmoutLabel;
+
+    @FXML
+    private TextField searchBar;
+    @FXML
+    private Button searchButton;
 
     @FXML
     private Button homeButton;
@@ -100,10 +105,53 @@ public class CustomerDashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        preLoad();
+
         loadPane("/com/lightlibrary/Views/CustomerHome.fxml");
         activeButton = ActiveButton.HOME;
         currentPageNameLabel.setText("Dashboard");
+
+        searchBar.setOnAction(event -> {
+            String query = searchBar.getText();
+            updateIssueBookSearchResults(query);
+        });
+        searchButton.setOnAction(event -> {
+            String query = searchBar.getText();
+            updateIssueBookSearchResults(query);
+        });
+
         navigationButtonAction();
+    }
+
+    private void preLoad() {
+        String[] fxmlPaths = {
+                "/com/lightlibrary/Views/CustomerHome.fxml",
+                "/com/lightlibrary/Views/CustomerIssueBook.fxml",
+                "/com/lightlibrary/Views/CustomerReturnBook.fxml",
+                "/com/lightlibrary/Views/CustomerHistory.fxml"
+        };
+
+        for (String fxmlPath : fxmlPaths) {
+            Task<FXMLLoader> loadTask = new Task<>() {
+                @Override
+                protected FXMLLoader call() throws IOException {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                    loader.load();
+                    return loader;
+                }
+            };
+
+            loadTask.setOnSucceeded(event -> {
+                FXMLLoader loader = loadTask.getValue();
+                cache.put(fxmlPath, loader);
+            });
+
+            loadTask.setOnFailed(event -> loadTask.getException().printStackTrace());
+
+            Thread loadPaneThread = new Thread(loadTask);
+            loadPaneThread.setDaemon(true);
+            loadPaneThread.start();
+        }
     }
 
     /**
@@ -111,25 +159,31 @@ public class CustomerDashboardController implements Initializable {
      * @param fxmlPath is the path to scene which customer want to go.
      */
     private void loadPane(final String fxmlPath) {
-        Task<Node> loadTask = new Task<>() {
-            @Override
-            protected Node call() throws IOException {
-                return FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
-            }
-        };
+        if (cache.containsKey(fxmlPath)) {
+            FXMLLoader loader = (FXMLLoader) cache.get(fxmlPath);
+            setPaneWithAnimation(loader.getRoot());
+        } else {
+            Task<FXMLLoader> loadTask = new Task<>() {
+                @Override
+                protected FXMLLoader call() throws IOException {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                    loader.load();
+                    return loader;
+                }
+            };
 
-        loadTask.setOnSucceeded(event -> {
-            Node pane = loadTask.getValue();
-            pane.setLayoutX(0);
-            pane.setLayoutY(0);
-            setPaneWithAnimation(pane);
-        });
+            loadTask.setOnSucceeded(event -> {
+                FXMLLoader loader = loadTask.getValue();
+                cache.put(fxmlPath, loader);
+                setPaneWithAnimation(loader.getRoot());
+            });
 
-        loadTask.setOnFailed(event -> loadTask.getException().printStackTrace());
+            loadTask.setOnFailed(event -> loadTask.getException().printStackTrace());
 
-        Thread loadPaneThread = new Thread(loadTask);
-        loadPaneThread.setDaemon(true);
-        loadPaneThread.start();
+            Thread loadPaneThread = new Thread(loadTask);
+            loadPaneThread.setDaemon(true);
+            loadPaneThread.start();
+        }
     }
 
     /**
@@ -142,7 +196,6 @@ public class CustomerDashboardController implements Initializable {
             fadeOut.setOnFinished(e -> {
                 mainContentContainer.getChildren().clear();
                 mainContentContainer.getChildren().add(newNode);
-
                 FadeTransition fadeIn = ControllerUntil.creatFadeInAnimation(newNode);
                 fadeIn.play();
             });
@@ -152,7 +205,6 @@ public class CustomerDashboardController implements Initializable {
             FadeTransition fadeIn = ControllerUntil.creatFadeInAnimation(newNode);
             fadeIn.play();
         }
-
         currentNode = newNode;
     }
 
@@ -160,6 +212,7 @@ public class CustomerDashboardController implements Initializable {
         if (activeButton != ActiveButton.HOME) {
             loadPane("/com/lightlibrary/Views/CustomerHome.fxml");
             currentPageNameLabel.setText("Home");
+            navigationBorderAnimation(homeButton);
             activeButton = ActiveButton.HOME;
         }
     }
@@ -168,6 +221,7 @@ public class CustomerDashboardController implements Initializable {
         if (activeButton != ActiveButton.ISSUE_BOOK) {
             loadPane("/com/lightlibrary/Views/CustomerIssueBook.fxml");
             currentPageNameLabel.setText("Issue Book");
+            navigationBorderAnimation(issueBookButton);
             activeButton = ActiveButton.ISSUE_BOOK;
         }
     }
@@ -176,6 +230,7 @@ public class CustomerDashboardController implements Initializable {
         if (activeButton != ActiveButton.RETURN_BOOK) {
             loadPane("/com/lightlibrary/Views/CustomerReturnBook.fxml");
             currentPageNameLabel.setText("Return Book");
+            navigationBorderAnimation(returnBookButton);
             activeButton = ActiveButton.RETURN_BOOK;
         }
     }
@@ -184,6 +239,7 @@ public class CustomerDashboardController implements Initializable {
         if (activeButton != ActiveButton.HISTORY) {
             loadPane("/com/lightlibrary/Views/CustomerHistory.fxml");
             currentPageNameLabel.setText("History");
+            navigationBorderAnimation(historyButton);
             activeButton = ActiveButton.HISTORY;
         }
     }
@@ -232,22 +288,18 @@ public class CustomerDashboardController implements Initializable {
 
     private void navigationButtonAction() {
         homeButton.setOnAction(event -> {
-            navigationBorderAnimation(homeButton);
             goToHomePage();
         });
 
         issueBookButton.setOnAction(event -> {
-            navigationBorderAnimation(issueBookButton);
             goToIssueBookPage();
         });
 
         returnBookButton.setOnAction(event -> {
-            navigationBorderAnimation(returnBookButton);
             goToReturnBookPage();
         });
 
         historyButton.setOnAction(event -> {
-            navigationBorderAnimation(historyButton);
             goToHistoryPage();
         });
     }
@@ -259,9 +311,27 @@ public class CustomerDashboardController implements Initializable {
         navigationButtonBorderTransition.play();
     }
 
-    public String getSearchQuery() {
-        return null;
+    public void updateIssueBookSearchResults(String query) {
+        String fxmlPath = "/com/lightlibrary/Views/CustomerIssueBook.fxml";
+
+        if (cache.containsKey(fxmlPath)) {
+            FXMLLoader loader = cache.get(fxmlPath);
+            CustomerIssueBookController controller = loader.getController();
+            controller.updateSearchResults(query);
+        } else {
+            loadPane(fxmlPath);
+            Platform.runLater(() -> {
+                FXMLLoader loader = cache.get(fxmlPath);
+                if (loader != null) {
+                    CustomerIssueBookController controller = loader.getController();
+                    controller.updateSearchResults(query);
+                }
+            });
+        }
+
+        goToIssueBookPage();
     }
+
 
     public void goToSetting(ActionEvent event) {
         try {
