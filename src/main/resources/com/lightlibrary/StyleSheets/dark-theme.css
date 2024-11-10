@@ -38,6 +38,11 @@
     -fx-border-radius: 15px;
 }
 
+.change-theme-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+}
+
 .page-title {
     -fx-fill: #ffffff;
     -fx-text-fill: #ffffff;

@@ -2,6 +2,7 @@ package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.Customer;
 import javafx.animation.FadeTransition;
+import javafx.animation.FillTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -19,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -35,6 +37,11 @@ public class CustomerDashboardController implements Initializable {
     @FXML
     private AnchorPane mainContentContainer;
     private Map<String, FXMLLoader> cache = new HashMap<>();
+
+    @FXML
+    private Button changeThemeButton;
+    @FXML
+    private Circle changeThemeToggle;
 
     @FXML
     private Label currentPageNameLabel;
@@ -118,6 +125,10 @@ public class CustomerDashboardController implements Initializable {
         searchButton.setOnAction(event -> {
             String query = searchBar.getText();
             updateIssueBookSearchResults(query);
+        });
+
+        changeThemeButton.setOnAction(event -> {
+            changeTheme();
         });
 
         navigationButtonAction();
@@ -248,6 +259,32 @@ public class CustomerDashboardController implements Initializable {
         this.customer.setDarkMode(!this.customer.isDarkMode());
         dashBoardRoot.getStylesheets().clear();
         setTheme(this.customer.isDarkMode());
+        changeThemeToggleButtonAnimation(this.customer.isDarkMode());
+    }
+
+    private void changeThemeToggleButtonAnimation(boolean darkMode) {
+        TranslateTransition changeThemeButtonTransition = new TranslateTransition(Duration.seconds(0.3), changeThemeToggle);
+        if (darkMode) {
+            changeThemeButton.setText("Dark Mode");
+            changeThemeButtonTransition.setToX(-33);
+            changeThemeButtonTransition.play();
+
+            Color startColor = Color.web("#ffffff");
+            Color endColor = Color.web("#434343");
+            FillTransition changeThemeButtonFillTransition = new FillTransition(Duration.seconds(0.3),
+                    changeThemeToggle, startColor, endColor);
+            changeThemeButtonFillTransition.play();
+        } else {
+            changeThemeButton.setText("Light Mode");
+            changeThemeButtonTransition.setToX(0);
+            changeThemeButtonTransition.play();
+
+            Color startColor = Color.web("#434343");
+            Color endColor = Color.web("#ffffff");
+            FillTransition changeThemeButtonFillTransition = new FillTransition(Duration.seconds(0.3),
+                    changeThemeToggle, startColor, endColor);
+            changeThemeButtonFillTransition.play();
+        }
     }
 
     private void setTheme(boolean darkMode) {
