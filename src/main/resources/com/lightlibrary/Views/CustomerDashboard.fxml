@@ -58,7 +58,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Label fx:id="currentPageNameLabel" layoutX="187.0" layoutY="21.0" prefHeight="47.0" prefWidth="212.0" styleClass="page-title">
+      <Label fx:id="currentPageNameLabel" layoutX="182.0" layoutY="21.0" prefHeight="47.0" prefWidth="212.0" styleClass="page-title">
          <font>
             <Font size="32.0" />
          </font>
@@ -109,7 +109,7 @@
             </LinearGradient>
          </stroke>
       </Line>
-      <Button layoutX="22.0" layoutY="821.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
+      <Button layoutX="22.0" layoutY="821.0" mnemonicParsing="false" onAction="#logout" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
          <graphic>
             <FontAwesomeIcon glyphName="SIGN_OUT" rotate="180.0" size="3em" textAlignment="CENTER">
                <fill>
@@ -188,7 +188,7 @@
             <FontAwesomeIcon glyphName="SEARCH" text="" />
          </graphic>
       </Button>
-      <FontAwesomeIcon glyphName="BARS" layoutX="122.0" layoutY="59.0" size="3.5em" styleClass="page-title" />
+      <FontAwesomeIcon glyphName="BARS" layoutX="122.0" layoutY="60.0" size="3em" styleClass="page-title" />
       <Button fx:id="changeThemeButton" alignment="TOP_CENTER" layoutX="1036.0" layoutY="11.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="105.0" styleClass="change-theme-button" text="Light Mode">
          <font>
             <Font name="System Bold" size="15.0" />

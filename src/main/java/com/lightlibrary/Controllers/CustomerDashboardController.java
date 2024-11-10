@@ -396,4 +396,13 @@ public class CustomerDashboardController implements Initializable {
             throw new RuntimeException(ex);
         }
     }
+
+    public void logout(ActionEvent event) throws IOException {
+        Parent login = FXMLLoader.load(Objects.requireNonNull(getClass()
+                .getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Platform.runLater(stage::centerOnScreen);
+        stage.setScene(new Scene(login, 960, 640));
+        stage.show();
+    }
 }
