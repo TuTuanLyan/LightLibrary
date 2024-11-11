@@ -75,13 +75,16 @@ public class ControllerUntil {
      */
     public static Pane createBookBlock(String thumbnailUrl, String title,
                                  String author, String ISBN, String description) {
-        ImageView thumbnail = new ImageView(new Image(Objects.requireNonNull(ControllerUntil
-                .class.getResource(thumbnailUrl)).toExternalForm()));
-        thumbnail.setPreserveRatio(false);
-        thumbnail.setFitHeight(160);
-        thumbnail.setFitWidth(125);
-        thumbnail.setLayoutX(15);
-        thumbnail.setLayoutY(15);
+        ImageView thumbnail = new ImageView();
+        if (thumbnailUrl != null) {
+            thumbnail.setImage(new Image(thumbnailUrl));
+            thumbnail.setPreserveRatio(false);
+            thumbnail.setFitHeight(160);
+            thumbnail.setFitWidth(125);
+            thumbnail.setLayoutX(15);
+            thumbnail.setLayoutY(15);
+        }
+
 
         Pane thumbnailBorder = new Pane();
         thumbnailBorder.setPrefSize(145, 180);
@@ -115,7 +118,7 @@ public class ControllerUntil {
                 + "-fx-text-alignment: center;"
                 + "-fx-alignment: center");
 
-        Label ISBNLabel = new Label("ISBN: " + ISBN);
+        Label ISBNLabel = new Label(ISBN);
         ISBNLabel.setWrapText(true);
         ISBNLabel.setPrefSize(295, 40);
         ISBNLabel.setLayoutX(155);

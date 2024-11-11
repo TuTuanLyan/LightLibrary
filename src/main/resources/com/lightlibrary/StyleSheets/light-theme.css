@@ -145,6 +145,12 @@
     -fx-alignment: center;
 }
 
+.for-you-label {
+    -fx-background-color: #ffffff;
+    -fx-font-size: 25px;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+}
 
 
 

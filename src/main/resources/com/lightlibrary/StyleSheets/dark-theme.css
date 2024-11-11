@@ -147,6 +147,14 @@
     -fx-alignment: center;
 }
 
+.for-you-label {
+    -fx-background-color: #4d4948;
+    -fx-font-size: 25px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+
 
 
 

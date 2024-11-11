@@ -20,6 +20,11 @@
                 <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0" />
               </content>
             </ScrollPane>
+            <Label layoutX="18.0" prefHeight="53.0" prefWidth="605.0" styleClass="for-you-label" text="    For you" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
          </children></Pane>
       <Pane layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container" />
       <Pane layoutX="680.0" layoutY="443.0" prefHeight="350.0" prefWidth="645.0" styleClass="box-container">
