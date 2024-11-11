@@ -88,6 +88,69 @@
 
 
 
+/*Issue Book*/
+.box-container {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-text-fill: #000000;
+    -fx-effect: dropshadow(gaussian, rgba(100, 100, 100, 0.5), 5, 0, -2, 2);
+}
+
+.scroll-pane {
+    -fx-background-color: transparent; /* Nền trong suốt */
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent; /* Viewport trong suốt */
+}
+
+.scroll-pane .scroll-bar:vertical .increment-button,
+.scroll-pane .scroll-bar:vertical .decrement-button,
+.scroll-pane .scroll-bar:horizontal .increment-button,
+.scroll-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent; /* Ẩn nút */
+    -fx-padding: 0; /* Loại bỏ padding để không chiếm chỗ */
+}
+
+.scroll-pane .scroll-bar:vertical .thumb,
+.scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #dadada; /* Màu xám đen nhẹ cho con trượt */
+    -fx-background-radius: 10; /* Bo góc cho con trượt */
+}
+
+.scroll-pane .scroll-bar:vertical:hover .thumb,
+.scroll-pane .scroll-bar:horizontal:hover .thumb,
+.scroll-pane .scroll-bar:vertical .thumb:pressed,
+.scroll-pane .scroll-bar:horizontal .thumb:pressed {
+    -fx-background-color: #bababa; /* Màu đen khi hover hoặc kéo con trượt */
+}
+
+.scroll-pane .scroll-bar:vertical,
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent; /* Thanh chứa con trượt trong suốt */
+}
+
+.thumbnail-result-border {
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 25px;
+    -fx-border-width: 10px;
+}
+
+.book-title-label {
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+
+
+
+
+
+
 /*Setting fxml css*/
 .setting-root {
     -fx-background-color: #e4e4e4;

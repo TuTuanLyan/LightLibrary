@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.Objects;
@@ -17,13 +18,16 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
     @FXML
     private Label searchResultLabel;
 
+    @FXML
+    private AnchorPane resultSearchContainer;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
-    public void updateSearchResults(String result) {
-        searchResultLabel.setText(result);
+    public void updateSearchResults(String query) {
+        searchResultLabel.setText(query);
     }
 
     @Override
@@ -37,4 +41,5 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
                     .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
         }
     }
+
 }
