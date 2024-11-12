@@ -187,6 +187,11 @@ public class CustomerDashboardController implements Initializable {
                 FXMLLoader loader = loadTask.getValue();
                 cache.put(fxmlPath, loader);
                 setPaneWithAnimation(loader.getRoot());
+
+                Object controller = loader.getController();
+                if (controller instanceof ThemeAction) {
+                    ((ThemeAction) controller).setTheme(customer.isDarkMode());
+                }
             });
 
             loadTask.setOnFailed(event -> loadTask.getException().printStackTrace());

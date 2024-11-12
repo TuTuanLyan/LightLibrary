@@ -8,11 +8,6 @@
 
 <AnchorPane fx:id="issueBookRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="page-content-container" stylesheets="@../StyleSheets/dark-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerIssueBookController">
     <children>
-        <Label fx:id="searchResultLabel" alignment="CENTER" layoutX="146.0" layoutY="202.0" prefHeight="416.0" prefWidth="1086.0" visible="false">
-            <font>
-                <Font size="47.0" />
-            </font>
-        </Label>
       <Pane layoutX="15.0" layoutY="12.0" prefHeight="780.0" prefWidth="650.0" styleClass="box-container">
          <children>
             <ScrollPane layoutX="15.0" layoutY="15.0" prefHeight="750.0" prefWidth="620.0">
@@ -26,7 +21,7 @@
                </font>
             </Label>
          </children></Pane>
-      <Pane layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container" />
+      <Pane fx:id="detailBookPane" layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container" />
       <Pane layoutX="680.0" layoutY="443.0" prefHeight="350.0" prefWidth="645.0" styleClass="box-container">
          <children>
             <ScrollPane layoutX="8.0" layoutY="8.0" prefHeight="335.0" prefWidth="630.0">

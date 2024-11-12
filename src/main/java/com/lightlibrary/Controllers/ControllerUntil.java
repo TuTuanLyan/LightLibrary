@@ -2,6 +2,7 @@ package com.lightlibrary.Controllers;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -136,6 +137,7 @@ public class ControllerUntil {
         line.setLayoutX(196);
         line.setLayoutY(258);
 
-        return new Pane(thumbnail, thumbnailBorder, titleLabel, authorLabel, descriptionLabel, ISBNLabel, line);
+        return new Pane(thumbnail, thumbnailBorder, titleLabel, authorLabel,
+                descriptionLabel, ISBNLabel, line);
     }
 }

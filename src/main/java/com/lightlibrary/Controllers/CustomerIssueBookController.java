@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,10 +24,10 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
     private AnchorPane issueBookRoot;
 
     @FXML
-    private Label searchResultLabel;
+    private AnchorPane resultSearchContainer;
 
     @FXML
-    private AnchorPane resultSearchContainer;
+    private Pane detailBookPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -35,8 +36,6 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
 
     public void updateSearchResults(String query) {
         if (query.isEmpty()) return;
-
-        searchResultLabel.setText(query);
 
         resultSearchContainer.setVisible(true);
         resultSearchContainer.getChildren().clear();
@@ -88,6 +87,11 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
                     @Override
                     protected Pane call() throws Exception {
                         Pane bookPane = ControllerUntil.createBookBlock(thumbnailURL, title, authors, ISBN, description);
+                        Button viewDetailButton = createViewDetailButton();
+                        viewDetailButton.setOnAction(e -> {
+                                showBookDetail(thumbnailURL, title, authors, ISBN, description);
+                        });
+                        bookPane.getChildren().add(viewDetailButton);
                         bookPane.setPrefSize(580, 265);
                         bookPane.setLayoutX(15);
                         bookPane.setLayoutY(25 + blockIndex * 280);
@@ -185,4 +189,19 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
         }
     }
 
+    public static void showBookDetail(String thumbnailUrl,String title,
+                                      String author,String ISBN,String description) {
+        System.out.println("Call here " + ISBN);
+
+    }
+
+    private Button createViewDetailButton() {
+        Button viewDetailButton = new Button("View Detail");
+        viewDetailButton.setPrefSize(120, 40);
+        viewDetailButton.setLayoutX(450);
+        viewDetailButton.setLayoutY(180);
+        viewDetailButton.setStyle("-fx-background-color: #08d792; -fx-text-fill: white;");
+
+        return viewDetailButton;
+    }
 }
