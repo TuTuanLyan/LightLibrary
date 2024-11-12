@@ -104,30 +104,21 @@ public class ControllerUntil {
         authorLabel.setPrefSize(125, 50);
         authorLabel.setLayoutX(15);
         authorLabel.setLayoutY(180);
-        authorLabel.setStyle("-fx-text-fill: #a8a8a8;"
-                + "-fx-font-size: 15px;"
-                + "-fx-text-alignment: center;"
-                + "-fx-alignment: center");
+        authorLabel.getStyleClass().add("book-info-label");
 
         Label descriptionLabel = new Label(description);
         descriptionLabel.setWrapText(true);
         descriptionLabel.setPrefSize(415, 120);
         descriptionLabel.setLayoutX(155);
         descriptionLabel.setLayoutY(55);
-        descriptionLabel.setStyle("-fx-text-fill: #a8a8a8;"
-                + "-fx-font-size: 15px;"
-                + "-fx-text-alignment: center;"
-                + "-fx-alignment: center");
+        descriptionLabel.getStyleClass().add("book-info-label");
 
         Label ISBNLabel = new Label(ISBN);
         ISBNLabel.setWrapText(true);
         ISBNLabel.setPrefSize(295, 40);
         ISBNLabel.setLayoutX(155);
         ISBNLabel.setLayoutY(190);
-        ISBNLabel.setStyle("-fx-text-fill: #a8a8a8;"
-                + "-fx-font-size: 15px;"
-                + "-fx-text-alignment: center;"
-                + "-fx-alignment: center");
+        ISBNLabel.getStyleClass().add("book-info-label");
 
         Line line = new Line();
         line.setStartX(-150);

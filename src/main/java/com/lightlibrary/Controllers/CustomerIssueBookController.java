@@ -29,6 +29,32 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
     @FXML
     private Pane detailBookPane;
 
+    @FXML
+    private Button addToFavouriteListButton;
+
+    @FXML
+    private Button borrowBookButton;
+
+    @FXML
+    private Button detailCloseButton;
+
+    @FXML
+    private Label detailDescriptionLabel;
+
+    @FXML
+    private Label detailISBNLabel;
+
+    @FXML
+    private Label detailPriceLabel;
+
+    @FXML
+    private Label detailTItleLabel;
+
+    @FXML
+    private ImageView detailThumbnailImage;
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -189,9 +215,16 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
         }
     }
 
-    public static void showBookDetail(String thumbnailUrl,String title,
+    public void showBookDetail(String thumbnailUrl,String title,
                                       String author,String ISBN,String description) {
         System.out.println("Call here " + ISBN);
+
+        detailBookPane.setVisible(true);
+
+        detailThumbnailImage.setImage(new Image(thumbnailUrl));
+        detailTItleLabel.setText(title);
+        detailDescriptionLabel.setText(description);
+        detailISBNLabel.setText(ISBN);
 
     }
 
@@ -200,7 +233,7 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
         viewDetailButton.setPrefSize(120, 40);
         viewDetailButton.setLayoutX(450);
         viewDetailButton.setLayoutY(180);
-        viewDetailButton.setStyle("-fx-background-color: #08d792; -fx-text-fill: white;");
+        viewDetailButton.getStyleClass().add("view-detail-button");
 
         return viewDetailButton;
     }
