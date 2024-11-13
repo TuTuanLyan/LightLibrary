@@ -2,6 +2,8 @@ package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.Game.Game;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -12,6 +14,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class GameController {
     @FXML
@@ -98,10 +103,38 @@ public class GameController {
 
     @FXML
     private void handleRestartButtonClick(MouseEvent event) {
+        togglePause();
+        restartGame();
+    }
+
+    @FXML
+    private void handleRetryButtonClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY && isGameOver) {
             restartGame();
         }
     }
+
+    @FXML
+    private void handleReturnButtonClick(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY && (isGameOver || isPaused)) {
+            try {
+                // Tải file UserDashboard.fxml
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml"));
+                Parent dashboardRoot = loader.load();
+
+                // Lấy Stage hiện tại từ một Node bất kỳ, ví dụ gameCanvas
+                Stage stage = (Stage) gameCanvas.getScene().getWindow();
+
+                // Tạo Scene mới và đặt vào Stage
+                Scene dashboardScene = new Scene(dashboardRoot);
+                stage.setScene(dashboardScene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public void updateScore(int score) {
         scoreLabel.setText("Score: " + score);

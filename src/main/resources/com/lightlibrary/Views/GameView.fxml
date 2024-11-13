@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23" fx:controller="com.lightlibrary.Controllers.GameController">
+<?import javafx.scene.shape.Rectangle?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23" fx:controller="com.lightlibrary.Controllers.GameController" style="-fx-background-color: #DED47D;">
     <!-- Canvas để vẽ trò chơi -->
     <Canvas fx:id="gameCanvas" height="640" width="960" />
 
@@ -36,14 +37,46 @@
     </HBox>
 
     <!-- Menu tạm dừng -->
-    <VBox fx:id="pauseMenu" alignment="CENTER" spacing="10" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 20;" visible="false">
-        <Label style="-fx-font-size: 24; -fx-text-fill: white;" text="Game Paused" />
-        <Button text="Resume" onMouseClicked="#handleResumeButtonClick" onAction="#togglePause" />
+    <VBox fx:id="pauseMenu" alignment="CENTER" spacing="20" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 20; -fx-background-radius: 10;" visible="false">
+        <StackPane>
+            <Rectangle width="150" height="50" fill="black" arcWidth="10" arcHeight="10" />
+            <Label text="PAUSED" style="-fx-font-size: 24; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.8);" />
+        </StackPane>
+
+        <StackPane>
+            <Rectangle width="150" height="50" fill="white" arcWidth="10" arcHeight="10" />
+            <Button text="↻ Restart" onMouseClicked="#handleRestartButtonClick"
+                    style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: black; -fx-background-radius: 10; -fx-padding: 10;" />
+        </StackPane>
+        <StackPane>
+            <Rectangle width="150" height="50" fill="white" arcWidth="10" arcHeight="10" />
+            <Button text="▷ Continue" onMouseClicked="#handleResumeButtonClick"
+                    style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: black; -fx-background-radius: 10; -fx-padding: 10;" />
+        </StackPane>
+        <StackPane>
+            <Rectangle width="150" height="50" fill="white" arcWidth="10" arcHeight="10" />
+            <Button text="≡ Dashboard" onMouseClicked="#handleReturnButtonClick"
+                    style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: black; -fx-background-radius: 10; -fx-padding: 10;" />
+        </StackPane>
     </VBox>
 
     <!-- Menu Game Over -->
-    <VBox fx:id="gameOverMenu" alignment="CENTER" spacing="10" style="-fx-background-color: rgba(255, 0, 0, 0.5); -fx-padding: 20;" visible="false">
-        <Label style="-fx-font-size: 24; -fx-text-fill: white;" text="Game Over" />
-        <Button text="Restart" onMouseClicked="#handleRestartButtonClick" onAction="#restartGame" />
+    <VBox fx:id="gameOverMenu" alignment="CENTER" spacing="20" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 20; -fx-background-radius: 10;" visible="false">
+        <StackPane>
+            <Rectangle width="150" height="50" fill="black" arcWidth="10" arcHeight="10" />
+            <Label text="GAME OVER" style="-fx-font-size: 24; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.8);" />
+        </StackPane>
+
+        <StackPane>
+            <Rectangle width="150" height="50" fill="white" arcWidth="10" arcHeight="10" />
+            <Button text="↻ Retry" onMouseClicked="#handleRetryButtonClick"
+                    style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: black; -fx-background-radius: 10; -fx-padding: 10;" />
+        </StackPane>
+
+        <StackPane>
+            <Rectangle width="150" height="50" fill="white" arcWidth="10" arcHeight="10" />
+            <Button text="≡ Dashboard" onMouseClicked="#handleReturnButtonClick"
+                    style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: black; -fx-background-radius: 10; -fx-padding: 10;" />
+        </StackPane>
     </VBox>
 </StackPane>

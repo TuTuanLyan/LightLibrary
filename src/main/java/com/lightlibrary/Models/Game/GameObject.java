@@ -17,11 +17,24 @@ public abstract class GameObject {
     public abstract void update();
 
     public boolean isColliding(GameObject other) {
-        return this.x < other.x + other.width &&
-                this.x + this.width > other.x &&
-                this.y < other.y + other.height &&
-                this.y + this.height > other.y;
+        // Thu nhỏ hitbox của this
+        double thisLeft = this.x + 9;
+        double thisRight = this.x + this.width - 9;
+        double thisTop = this.y + 9;
+        double thisBottom = this.y + this.height - 9;
+
+        // Thu nhỏ hitbox của other
+        double otherLeft = other.x + 9;
+        double otherRight = other.x + other.width - 9;
+        double otherTop = other.y + 9;
+        double otherBottom = other.y + other.height - 9;
+
+        return thisLeft < otherRight &&
+                thisRight > otherLeft &&
+                thisTop < otherBottom &&
+                thisBottom > otherTop;
     }
+
 
     public double getX() {
         return x;

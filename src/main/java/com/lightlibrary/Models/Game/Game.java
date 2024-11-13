@@ -23,10 +23,10 @@ public class Game {
 
     public Game() {
         // Khởi tạo nhân vật và chướng ngại vật
-        robot = new Robot(100, GROUND_Y - 40, 40, 40);
-        obstacles.add(new Motorcycle(WINDOW_WIDTH, GROUND_Y - 30));
-        obstacles.add(new Car(WINDOW_WIDTH + 200, GROUND_Y - 30));
-        obstacles.add(new Helicopter(WINDOW_WIDTH + 400, GROUND_Y - 160));
+        robot = new Robot(100, GROUND_Y - 60, 60, 60);
+        obstacles.add(new Motorcycle(WINDOW_WIDTH, GROUND_Y - 60));
+        obstacles.add(new Car(WINDOW_WIDTH + 200, GROUND_Y - 60));
+        obstacles.add(new Helicopter(WINDOW_WIDTH + 400, GROUND_Y - 250));
     }
 
     public void setController(GameController controller) {
@@ -60,11 +60,11 @@ public class Game {
         isGameOver = false;
         score = 0;
         playerHealth = 3;
-        robot = new Robot(100, GROUND_Y - 40, 40, 40);
+        robot = new Robot(100, GROUND_Y - 60, 60, 60);
         obstacles.clear();
-        obstacles.add(new Motorcycle(WINDOW_WIDTH, GROUND_Y - 30));
-        obstacles.add(new Car(WINDOW_WIDTH + 200, GROUND_Y - 30));
-        obstacles.add(new Helicopter(WINDOW_WIDTH + 400, GROUND_Y - 160));
+        obstacles.add(new Motorcycle(WINDOW_WIDTH, GROUND_Y - 60));
+        obstacles.add(new Car(WINDOW_WIDTH + 200, GROUND_Y - 60));
+        obstacles.add(new Helicopter(WINDOW_WIDTH + 400, GROUND_Y - 250));
         controller.updateScore(score);
         controller.updateHealth(playerHealth);
         gameLoop.start();
