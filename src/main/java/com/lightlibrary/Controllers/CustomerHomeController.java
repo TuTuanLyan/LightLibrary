@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CustomerHomeController implements Initializable, ThemeAction {
+public class CustomerHomeController implements Initializable, SyncAction {
 
     @FXML
     private AnchorPane homeRoot;

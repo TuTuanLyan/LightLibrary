@@ -1,5 +1,5 @@
 package com.lightlibrary.Controllers;
 
-public interface ThemeAction {
+public interface SyncAction {
     void setTheme(boolean darkMode);
 }

@@ -189,8 +189,8 @@ public class CustomerDashboardController implements Initializable {
                 setPaneWithAnimation(loader.getRoot());
 
                 Object controller = loader.getController();
-                if (controller instanceof ThemeAction) {
-                    ((ThemeAction) controller).setTheme(customer.isDarkMode());
+                if (controller instanceof SyncAction) {
+                    ((SyncAction) controller).setTheme(customer.isDarkMode());
                 }
             });
 
@@ -323,8 +323,8 @@ public class CustomerDashboardController implements Initializable {
     private void updateChildThemes(boolean darkMode) {
         cache.values().forEach(loader -> {
             Object controller = loader.getController();
-            if (controller instanceof ThemeAction) {
-                ((ThemeAction) controller).setTheme(darkMode);
+            if (controller instanceof SyncAction) {
+                ((SyncAction) controller).setTheme(darkMode);
             }
         });
     }
@@ -334,7 +334,8 @@ public class CustomerDashboardController implements Initializable {
         avatarImageContainer.setClip(avatarClip);
 
         if (customer != null) {
-            customerNameLabel.setText(this.customer.getFullName() == null ? "Name of customer" : this.customer.getFullName());
+            customerNameLabel.setText(this.customer.getFullName() == null ?
+                    "Name of customer" : this.customer.getFullName());
             customerCoinAmoutLabel.setText(this.customer.getCoins() + "");
         }
     }

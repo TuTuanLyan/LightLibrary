@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CustomerHistoryController implements Initializable, ThemeAction {
+public class CustomerHistoryController implements Initializable, SyncAction {
 
     @FXML
     private AnchorPane historyRoot;

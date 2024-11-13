@@ -7,6 +7,7 @@ public class Customer extends User {
     private long coins;
     private String avatarImageUrl;
     private List<Book> listFavouriteBooks;
+    private List<Transaction> listTransactions;
 
     public Customer() {
         super();
@@ -44,6 +45,14 @@ public class Customer extends User {
 
     public void setListFavouriteBooks(List<Book> listFavouriteBooks) {
         this.listFavouriteBooks = listFavouriteBooks;
+    }
+
+    public List<Transaction> getListTransactions() {
+        return listTransactions;
+    }
+
+    public void setListTransactions(List<Transaction> listTransactions) {
+        this.listTransactions = listTransactions;
     }
 
     /**

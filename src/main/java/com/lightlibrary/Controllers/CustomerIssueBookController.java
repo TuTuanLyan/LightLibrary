@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CustomerIssueBookController implements Initializable, ThemeAction {
+public class CustomerIssueBookController implements Initializable, SyncAction {
 
     @FXML
     private AnchorPane issueBookRoot;
@@ -42,7 +42,16 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
     private Label detailDescriptionLabel;
 
     @FXML
+    private Label detailPublisherLabel;
+
+    @FXML
+    private Label detailPublishDateLabel;
+
+    @FXML
     private Label detailISBNLabel;
+
+    @FXML
+    private Label detailAuthorLabel;
 
     @FXML
     private Label detailPriceLabel;
@@ -53,11 +62,20 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
     @FXML
     private ImageView detailThumbnailImage;
 
+    private CustomerDashboardController parentController;
 
+    public CustomerDashboardController getParentController() {
+        return parentController;
+    }
+
+    public void setParentController(CustomerDashboardController parentController) {
+        this.parentController = parentController;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        detailBookPane.setVisible(false);
+        detailCloseButton.setOnAction(e -> detailBookPane.setVisible(false));
     }
 
     public void updateSearchResults(String query) {
@@ -107,6 +125,11 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
                 String ISBN = "ISBN: " + GoogleBooksAPIClient.getISBN(volumeInfo);
                 String description = volumeInfo.getDescription() != null ?
                         volumeInfo.getDescription() : "There is no description for this book :(";
+                String publisher = volumeInfo.getPublisher() != null ?
+                        "Publish by " + volumeInfo.getPublisher() : "Unknown Publisher";
+                String publishedDate = volumeInfo.getPublishedDate() != null ?
+                        "Publish at " + volumeInfo.getPublishedDate() : "Unknown published date";
+
 
                 int blockIndex = index;
                 Task<Pane> blockTask = new Task<Pane>() {
@@ -115,7 +138,8 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
                         Pane bookPane = ControllerUntil.createBookBlock(thumbnailURL, title, authors, ISBN, description);
                         Button viewDetailButton = createViewDetailButton();
                         viewDetailButton.setOnAction(e -> {
-                                showBookDetail(thumbnailURL, title, authors, ISBN, description);
+                                showBookDetail(thumbnailURL, title, authors, ISBN,
+                                        description, publisher, publishedDate);
                         });
                         bookPane.getChildren().add(viewDetailButton);
                         bookPane.setPrefSize(580, 265);
@@ -215,17 +239,19 @@ public class CustomerIssueBookController implements Initializable, ThemeAction {
         }
     }
 
-    public void showBookDetail(String thumbnailUrl,String title,
-                                      String author,String ISBN,String description) {
+    public void showBookDetail(String thumbnailUrl,String title, String author,String ISBN,
+                               String description, String publisher, String publishDate) {
         System.out.println("Call here " + ISBN);
 
         detailBookPane.setVisible(true);
 
         detailThumbnailImage.setImage(new Image(thumbnailUrl));
+        detailAuthorLabel.setText(author);
         detailTItleLabel.setText(title);
         detailDescriptionLabel.setText(description);
         detailISBNLabel.setText(ISBN);
-
+        detailPublisherLabel.setText(publisher);
+        detailPublishDateLabel.setText(publishDate);
     }
 
     private Button createViewDetailButton() {
