@@ -10,10 +10,11 @@ import java.util.List;
 public class Game {
     public static final int WINDOW_WIDTH = 960;
     public static final int WINDOW_HEIGHT = 640;
-    public static final int GROUND_Y = 500;
+    public static final int GROUND_Y = 550;
 
     private Robot robot;
     private List<Obstacle> obstacles = new ArrayList<>();
+    private List<Background> backgrounds = new ArrayList<>();
     private int score = 0;
     private int playerHealth = 3;
     private boolean isPaused = false;
@@ -27,6 +28,8 @@ public class Game {
         obstacles.add(new Motorcycle(WINDOW_WIDTH, GROUND_Y - 60));
         obstacles.add(new Car(WINDOW_WIDTH + 200, GROUND_Y - 60));
         obstacles.add(new Helicopter(WINDOW_WIDTH + 400, GROUND_Y - 250));
+        backgrounds.add(new Background(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+        backgrounds.add(new Background(WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
     }
 
     public void setController(GameController controller) {
@@ -73,6 +76,10 @@ public class Game {
     private void update() {
         robot.update();
 
+        for (Background background : backgrounds) {
+            background.update();
+        }
+
         for (Obstacle obstacle : obstacles) {
             obstacle.update();
             if (obstacle.x + obstacle.width < 0) {
@@ -99,6 +106,11 @@ public class Game {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+        // Vẽ background
+        for (Background background : backgrounds) {
+            background.render(gc);
+        }
+
         // Vẽ robot và chướng ngại vật
         robot.render(gc);
         for (Obstacle obstacle : obstacles) {
@@ -106,7 +118,7 @@ public class Game {
         }
 
         // Vẽ mặt đất
-        gc.setStroke(Color.BLACK);
+        gc.setStroke(Color.WHITE);
         gc.setLineWidth(2);
         gc.strokeLine(0, GROUND_Y, WINDOW_WIDTH, GROUND_Y);
     }

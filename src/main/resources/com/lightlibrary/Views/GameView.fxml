@@ -21,17 +21,17 @@
     <HBox spacing="5" StackPane.alignment="TOP_LEFT">
         <ImageView fx:id="heart1" fitHeight="30" fitWidth="30">
             <image>
-                <Image url="@../Images/heart.jpg" />
+                <Image url="@../Images/Game/heart.jpg" />
             </image>
         </ImageView>
         <ImageView fx:id="heart2" fitHeight="30" fitWidth="30">
             <image>
-                <Image url="@../Images/heart.jpg" />
+                <Image url="@../Images/Game/heart.jpg" />
             </image>
         </ImageView>
         <ImageView fx:id="heart3" fitHeight="30" fitWidth="30">
             <image>
-                <Image url="@../Images/heart.jpg" />
+                <Image url="@../Images/Game/heart.jpg" />
             </image>
         </ImageView>
     </HBox>

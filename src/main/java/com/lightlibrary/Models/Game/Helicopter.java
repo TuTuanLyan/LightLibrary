@@ -11,7 +11,7 @@ public class Helicopter extends Obstacle {
 
     public Helicopter(double x, double y) {
         super(x, y, 120, 60, 3);
-        helicopterImage = new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/helicopter.jpg")).toExternalForm());
+        helicopterImage = new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/Game/helicopter.jpg")).toExternalForm());
     }
 
     @Override

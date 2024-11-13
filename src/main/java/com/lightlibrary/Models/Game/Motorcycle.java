@@ -11,7 +11,7 @@ public class Motorcycle extends Obstacle {
 
     public Motorcycle(double x, double y) {
         super(x, y, 60, 60, 5);
-        motorcycleImage = new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/motorcycle.jpg")).toExternalForm());
+        motorcycleImage = new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/Game/motorcycle.jpg")).toExternalForm());
     }
 
     @Override

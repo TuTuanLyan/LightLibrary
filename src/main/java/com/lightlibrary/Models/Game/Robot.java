@@ -14,7 +14,7 @@ public class Robot extends GameObject {
 
     public Robot(double x, double y, double width, double height) {
         super(x, y, width, height);
-        robotImage = new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/robot.jpg")).toExternalForm());
+        robotImage = new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/Game/robot.jpg")).toExternalForm());
     }
 
     public void jump() {

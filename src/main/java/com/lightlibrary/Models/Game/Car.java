@@ -11,7 +11,7 @@ public class Car extends Obstacle {
 
     public Car(double x, double y) {
         super(x, y, 90, 60, 4);
-        carImage = new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/car.jpg")).toExternalForm());
+        carImage = new Image(Objects.requireNonNull(getClass().getResource("/com/lightlibrary/Images/Game/car.jpg")).toExternalForm());
     }
 
     @Override
