@@ -26,7 +26,7 @@ public class GameController {
     @FXML
     private ImageView heart1, heart2, heart3;
     @FXML
-    private VBox pauseMenu, gameOverMenu;
+    private VBox pauseMenu, gameOverMenu, storyBox;
 
     private boolean isPaused = false;
     private boolean isGameOver = false;
@@ -42,9 +42,15 @@ public class GameController {
 
         // Khởi động trò chơi
         game.startGame(gc);
+        game.render(gc);
 
         // Thiết lập sự kiện bàn phím và chuột
         setupKeyAndMouseListeners();
+
+        // Pause game tạm thời để hiển thị story
+        isPaused = true;
+        game.setPaused(isPaused);
+        gameCanvas.setMouseTransparent(isPaused);
     }
 
     private void setupKeyAndMouseListeners() {
@@ -95,6 +101,16 @@ public class GameController {
     }
 
     @FXML
+    private void handleStartGameButtonClick(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            storyBox.setVisible(false);
+            isPaused = false;
+            game.setPaused(isPaused);
+            gameCanvas.setMouseTransparent(isPaused);
+        }
+    }
+
+    @FXML
     private void handleResumeButtonClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY && isPaused && !isGameOver) {
             togglePause();
@@ -122,10 +138,8 @@ public class GameController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml"));
                 Parent dashboardRoot = loader.load();
 
-                // Lấy Stage hiện tại từ một Node bất kỳ, ví dụ gameCanvas
                 Stage stage = (Stage) gameCanvas.getScene().getWindow();
 
-                // Tạo Scene mới và đặt vào Stage
                 Scene dashboardScene = new Scene(dashboardRoot);
                 stage.setScene(dashboardScene);
                 stage.show();

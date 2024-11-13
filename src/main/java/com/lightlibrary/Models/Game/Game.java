@@ -101,7 +101,7 @@ public class Game {
         }
     }
 
-    private void render(GraphicsContext gc) {
+    public void render(GraphicsContext gc) {
         // Xóa canvas
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
