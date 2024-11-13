@@ -68,6 +68,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         return parentController;
     }
 
+    @Override
     public void setParentController(CustomerDashboardController parentController) {
         this.parentController = parentController;
     }

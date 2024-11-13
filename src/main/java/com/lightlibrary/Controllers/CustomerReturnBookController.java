@@ -13,6 +13,18 @@ public class CustomerReturnBookController implements Initializable, SyncAction {
     @FXML
     private AnchorPane returnBookRoot;
 
+    @FXML
+    private CustomerDashboardController parentController;
+
+    public CustomerDashboardController getParentController() {
+        return parentController;
+    }
+
+    @Override
+    public void setParentController(CustomerDashboardController parentController) {
+        this.parentController = parentController;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
