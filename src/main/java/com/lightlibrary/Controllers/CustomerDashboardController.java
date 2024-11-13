@@ -98,9 +98,9 @@ public class CustomerDashboardController implements Initializable {
 
     public ActiveButton activeButton;
 
-    private Customer customer;
+    private static Customer customer;
 
-    public Customer getCustomer() {
+    public static Customer getCustomer() {
         return customer;
     }
 
@@ -139,7 +139,7 @@ public class CustomerDashboardController implements Initializable {
                 "/com/lightlibrary/Views/CustomerHome.fxml",
                 "/com/lightlibrary/Views/CustomerIssueBook.fxml",
                 "/com/lightlibrary/Views/CustomerReturnBook.fxml",
-                "/com/lightlibrary/Views/CustomerHistory.fxml"
+                "/com/lightlibrary/Views/test_dashboard.fxml"
         };
 
         for (String fxmlPath : fxmlPaths) {
@@ -248,8 +248,8 @@ public class CustomerDashboardController implements Initializable {
 
     public void goToHistoryPage() {
         if (activeButton != ActiveButton.HISTORY) {
-            loadPane("/com/lightlibrary/Views/CustomerHistory.fxml");
-            currentPageNameLabel.setText("History");
+            loadPane("/com/lightlibrary/Views/test_dashboard.fxml");
+            //currentPageNameLabel.setText("History");
             navigationBorderAnimation(historyButton);
             activeButton = ActiveButton.HISTORY;
         }
