@@ -28,6 +28,11 @@
                </font>
             </Label>
          </children></Pane>
+      <Pane layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container">
+         <children>
+            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
+         </children>
+      </Pane>
       <Pane fx:id="detailBookPane" layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container" visible="false">
          <children>
             <ImageView fx:id="detailThumbnailImage" fitHeight="160.0" fitWidth="125.0" layoutX="28.0" layoutY="61.0" pickOnBounds="true">

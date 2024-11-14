@@ -73,6 +73,9 @@ public class CustomerDashboardController implements Initializable {
     private Button historyButton;
 
     @FXML
+    private Button chatButton;
+
+    @FXML
     private ImageView homeImage;
 
     @FXML
@@ -85,6 +88,9 @@ public class CustomerDashboardController implements Initializable {
     private ImageView historyImage;
 
     @FXML
+    private ImageView chatImage;
+
+    @FXML
     private Pane navigationBorderPane;
 
     private Node currentNode;
@@ -93,7 +99,8 @@ public class CustomerDashboardController implements Initializable {
         HOME,
         ISSUE_BOOK,
         RETURN_BOOK,
-        HISTORY
+        HISTORY,
+        CHAT
     }
 
     public ActiveButton activeButton;
@@ -139,7 +146,8 @@ public class CustomerDashboardController implements Initializable {
                 "/com/lightlibrary/Views/CustomerHome.fxml",
                 "/com/lightlibrary/Views/CustomerIssueBook.fxml",
                 "/com/lightlibrary/Views/CustomerReturnBook.fxml",
-                "/com/lightlibrary/Views/CustomerHistory.fxml"
+                "/com/lightlibrary/Views/CustomerHistory.fxml",
+                "/com/lightlibrary/Views/CustomerChat.fxml"
         };
 
         for (String fxmlPath : fxmlPaths) {
@@ -261,6 +269,15 @@ public class CustomerDashboardController implements Initializable {
         }
     }
 
+    public void goToChatPage() {
+        if (activeButton != ActiveButton.CHAT) {
+            loadPane("/com/lightlibrary/Views/CustomerChat.fxml");
+            currentPageNameLabel.setText("Chat");
+            navigationBorderAnimation(chatButton);
+            activeButton = ActiveButton.CHAT;
+        }
+    }
+
     public void changeTheme() {
         this.customer.setDarkMode(!this.customer.isDarkMode());
         dashBoardRoot.getStylesheets().clear();
@@ -305,6 +322,8 @@ public class CustomerDashboardController implements Initializable {
                     .getResource("/com/lightlibrary/Images/light-return.png")).toExternalForm()));
             historyImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/light-history.png")).toExternalForm()));
+            chatImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/light-chat.png")).toExternalForm()));
         } else {
             dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
@@ -316,6 +335,8 @@ public class CustomerDashboardController implements Initializable {
                     .getResource("/com/lightlibrary/Images/dark-return.png")).toExternalForm()));
             historyImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/dark-history.png")).toExternalForm()));
+            chatImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/dark-chat.png")).toExternalForm()));
         }
 
         updateChildThemes(darkMode);
@@ -356,6 +377,10 @@ public class CustomerDashboardController implements Initializable {
 
         historyButton.setOnAction(event -> {
             goToHistoryPage();
+        });
+
+        chatButton.setOnAction(event -> {
+            goToChatPage();
         });
     }
 
