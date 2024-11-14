@@ -132,5 +132,10 @@
                 <Font name="System Bold" size="15.0" />
             </font>
         </Button>
+      <Button fx:id="homeButton" layoutX="24.0" layoutY="191.0" mnemonicParsing="false" text="Home" />
+      <Button fx:id="viewBookButton" layoutX="13.0" layoutY="278.0" mnemonicParsing="false" text="View book" />
+      <Button fx:id="issueBookButton" layoutX="26.0" layoutY="358.0" mnemonicParsing="false" text="Issue" />
+      <Button fx:id="userButton" layoutX="26.0" layoutY="425.0" mnemonicParsing="false" text="User" />
+      <Button fx:id="chatButton" layoutX="26.0" layoutY="495.0" mnemonicParsing="false" text="Chat" />
     </children>
 </AnchorPane>

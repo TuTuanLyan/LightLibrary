@@ -38,6 +38,8 @@ public class CustomerDashboardController implements Initializable {
     private AnchorPane mainContentContainer;
     private Map<String, FXMLLoader> cache = new HashMap<>();
 
+    private Node currentNode;
+
     @FXML
     private Button changeThemeButton;
     @FXML
@@ -92,8 +94,6 @@ public class CustomerDashboardController implements Initializable {
 
     @FXML
     private Pane navigationBorderPane;
-
-    private Node currentNode;
 
     public enum ActiveButton {
         HOME,
