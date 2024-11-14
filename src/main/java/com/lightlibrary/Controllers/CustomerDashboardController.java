@@ -416,9 +416,9 @@ public class CustomerDashboardController implements Initializable {
     public void goToSetting(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/com/lightlibrary/Views/Setting.fxml"));
+                    .getResource("/com/lightlibrary/Views/CustomerSetting.fxml"));
             Parent setting = (Parent) loader.load();
-            SettingController controller = loader.getController();
+            CustomerSettingController controller = loader.getController();
             controller.setCustomerDashboardController(CustomerDashboardController.this);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Platform.runLater(stage::centerOnScreen);

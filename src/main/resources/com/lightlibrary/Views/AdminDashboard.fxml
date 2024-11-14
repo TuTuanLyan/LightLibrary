@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="dashBoardRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" styleClass="parent-container" stylesheets="@../StyleSheets/dark-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminDashboardController">
+    <children>
+        <Pane layoutX="1056.0" layoutY="40.0" prefHeight="30.0" prefWidth="64.0" style="-fx-background-radius: 15px; -fx-background-color: rgba(160, 160, 160, 0.7);">
+            <children>
+                <Circle fx:id="changeThemeToggle" fill="WHITE" layoutX="48.0" layoutY="15.0" radius="13.0" stroke="#bcbcbc" strokeType="INSIDE" />
+            </children>
+        </Pane>
+        <AnchorPane fx:id="mainContentContainer" layoutX="100.0" layoutY="90.0" prefHeight="810.0" prefWidth="1340.0" styleClass="main-content-container" />
+        <Pane layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="80.0" styleClass="logo-container">
+            <children>
+                <ImageView fitHeight="118.0" fitWidth="114.0" layoutX="-17.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../Images/NonBgLightLibraryLogo.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </Pane>
+        <Label fx:id="currentPageNameLabel" layoutX="182.0" layoutY="21.0" prefHeight="47.0" prefWidth="212.0" styleClass="page-title">
+            <font>
+                <Font size="32.0" />
+            </font>
+        </Label>
+        <Pane fx:id="avatarImageContainer" layoutX="1345.0" layoutY="10.0" prefHeight="70.0" prefWidth="70.0">
+            <children>
+                <Button layoutX="-8.0" layoutY="-4.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: transparent;">
+                    <graphic>
+                        <ImageView fitHeight="70.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../Images/LightLibraryLogo.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </children>
+        </Pane>
+        <Line endX="-36.0" layoutX="120.0" layoutY="613.0" startX="-100.0">
+            <stroke>
+                <LinearGradient endX="0.7109004739336493" endY="1.0" startY="1.0">
+                    <stops>
+                        <Stop>
+                            <color>
+                                <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                            </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                            <color>
+                                <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                            </color>
+                        </Stop>
+                    </stops>
+                </LinearGradient>
+            </stroke>
+        </Line>
+        <Button layoutX="22.0" layoutY="821.0" mnemonicParsing="false" onAction="#logout" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
+            <graphic>
+                <FontAwesomeIcon glyphName="SIGN_OUT" rotate="180.0" size="3em" textAlignment="CENTER">
+                    <fill>
+                        <LinearGradient endX="1.0" endY="1.0" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </FontAwesomeIcon>
+            </graphic>
+        </Button>
+        <Button layoutX="22.0" layoutY="646.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
+            <graphic>
+                <FontAwesomeIcon glyphName="COG" size="3em" textAlignment="CENTER">
+                    <fill>
+                        <LinearGradient endX="1.0" endY="1.0" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </FontAwesomeIcon>
+            </graphic>
+        </Button>
+        <TextField fx:id="searchBar" layoutX="430.0" layoutY="23.0" prefHeight="42.0" prefWidth="580.0" promptText="Search here ..." styleClass="search-bar">
+            <padding>
+                <Insets left="15.0" />
+            </padding>
+            <font>
+                <Font size="16.0" />
+            </font>
+        </TextField>
+        <Button fx:id="searchButton" layoutX="976.0" layoutY="31.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="search-button">
+            <graphic>
+                <FontAwesomeIcon glyphName="SEARCH" text="" />
+            </graphic>
+        </Button>
+        <FontAwesomeIcon glyphName="BARS" layoutX="122.0" layoutY="60.0" size="3em" styleClass="page-title" />
+        <Button fx:id="changeThemeButton" alignment="TOP_CENTER" layoutX="1036.0" layoutY="11.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="105.0" styleClass="change-theme-button" text="Light Mode">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>
