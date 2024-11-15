@@ -1,6 +1,9 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.Admin;
+import com.lightlibrary.Models.Customer;
 import javafx.animation.FadeTransition;
+import javafx.animation.FillTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -17,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -51,6 +55,9 @@ public class AdminDashboardController implements Initializable {
     private Pane avatarImageContainer;
 
     @FXML
+    private Label adminName;
+
+    @FXML
     private Button homeButton;
 
     @FXML
@@ -80,9 +87,6 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private ImageView chatImage;
 
-
-    private boolean isDark;
-
     @FXML
     private Pane navigationBorderPane;
 
@@ -96,14 +100,73 @@ public class AdminDashboardController implements Initializable {
 
     public ActiveButton activeButton;
 
+    private Admin admin;
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+        displayAdminInformation();
+        setTheme(admin.isDarkMode());
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        preLoad();
+
         navigationButtonAction();
 
+        loadPane("/com/lightlibrary/Views/AdminHome.fxml");
+        activeButton = ActiveButton.HOME;
+        currentPageNameLabel.setText("Dashboard");
+
         changeThemeButton.setOnAction(event -> {
-            setTheme(isDark);
-            isDark = !isDark;
+            changeTheme();
         });
+    }
+
+    private void displayAdminInformation() {
+        Circle avatarClip = new Circle(35, 35, 35);
+        avatarImageContainer.setClip(avatarClip);
+
+        if (admin != null) {
+            adminName.setText(this.admin.getFullName() == null ?
+                    "Name of customer" : this.admin.getFullName());
+        }
+    }
+
+    private void preLoad() {
+        String[] fxmlPaths = {
+                "/com/lightlibrary/Views/AdminHome.fxml",
+                "/com/lightlibrary/Views/AdminViewBook.fxml",
+                "/com/lightlibrary/Views/AdminIssueBook.fxml",
+                "/com/lightlibrary/Views/AdminUserManagement.fxml",
+                "/com/lightlibrary/Views/AdminChat.fxml"
+        };
+
+        for (String fxmlPath : fxmlPaths) {
+            Task<FXMLLoader> loadTask = new Task<>() {
+                @Override
+                protected FXMLLoader call() throws IOException {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                    loader.load();
+                    return loader;
+                }
+            };
+
+            loadTask.setOnSucceeded(event -> {
+                FXMLLoader loader = loadTask.getValue();
+                cache.put(fxmlPath, loader);
+            });
+
+            loadTask.setOnFailed(event -> loadTask.getException().printStackTrace());
+
+            Thread loadPaneThread = new Thread(loadTask);
+            loadPaneThread.setDaemon(true);
+            loadPaneThread.start();
+        }
     }
 
     private void loadPane(final String fxmlPath) {
@@ -231,6 +294,13 @@ public class AdminDashboardController implements Initializable {
         navigationButtonBorderTransition.play();
     }
 
+    public void changeTheme() {
+        this.admin.setDarkMode(!this.admin.isDarkMode());
+        dashBoardRoot.getStylesheets().clear();
+        setTheme(this.admin.isDarkMode());
+        changeThemeToggleButtonAnimation(this.admin.isDarkMode());
+    }
+
     private void setTheme(boolean darkMode) {
         dashBoardRoot.getStylesheets().clear();
         if (darkMode) {
@@ -262,6 +332,31 @@ public class AdminDashboardController implements Initializable {
         }
 
         updateChildThemes(darkMode);
+    }
+
+    private void changeThemeToggleButtonAnimation(boolean darkMode) {
+        TranslateTransition changeThemeButtonTransition = new TranslateTransition(Duration.seconds(0.3), changeThemeToggle);
+        if (darkMode) {
+            changeThemeButton.setText("Dark Mode");
+            changeThemeButtonTransition.setToX(-33);
+            changeThemeButtonTransition.play();
+
+            Color startColor = Color.web("#ffffff");
+            Color endColor = Color.web("#434343");
+            FillTransition changeThemeButtonFillTransition = new FillTransition(Duration.seconds(0.3),
+                    changeThemeToggle, startColor, endColor);
+            changeThemeButtonFillTransition.play();
+        } else {
+            changeThemeButton.setText("Light Mode");
+            changeThemeButtonTransition.setToX(0);
+            changeThemeButtonTransition.play();
+
+            Color startColor = Color.web("#434343");
+            Color endColor = Color.web("#ffffff");
+            FillTransition changeThemeButtonFillTransition = new FillTransition(Duration.seconds(0.3),
+                    changeThemeToggle, startColor, endColor);
+            changeThemeButtonFillTransition.play();
+        }
     }
 
     private void updateChildThemes(boolean darkMode) {

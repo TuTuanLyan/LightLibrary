@@ -137,6 +137,8 @@ public class LoginAndRegisterController implements Initializable {
                         FXMLLoader loader = new FXMLLoader(getClass()
                                 .getResource("/com/lightlibrary/Views/AdminDashboard.fxml"));
                         Parent dashboard = loader.load();
+                        AdminDashboardController controller = loader.getController();
+                        controller.setAdmin((Admin) user);
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         Platform.runLater(stage::centerOnScreen);
                         stage.setScene(new Scene(dashboard, 1440, 900));

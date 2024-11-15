@@ -18,7 +18,7 @@
 
 <AnchorPane fx:id="dashBoardRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" styleClass="parent-container" stylesheets="@../StyleSheets/dark-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminDashboardController">
     <children>
-      <Pane fx:id="navigationBorderPane" layoutX="11.0" layoutY="129.0" prefHeight="80.0" prefWidth="80.0" styleClass="logo-container" />
+      <Pane fx:id="navigationBorderPane" layoutX="9.0" layoutY="129.0" prefHeight="80.0" prefWidth="80.0" styleClass="logo-container" />
         <Pane layoutX="1056.0" layoutY="40.0" prefHeight="30.0" prefWidth="64.0" style="-fx-background-radius: 15px; -fx-background-color: rgba(160, 160, 160, 0.7);">
             <children>
                 <Circle fx:id="changeThemeToggle" fill="WHITE" layoutX="48.0" layoutY="15.0" radius="13.0" stroke="#bcbcbc" strokeType="INSIDE" />
@@ -52,7 +52,7 @@
                 </Button>
             </children>
         </Pane>
-        <Line endX="-36.0" layoutX="120.0" layoutY="613.0" startX="-100.0">
+        <Line endX="-36.0" layoutX="117.0" layoutY="609.0" startX="-100.0">
             <stroke>
                 <LinearGradient endX="0.7109004739336493" endY="1.0" startY="1.0">
                     <stops>
@@ -70,7 +70,7 @@
                 </LinearGradient>
             </stroke>
         </Line>
-        <Button layoutX="22.0" layoutY="821.0" mnemonicParsing="false" onAction="#logout" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
+        <Button layoutX="21.0" layoutY="821.0" mnemonicParsing="false" onAction="#logout" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
             <graphic>
                 <FontAwesomeIcon glyphName="SIGN_OUT" rotate="180.0" size="3em" textAlignment="CENTER">
                     <fill>
@@ -92,7 +92,7 @@
                 </FontAwesomeIcon>
             </graphic>
         </Button>
-        <Button layoutX="22.0" layoutY="646.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
+        <Button layoutX="22.0" layoutY="648.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
             <graphic>
                 <FontAwesomeIcon glyphName="COG" size="3em" textAlignment="CENTER">
                     <fill>
@@ -133,11 +133,11 @@
                 <Font name="System Bold" size="15.0" />
             </font>
         </Button>
-      <Button fx:id="homeButton" alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="134.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="72.0" styleClass="navigation-button" text="Home" textAlignment="CENTER">
+      <Button fx:id="homeButton" alignment="BOTTOM_CENTER" layoutX="13.0" layoutY="134.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="72.0" styleClass="navigation-button" text="Home" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Button>
-      <Button fx:id="viewBookButton" alignment="BOTTOM_CENTER" layoutX="13.0" layoutY="235.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="72.0" styleClass="navigation-button" text="Book">
+      <Button fx:id="viewBookButton" alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="235.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="72.0" styleClass="navigation-button" text="Book">
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Button>
@@ -145,18 +145,28 @@
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Button>
-      <Button fx:id="userButton" alignment="BOTTOM_CENTER" layoutX="13.0" layoutY="427.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="72.0" styleClass="navigation-button" text="User">
+      <Button fx:id="userButton" alignment="BOTTOM_CENTER" layoutX="13.0" layoutY="428.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="72.0" styleClass="navigation-button" text="User">
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Button>
-      <Button fx:id="chatButton" alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="523.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="navigation-button" text="Chat" textAlignment="CENTER">
+      <Button fx:id="chatButton" alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="527.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" styleClass="navigation-button" text="Chat" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Button>
-      <ImageView fx:id="homeImage" disable="true" fitHeight="25.0" fitWidth="26.0" layoutX="38.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="viewBookImage" disable="true" fitHeight="25.0" fitWidth="26.0" layoutX="36.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="homeImage" disable="true" fitHeight="25.0" fitWidth="26.0" layoutX="36.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="viewBookImage" disable="true" fitHeight="25.0" fitWidth="26.0" layoutX="36.0" layoutY="245.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="issueBookImage" disable="true" fitHeight="25.0" fitWidth="26.0" layoutX="36.0" layoutY="341.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="userImage" disable="true" fitHeight="25.0" fitWidth="26.0" layoutX="38.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="userImage" disable="true" fitHeight="25.0" fitWidth="26.0" layoutX="36.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="chatImage" disable="true" fitHeight="25.0" fitWidth="26.0" layoutX="36.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="1183.0" layoutY="11.0" prefHeight="36.0" prefWidth="151.0" styleClass="customer-info-label" text="Welcome, admin">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="adminName" alignment="CENTER_RIGHT" layoutX="1219.0" layoutY="49.0" prefHeight="25.0" prefWidth="105.0" text="Label" textAlignment="RIGHT" textFill="#aeaeae">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

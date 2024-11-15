@@ -8,22 +8,19 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CustomerChatController implements Initializable, SyncAction {
+public class AdminHomeController implements Initializable, SyncAction {
 
     @FXML
-    private AnchorPane chatRoot;
+    private AnchorPane homeRoot;
 
-    CustomerDashboardController parentController;
+    AdminDashboardController parentController;
 
-    public CustomerDashboardController getParentController() {
+    public AdminDashboardController getParentController() {
         return parentController;
     }
 
     @Override
-    public  void setParentController(AdminDashboardController parentController) {}
-
-    @Override
-    public void setParentController(CustomerDashboardController parentController) {
+    public void setParentController(AdminDashboardController parentController) {
         this.parentController = parentController;
     }
 
@@ -34,14 +31,16 @@ public class CustomerChatController implements Initializable, SyncAction {
 
     @Override
     public void setTheme(boolean darkMode) {
-        chatRoot.getStylesheets().clear();
+        homeRoot.getStylesheets().clear();
         if (darkMode) {
-            chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
+            homeRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
         } else {
-            chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
+            homeRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
         }
     }
 
+    @Override
+    public void setParentController(CustomerDashboardController parentController) {}
 }
