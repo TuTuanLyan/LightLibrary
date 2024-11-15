@@ -1,0 +1,33 @@
+.label-custom {
+    -fx-font-size: 18px;
+    -fx-text-fill: #2E8B57;
+    -fx-font-weight: bold;
+    -fx-background-color: #F0F8FF;
+    -fx-padding: 10px;
+}
+/* Thiết lập màu nền cho AnchorPane */
+.anchor-pane {
+    -fx-background-color: #F0F8FF;  /* Màu nền nhẹ (AliceBlue) */
+    -fx-border-color: #4682B4;      /* Màu viền (SteelBlue) */
+    -fx-border-width: 2;            /* Độ rộng viền */
+    -fx-border-radius: 10;          /* Bo góc cho viền */
+}
+
+/* Thêm hiệu ứng cho các thành phần con trong AnchorPane */
+.anchor-pane .label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;         /* Màu chữ tối */
+    -fx-font-weight: bold;          /* Đậm */
+}
+
+/* Thiết lập cho nút Button */
+.anchor-pane .button {
+    -fx-background-color: #4682B4; /* Màu nền nút (SteelBlue) */
+    -fx-text-fill: white;          /* Màu chữ trắng */
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 8px;       /* Bo góc cho nút */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 2);  /* Hiệu ứng đổ bóng */
+    -fx-transition: 0.3s;
+}

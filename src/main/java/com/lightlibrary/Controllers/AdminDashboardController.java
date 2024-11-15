@@ -142,7 +142,7 @@ public class AdminDashboardController implements Initializable {
                 "/com/lightlibrary/Views/AdminHome.fxml",
                 "/com/lightlibrary/Views/AdminViewBook.fxml",
                 "/com/lightlibrary/Views/AdminIssueBook.fxml",
-                "/com/lightlibrary/Views/AdminUserManagement.fxml",
+                "/com/lightlibrary/Views/viewUser.fxml",
                 "/com/lightlibrary/Views/AdminChat.fxml"
         };
 
@@ -249,7 +249,7 @@ public class AdminDashboardController implements Initializable {
 
     public void goToUserManagementPage() {
         if (activeButton != ActiveButton.USER_MANAGEMENT) {
-            loadPane("/com/lightlibrary/Views/AdminUSerManagement.fxml");
+            loadPane("/com/lightlibrary/Views/viewUser.fxml");
             currentPageNameLabel.setText("History");
             navigationBorderAnimation(userButton);
             activeButton = ActiveButton.USER_MANAGEMENT;
