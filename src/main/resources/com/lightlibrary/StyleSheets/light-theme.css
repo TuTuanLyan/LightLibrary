@@ -90,6 +90,18 @@
 
 
 
+
+
+
+
+/*Customer Home*/
+.welcome-customer-label {
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+}
+
+
+
 /*Issue Book*/
 .box-container {
     -fx-background-color: #ffffff;

@@ -90,7 +90,19 @@
 
 
 
-/*Issue Book*/
+
+
+/*Customer Home*/
+.welcome-customer-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+
+
+
+
+/*Customer Issue Book*/
 .box-container {
     -fx-background-color: #4d4948;
     -fx-background-radius: 20px;
