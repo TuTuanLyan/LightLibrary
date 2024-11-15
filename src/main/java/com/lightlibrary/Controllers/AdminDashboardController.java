@@ -188,11 +188,11 @@ public class AdminDashboardController implements Initializable {
                 cache.put(fxmlPath, loader);
                 setPaneWithAnimation(loader.getRoot());
 
-                /*Object controller = loader.getController();
+                Object controller = loader.getController();
                 if (controller instanceof SyncAction) {
-                    ((SyncAction) controller).setTheme(customer.isDarkMode());
+                    ((SyncAction) controller).setTheme(admin.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
-                }*/
+                }
             });
 
             loadTask.setOnFailed(event -> loadTask.getException().printStackTrace());
