@@ -16,11 +16,6 @@ public class Motorcycle extends Obstacle {
 
     @Override
     public void render(GraphicsContext gc) {
-        if (motorcycleImage != null) {
-            gc.drawImage(motorcycleImage, x, y, width, height);
-        } else {
-            gc.setFill(Color.RED);
-            gc.fillRect(x, y, width, height);
-        }
+        gc.drawImage(motorcycleImage, x, y, width, height);
     }
 }

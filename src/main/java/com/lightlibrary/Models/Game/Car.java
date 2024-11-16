@@ -16,11 +16,6 @@ public class Car extends Obstacle {
 
     @Override
     public void render(GraphicsContext gc) {
-        if (carImage != null) {
-            gc.drawImage(carImage, x, y, width, height);
-        } else {
-            gc.setFill(Color.GREEN);
-            gc.fillRect(x, y, width, height);
-        }
+        gc.drawImage(carImage, x, y, width, height);
     }
 }

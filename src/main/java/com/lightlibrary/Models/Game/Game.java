@@ -15,6 +15,7 @@ public class Game {
     private Robot robot;
     private List<Obstacle> obstacles = new ArrayList<>();
     private List<Background> backgrounds = new ArrayList<>();
+    private List<Collectable> collectables = new ArrayList<>();
     private int score = 0;
     private int playerHealth = 3;
     private boolean isPaused = false;
@@ -78,6 +79,10 @@ public class Game {
 
         for (Background background : backgrounds) {
             background.update();
+        }
+
+        for (Collectable collectable : collectables) {
+            collectable.update();
         }
 
         for (Obstacle obstacle : obstacles) {

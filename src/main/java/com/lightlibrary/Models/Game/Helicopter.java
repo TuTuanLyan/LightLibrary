@@ -16,11 +16,6 @@ public class Helicopter extends Obstacle {
 
     @Override
     public void render(GraphicsContext gc) {
-        if (helicopterImage != null) {
-            gc.drawImage(helicopterImage, x, y, width, height);
-        } else {
-            gc.setFill(Color.DARKGRAY);
-            gc.fillRect(x, y, width, height);
-        }
+        gc.drawImage(helicopterImage, x, y, width, height);
     }
 }

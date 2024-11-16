@@ -20,7 +20,7 @@ public class Robot extends GameObject {
     public void jump() {
         if (!isJumping) {
             isJumping = true;
-            jumpVelocity = -12; // Tốc độ nhảy ban đầu
+            jumpVelocity = -12;
         }
     }
 
@@ -39,12 +39,7 @@ public class Robot extends GameObject {
 
     @Override
     public void render(GraphicsContext gc) {
-        if (robotImage != null) {
-            gc.drawImage(robotImage, x, y, width, height); // Vẽ ảnh robot
-        } else {
-            gc.setFill(Color.CORNFLOWERBLUE); // Màu dự phòng nếu ảnh không tải được
-            gc.fillRect(x, y, width, height);
-        }
+        gc.drawImage(robotImage, x, y, width, height);
     }
 
     public boolean isJumping() {
