@@ -429,6 +429,22 @@ public class CustomerDashboardController implements Initializable {
         }
     }
 
+    public void goToGame(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/com/lightlibrary/Views/GameView.fxml"));
+            Parent setting = (Parent) loader.load();
+            GameController controller = loader.getController();
+            controller.setCustomer(this.customer);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Platform.runLater(stage::centerOnScreen);
+            stage.setScene(new Scene(setting, 960, 640));
+            stage.show();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     public void logout(ActionEvent event) throws IOException {
         Parent login = FXMLLoader.load(Objects.requireNonNull(getClass()
                 .getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));

@@ -159,7 +159,7 @@
             </FontAwesomeIcon>
          </graphic>
       </Button>
-      <Button layoutX="22.0" layoutY="639.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
+      <Button layoutX="22.0" layoutY="639.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button" onAction="#goToGame">
          <graphic>
             <FontAwesomeIcon glyphName="GAMEPAD" size="3em" textAlignment="CENTER">
                <fill>

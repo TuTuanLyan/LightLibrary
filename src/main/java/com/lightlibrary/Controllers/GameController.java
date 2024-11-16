@@ -1,12 +1,17 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.Admin;
+import com.lightlibrary.Models.Customer;
+import com.lightlibrary.Models.DatabaseConnection;
 import com.lightlibrary.Models.Game.Game;
+import com.lightlibrary.Models.User;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -17,6 +22,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class GameController {
     @FXML
@@ -30,9 +39,19 @@ public class GameController {
     @FXML
     private VBox pauseMenu, gameOverMenu, storyBox;
 
+    Customer customer;
+
     private boolean isPaused = false;
     private boolean isGameOver = false;
     private Game game;
+
+    Customer getCustomer(Customer customer) {
+        return this.customer;
+    }
+
+    void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public void initialize() {
         game = new Game();
@@ -136,16 +155,17 @@ public class GameController {
     private void handleReturnButtonClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY && (isGameOver || isPaused)) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml"));
-                Parent dashboardRoot = loader.load();
-
-                Stage stage = (Stage) gameCanvas.getScene().getWindow();
-
-                Scene dashboardScene = new Scene(dashboardRoot);
-                stage.setScene(dashboardScene);
+                FXMLLoader loader = new FXMLLoader(getClass()
+                        .getResource("/com/lightlibrary/Views/CustomerDashboard.fxml"));
+                Parent dashboard = loader.load();
+                CustomerDashboardController controller = loader.getController();
+                controller.setCustomer(this.customer);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                Platform.runLater(stage::centerOnScreen);
+                stage.setScene(new Scene(dashboard, 1440, 900));
                 stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         }
     }
@@ -180,5 +200,34 @@ public class GameController {
         collectedCoinLabel.setVisible(false);
         gameOverMenu.setVisible(true);
         gameCanvas.setMouseTransparent(true);
+    }
+
+    public void updateCoinToSQL(int earnedCoin) {
+        long newCoin = customer.getCoins() + earnedCoin;
+
+        Connection connectDB = DatabaseConnection.getConnection();
+
+        if (connectDB == null) {
+            System.out.println("Something were wrong connectDB is null!");
+            return;
+        }
+
+        String connectQuery = "UPDATE users SET coin = ? WHERE userID = ?";
+
+        try (PreparedStatement preparedStatement = connectDB.prepareStatement(connectQuery)) {
+            preparedStatement.setLong(1, newCoin);
+            preparedStatement.setInt(2, customer.getUserID());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Coin updated successfully for user ID: " + customer.getUserID());
+            } else {
+                System.out.println("No rows updated. Check if the user ID exists.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 }

@@ -182,6 +182,7 @@ public class Game {
         isGameOver = true;
         collectedCoin += score;
         controller.updateCollectedCoin(collectedCoin);
+        controller.updateCoinToSQL(collectedCoin);
         gameLoop.stop();
         controller.showGameOver();
     }
