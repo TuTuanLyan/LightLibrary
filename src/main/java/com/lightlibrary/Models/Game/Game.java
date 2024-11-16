@@ -13,22 +13,32 @@ public class Game {
     public static final int GROUND_Y = 550;
 
     private Robot robot;
+    private int playerHealth = 3;
+    private int playerArmor = 0;
+
     private List<Obstacle> obstacles = new ArrayList<>();
     private List<Background> backgrounds = new ArrayList<>();
     private List<Collectable> collectables = new ArrayList<>();
+
     private int score = 0;
-    private int playerHealth = 3;
+    private int collectedCoin = 0;
+
     private boolean isPaused = false;
     private boolean isGameOver = false;
     private AnimationTimer gameLoop;
     private GameController controller;
 
     public Game() {
-        // Khởi tạo nhân vật và chướng ngại vật
         robot = new Robot(100, GROUND_Y - 60, 60, 60);
+
+        collectables.add(new Coin(WINDOW_WIDTH + Math.random() * WINDOW_WIDTH, GROUND_Y - 30 - Math.random() * 150));
+        collectables.add(new Heart(WINDOW_WIDTH + Math.random() * WINDOW_WIDTH, GROUND_Y - 30 - Math.random() * 150));
+        collectables.add(new Armor(WINDOW_WIDTH + Math.random() * WINDOW_WIDTH, GROUND_Y - 30 - Math.random() * 150));
+
         obstacles.add(new Motorcycle(WINDOW_WIDTH, GROUND_Y - 60));
         obstacles.add(new Car(WINDOW_WIDTH + 200, GROUND_Y - 60));
         obstacles.add(new Helicopter(WINDOW_WIDTH + 400, GROUND_Y - 250));
+
         backgrounds.add(new Background(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
         backgrounds.add(new Background(WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
     }
@@ -47,6 +57,7 @@ public class Game {
                 }
             }
         };
+        System.out.println(playerArmor);
         gameLoop.start();
     }
 
@@ -63,19 +74,33 @@ public class Game {
     public void restart() {
         isGameOver = false;
         score = 0;
+        collectedCoin = 0;
         playerHealth = 3;
+        playerArmor = 0;
+
         robot = new Robot(100, GROUND_Y - 60, 60, 60);
+
+        collectables.clear();
+        collectables.add(new Coin(WINDOW_WIDTH + Math.random() * WINDOW_WIDTH, GROUND_Y - 30 - Math.random() * 150));
+        collectables.add(new Heart(WINDOW_WIDTH + Math.random() * WINDOW_WIDTH, GROUND_Y - 30 - Math.random() * 150));
+        collectables.add(new Armor(WINDOW_WIDTH + Math.random() * WINDOW_WIDTH, GROUND_Y - 30 - Math.random() * 150));
+
         obstacles.clear();
         obstacles.add(new Motorcycle(WINDOW_WIDTH, GROUND_Y - 60));
         obstacles.add(new Car(WINDOW_WIDTH + 200, GROUND_Y - 60));
         obstacles.add(new Helicopter(WINDOW_WIDTH + 400, GROUND_Y - 250));
+
         controller.updateScore(score);
+        controller.updateCollectedCoin(collectedCoin);
         controller.updateHealth(playerHealth);
+        controller.updateArmor(playerArmor);
         gameLoop.start();
     }
 
     private void update() {
         robot.update();
+        controller.updateHealth(playerHealth);
+        controller.updateArmor(playerArmor);
 
         for (Background background : backgrounds) {
             background.update();
@@ -83,6 +108,25 @@ public class Game {
 
         for (Collectable collectable : collectables) {
             collectable.update();
+            if (collectable.x + collectable.width < 0) {
+                collectable.x = WINDOW_WIDTH + Math.random() * WINDOW_WIDTH;
+                collectable.y = GROUND_Y - 30 - Math.random() * 150;
+            }
+            if (robot.isColliding(collectable)) {
+                if (collectable instanceof Coin) {
+                   collectedCoin++;
+                   controller.updateCollectedCoin(collectedCoin);
+                } else if (collectable instanceof Heart) {
+                    playerHealth = Math.min(playerHealth + 1, 3);
+                    controller.updateHealth(playerHealth);
+                } else {
+                    // armor part
+                    playerArmor = Math.min(playerArmor + 1, 3);
+                    controller.updateArmor(playerArmor);
+                }
+                collectable.x = WINDOW_WIDTH + Math.random() * WINDOW_WIDTH;
+                collectable.y = GROUND_Y - 30 - Math.random() * 150;
+            }
         }
 
         for (Obstacle obstacle : obstacles) {
@@ -93,13 +137,17 @@ public class Game {
                 controller.updateScore(score);
             }
             if (robot.isColliding(obstacle)) {
-                playerHealth--;
-                controller.updateHealth(playerHealth);
+                if (playerArmor > 0) {
+                    playerArmor--;
+                    controller.updateArmor(playerArmor);
+                } else {
+                    playerHealth--;
+                    controller.updateHealth(playerHealth);
+                }
                 if (playerHealth <= 0) {
                     gameOver();
                     break;
                 }
-                // Reset vị trí chướng ngại vật khi có va chạm
                 obstacle.x = WINDOW_WIDTH + Math.random() * 200;
                 break;
             }
@@ -107,17 +155,19 @@ public class Game {
     }
 
     public void render(GraphicsContext gc) {
-        // Xóa canvas
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        // Vẽ background
         for (Background background : backgrounds) {
             background.render(gc);
         }
 
-        // Vẽ robot và chướng ngại vật
+        for (Collectable collectable : collectables) {
+            collectable.render(gc);
+        }
+
         robot.render(gc);
+
         for (Obstacle obstacle : obstacles) {
             obstacle.render(gc);
         }
@@ -130,6 +180,8 @@ public class Game {
 
     private void gameOver() {
         isGameOver = true;
+        collectedCoin += score;
+        controller.updateCollectedCoin(collectedCoin);
         gameLoop.stop();
         controller.showGameOver();
     }

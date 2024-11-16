@@ -22,9 +22,11 @@ public class GameController {
     @FXML
     private Canvas gameCanvas;
     @FXML
-    private Label scoreLabel;
+    private Label scoreLabel, collectedCoinLabel, pausedMenuScoreLabel, pausedMenuCollectedCoinLabel, gameOverMenuScoreLabel, gameOverMenuCollectedCoinLabel;
     @FXML
     private ImageView heart1, heart2, heart3;
+    @FXML
+    private ImageView armor1, armor2, armor3;
     @FXML
     private VBox pauseMenu, gameOverMenu, storyBox;
 
@@ -33,18 +35,14 @@ public class GameController {
     private Game game;
 
     public void initialize() {
-        // Khởi tạo trò chơi
         game = new Game();
         game.setController(this);
 
-        // Lấy GraphicsContext để vẽ trò chơi
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 
-        // Khởi động trò chơi
         game.startGame(gc);
         game.render(gc);
 
-        // Thiết lập sự kiện bàn phím và chuột
         setupKeyAndMouseListeners();
 
         // Pause game tạm thời để hiển thị story
@@ -88,6 +86,8 @@ public class GameController {
             pauseMenu.setVisible(isPaused);
             game.setPaused(isPaused);
             gameCanvas.setMouseTransparent(isPaused);
+            scoreLabel.setVisible(!isPaused);
+            collectedCoinLabel.setVisible(!isPaused);
         }
     }
 
@@ -97,6 +97,8 @@ public class GameController {
         isPaused = false;
         gameOverMenu.setVisible(false);
         pauseMenu.setVisible(false);
+        scoreLabel.setVisible(true);
+        collectedCoinLabel.setVisible(true);
         game.restart();
     }
 
@@ -134,7 +136,6 @@ public class GameController {
     private void handleReturnButtonClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY && (isGameOver || isPaused)) {
             try {
-                // Tải file UserDashboard.fxml
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/lightlibrary/Views/UserDashboard.fxml"));
                 Parent dashboardRoot = loader.load();
 
@@ -149,9 +150,16 @@ public class GameController {
         }
     }
 
-
     public void updateScore(int score) {
         scoreLabel.setText("Score: " + score);
+        pausedMenuScoreLabel.setText("Current score: " + score);
+        gameOverMenuScoreLabel.setText("Final score: " + score);
+    }
+
+    public void updateCollectedCoin(int collectedCoin) {
+        collectedCoinLabel.setText("Coin collected: " + collectedCoin);
+        pausedMenuCollectedCoinLabel.setText("Coin collected: " + collectedCoin);
+        gameOverMenuCollectedCoinLabel.setText("Coin earned: " + collectedCoin);
     }
 
     public void updateHealth(int health) {
@@ -160,8 +168,16 @@ public class GameController {
         heart3.setVisible(health > 2);
     }
 
+    public void updateArmor(int armor) {
+        armor1.setVisible(armor > 0);
+        armor2.setVisible(armor > 1);
+        armor3.setVisible(armor > 2);
+    }
+
     public void showGameOver() {
         isGameOver = true;
+        scoreLabel.setVisible(false);
+        collectedCoinLabel.setVisible(false);
         gameOverMenu.setVisible(true);
         gameCanvas.setMouseTransparent(true);
     }

@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Robot extends GameObject {
     private boolean isJumping = false;
     private double jumpVelocity = 0;
-    private double gravity = 0.5;
+    private double gravity = 0.3;
     private Image robotImage;
 
     public Robot(double x, double y, double width, double height) {
@@ -20,7 +20,7 @@ public class Robot extends GameObject {
     public void jump() {
         if (!isJumping) {
             isJumping = true;
-            jumpVelocity = -12;
+            jumpVelocity = -10;
         }
     }
 

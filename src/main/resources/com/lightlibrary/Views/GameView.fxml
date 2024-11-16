@@ -11,6 +11,7 @@
 
 <?import javafx.scene.shape.Rectangle?>
 <?import java.net.URL?>
+<?import javafx.scene.layout.AnchorPane?>
 <StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23" fx:controller="com.lightlibrary.Controllers.GameController">
     <!-- Liên kết CSS -->
     <stylesheets>
@@ -20,31 +21,58 @@
     <!-- Canvas để vẽ trò chơi -->
     <Canvas fx:id="gameCanvas" height="640" width="960" />
 
-    <!-- Label để hiển thị điểm số -->
-    <Label fx:id="scoreLabel" style="-fx-font-size: 18;" text="Score: 0" StackPane.alignment="TOP_RIGHT" />
+    <AnchorPane>
+        <!-- Hiển thị điểm số -->
+        <VBox spacing="5" AnchorPane.topAnchor="10" AnchorPane.rightAnchor="10">
+            <Label fx:id="scoreLabel" style="-fx-font-size: 18;" text="Score: 0" />
+            <Label fx:id="collectedCoinLabel" style="-fx-font-size: 18;" text="Coin collected: 0" />
+        </VBox>
 
-    <!-- Hiển thị số máu của người chơi -->
-    <HBox spacing="5" StackPane.alignment="TOP_LEFT">
-        <ImageView fx:id="heart1" fitHeight="30" fitWidth="30">
-            <image>
-                <Image url="@../Images/Game/heart.jpg" />
-            </image>
-        </ImageView>
-        <ImageView fx:id="heart2" fitHeight="30" fitWidth="30">
-            <image>
-                <Image url="@../Images/Game/heart.jpg" />
-            </image>
-        </ImageView>
-        <ImageView fx:id="heart3" fitHeight="30" fitWidth="30">
-            <image>
-                <Image url="@../Images/Game/heart.jpg" />
-            </image>
-        </ImageView>
-    </HBox>
+        <!-- Hiển thị máu và giáp -->
+        <VBox spacing="5" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10">
+            <HBox spacing="5">
+                <ImageView fx:id="heart1" fitHeight="30" fitWidth="30">
+                    <image>
+                        <Image url="@../Images/Game/heart.jpg" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="heart2" fitHeight="30" fitWidth="30">
+                    <image>
+                        <Image url="@../Images/Game/heart.jpg" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="heart3" fitHeight="30" fitWidth="30">
+                    <image>
+                        <Image url="@../Images/Game/heart.jpg" />
+                    </image>
+                </ImageView>
+            </HBox>
+            <HBox spacing="5">
+                <ImageView fx:id="armor1" fitHeight="30" fitWidth="30">
+                    <image>
+                        <Image url="@../Images/Game/armor.jpg" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="armor2" fitHeight="30" fitWidth="30">
+                    <image>
+                        <Image url="@../Images/Game/armor.jpg" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="armor3" fitHeight="30" fitWidth="30">
+                    <image>
+                        <Image url="@../Images/Game/armor.jpg" />
+                    </image>
+                </ImageView>
+            </HBox>
+        </VBox>
+    </AnchorPane>
+
 
     <!-- Menu tạm dừng -->
     <VBox fx:id="pauseMenu" alignment="CENTER" spacing="20" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 20; -fx-background-radius: 10;" visible="false">
         <Label text="PAUSED" style="-fx-font-size: 24; -fx-text-fill: white; -fx-background-color: transparent; -fx-font-weight: bold;" />
+        <Label fx:id="pausedMenuScoreLabel" text="Current score: 0" style="-fx-font-size: 16; -fx-text-fill: white; -fx-background-color: transparent;" />
+        <Label fx:id="pausedMenuCollectedCoinLabel" text="Coin collected: 0" style="-fx-font-size: 16; -fx-text-fill: white; -fx-background-color: transparent;" />
 
         <StackPane styleClass="hover-effect-stackpane">
             <Rectangle width="150" height="50" arcWidth="10" arcHeight="10" />
@@ -65,6 +93,8 @@
     <!-- Menu Game Over -->
     <VBox fx:id="gameOverMenu" alignment="CENTER" spacing="20" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 20; -fx-background-radius: 10;" visible="false">
         <Label text="GAME OVER" style="-fx-font-size: 24; -fx-text-fill: white; -fx-background-color: transparent; -fx-font-weight: bold;" />
+        <Label fx:id="gameOverMenuScoreLabel" text="Final score: 0" style="-fx-font-size: 16; -fx-text-fill: white; -fx-background-color: transparent;" />
+        <Label fx:id="gameOverMenuCollectedCoinLabel" text="Coin earned: 0" style="-fx-font-size: 16; -fx-text-fill: white; -fx-background-color: transparent;" />
 
         <StackPane styleClass="hover-effect-stackpane">
             <Rectangle width="150" height="50" arcWidth="10" arcHeight="10" />
