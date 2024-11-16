@@ -1,53 +1,53 @@
-/* Style cho Label */
+/*!* Style cho Label *!
 .label {
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
-    -fx-text-fill: #333; /* Màu chữ */
+    -fx-text-fill: #333; !* Màu chữ *!
 }
 
-/* Style cho Button */
+!* Style cho Button *!
 .button {
-    -fx-background-color: linear-gradient(to bottom, #4CAF50, #45A049); /* Gradient */
-    -fx-text-fill: white; /* Màu chữ */
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #45A049); !* Gradient *!
+    -fx-text-fill: white; !* Màu chữ *!
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
-    -fx-border-radius: 1px; /* Góc bo tròn */
+    -fx-border-radius: 1px; !* Góc bo tròn *!
     -fx-border-color: #2e7d32;
     -fx-border-width: 1px;
-    -fx-cursor: hand; /* Hiệu ứng con trỏ khi hover */
+    -fx-cursor: hand; !* Hiệu ứng con trỏ khi hover *!
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(to bottom, #45A049, #4CAF50); /* Đổi hướng gradient */
+    -fx-background-color: linear-gradient(to bottom, #45A049, #4CAF50); !* Đổi hướng gradient *!
 }
 
 .button:pressed {
-    -fx-background-color: #388E3C; /* Màu khi click */
+    -fx-background-color: #388E3C; !* Màu khi click *!
     -fx-border-color: #1B5E20;
 }
 
 
 
 .grid-pane {
-    -fx-background-color: #000000; /* Màu nền đen */
-    -fx-border-color: #ffffff; /* Màu viền trắng */
-    -fx-border-radius: 20; /* Bo viền tròn */
-    -fx-background-radius: 20; /* Bo góc nền tròn */
-    -fx-padding: 10; /* Khoảng cách từ nội dung tới viền ngoài */
-    -fx-hgap: 0; /* Khoảng cách ngang giữa các ô */
-    -fx-vgap: 0; /* Khoảng cách dọc giữa các ô */
+    -fx-background-color: #aeaeae; !* Màu nền đen *!
+    -fx-border-color: #ffffff; !* Màu viền trắng *!
+    -fx-border-radius: 20; !* Bo viền tròn *!
+    -fx-background-radius: 20; !* Bo góc nền tròn *!
+    -fx-padding: 10; !* Khoảng cách từ nội dung tới viền ngoài *!
+    -fx-hgap: 0; !* Khoảng cách ngang giữa các ô *!
+    -fx-vgap: 0; !* Khoảng cách dọc giữa các ô *!
 }
 
 .grid-pane .label {
-    -fx-text-fill: white; /* Chữ màu trắng */
-    -fx-font-family: "Arial, Helvetica, sans-serif"; /* Font chữ đẹp */
-    -fx-font-size: 18px; /* Kích thước chữ */
-    -fx-background-color: transparent; /* Nền trong suốt */
+    -fx-text-fill: white; !* Chữ màu trắng *!
+    -fx-font-family: "Arial, Helvetica, sans-serif"; !* Font chữ đẹp *!
+    -fx-font-size: 18px; !* Kích thước chữ *!
+    -fx-background-color: transparent; !* Nền trong suốt *!
 }
 .anchorPane {
-    -fx-background-color: #3498db;  /* Màu nền */
-    -fx-background-radius: 20;      /* Đặt độ bo tròn cho tất cả các góc */
-    -fx-border-radius: 20;         /* Đặt độ bo tròn cho viền */
-    -fx-border-color: #2980b9;     /* Màu viền */
-    -fx-border-width: 2;           /* Độ dày viền */
-}
+    -fx-background-color: #3498db;  !* Màu nền *!
+    -fx-background-radius: 20;      !* Đặt độ bo tròn cho tất cả các góc *!
+    -fx-border-radius: 20;         !* Đặt độ bo tròn cho viền *!
+    -fx-border-color: #2980b9;     !* Màu viền *!
+    -fx-border-width: 2;           !* Độ dày viền *!
+}*/

@@ -59,6 +59,7 @@ public class AdminViewBookController implements Initializable, SyncAction {
     @Override
     public void setParentController(AdminDashboardController parentController) {
         this.parentController = parentController;
+        setTheme(parentController.getAdmin().isDarkMode());
     }
 
     @Override
@@ -472,6 +473,7 @@ public class AdminViewBookController implements Initializable, SyncAction {
             ok.setOnAction(event -> {
                 if (!changed.get()) {
                     System.out.println("Nothing change");
+                    editPane.setVisible(false);
                 }
                 else {
                     int totalNew;

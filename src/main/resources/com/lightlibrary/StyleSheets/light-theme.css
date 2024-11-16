@@ -207,3 +207,33 @@
 .setting-root {
     -fx-background-color: #e4e4e4;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Admin*/
+
+/*Admin View Book*/
+.user-info-table {
+    -fx-background-color: #ffffff; /* Màu nền đen */
+    -fx-border-color: #ffffff; /* Màu viền trắng */
+    -fx-border-radius: 20px; /* Bo viền tròn */
+    -fx-background-radius: 20px; /* Bo góc nền tròn */
+    -fx-padding: 10px; /* Khoảng cách từ nội dung tới viền ngoài */
+    -fx-hgap: 0; /* Khoảng cách ngang giữa các ô */
+    -fx-vgap: 0; /* Khoảng cách dọc giữa các ô */
+}
