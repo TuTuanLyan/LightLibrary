@@ -7,13 +7,17 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -62,6 +66,13 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     @FXML
     private ImageView detailThumbnailImage;
 
+
+    @FXML
+    private DatePicker pickDueDatePiker;
+
+    @FXML
+    private TextField borrowDaysAmount;
+
     private CustomerDashboardController parentController;
 
     public CustomerDashboardController getParentController() {
@@ -77,6 +88,9 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         detailBookPane.setVisible(false);
         detailCloseButton.setOnAction(e -> detailBookPane.setVisible(false));
+
+        pickDueDatePiker.setOnAction(event -> handleDueDatePickerAction());
+        setupOnActionForBorrowDays();
     }
 
     public void updateSearchResults(String query) {
@@ -264,4 +278,52 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
         return viewDetailButton;
     }
+
+    private void setupOnActionForBorrowDays() {
+        borrowDaysAmount.setOnAction(event -> {
+            String input = borrowDaysAmount.getText().trim();
+
+            if (input.isEmpty()) {
+                //System.out.println("Vui lòng nhập số ngày hợp lệ.");
+                return;
+            }
+
+            try {
+                int daysToExtend = Integer.parseInt(input);
+
+                if (daysToExtend < 0) {
+                    //System.out.println("Số ngày gia hạn không thể nhỏ hơn 0.");
+                    borrowDaysAmount.setText("0");
+                } else {
+                    LocalDate newDueDate = LocalDate.now().plusDays(daysToExtend);
+                    pickDueDatePiker.setValue(newDueDate);
+                    //System.out.println("Ngày gia hạn được cập nhật thành: " + newDueDate);
+                }
+            } catch (NumberFormatException e) {
+                //System.out.println("Định dạng không hợp lệ. Vui lòng nhập số nguyên.");
+            }
+        });
+    }
+
+    private void handleDueDatePickerAction() {
+        LocalDate selectedDate = pickDueDatePiker.getValue();
+
+        if (selectedDate == null) {
+            //System.out.println("Ngày chọn không hợp lệ.");
+            return;
+        }
+
+        long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), selectedDate);
+
+        if (daysBetween < 0) {
+            //System.out.println("Ngày gia hạn không thể trước hôm nay.");
+            pickDueDatePiker.setValue(LocalDate.now());
+            borrowDaysAmount.setText("0");
+        } else {
+            borrowDaysAmount.setText(String.valueOf(daysBetween));
+            //System.out.println("Số ngày gia hạn được cập nhật thành: " + daysBetween);
+        }
+    }
+
+
 }

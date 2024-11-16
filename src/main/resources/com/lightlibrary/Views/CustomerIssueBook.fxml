@@ -2,8 +2,10 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,7 +21,15 @@
          <children>
             <ScrollPane layoutX="15.0" layoutY="15.0" prefHeight="750.0" prefWidth="620.0">
               <content>
-                <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0" />
+                <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0">
+                     <children>
+                        <Pane layoutX="74.0" layoutY="129.0" prefHeight="415.0" prefWidth="417.0">
+                           <children>
+                              <DatePicker fx:id="pickDueDatePiker" layoutX="190.0" layoutY="48.0" prefHeight="42.0" prefWidth="194.0" promptText="Chose a due date" />
+                              <TextField fx:id="borrowDaysAmount" layoutX="22.0" layoutY="48.0" prefHeight="42.0" prefWidth="160.0" promptText="Number of days " />
+                           </children>
+                        </Pane>
+                     </children></AnchorPane>
               </content>
             </ScrollPane>
             <Label layoutX="18.0" prefHeight="53.0" prefWidth="605.0" styleClass="for-you-label" text="    For you" textFill="WHITE">
@@ -28,12 +38,25 @@
                </font>
             </Label>
          </children></Pane>
-      <Pane layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container">
+      <Pane layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container" visible="false">
          <children>
             <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
+            <Button layoutX="610.0" layoutY="6.0" mnemonicParsing="false" styleClass="functional-detail-button">
+               <graphic>
+                  <FontAwesomeIcon glyphName="CLOSE" size="1.6em" styleClass="functional-detail-button" />
+               </graphic>
+            </Button>
+            <Button layoutX="565.0" layoutY="5.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="31.0" styleClass="functional-detail-button">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon glyphName="CHEVRON_LEFT" size="1.6em" styleClass="functional-detail-button" />
+               </graphic>
+            </Button>
          </children>
       </Pane>
-      <Pane fx:id="detailBookPane" layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container" visible="false">
+      <Pane fx:id="detailBookPane" layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container">
          <children>
             <ImageView fx:id="detailThumbnailImage" fitHeight="160.0" fitWidth="125.0" layoutX="28.0" layoutY="61.0" pickOnBounds="true">
                <image>
