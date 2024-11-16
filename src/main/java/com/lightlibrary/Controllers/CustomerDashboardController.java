@@ -180,6 +180,11 @@ public class CustomerDashboardController implements Initializable {
     private void loadPane(final String fxmlPath) {
         if (cache.containsKey(fxmlPath)) {
             FXMLLoader loader = (FXMLLoader) cache.get(fxmlPath);
+            Object controller = loader.getController();
+            if (controller instanceof SyncAction) {
+                ((SyncAction) controller).setTheme(customer.isDarkMode());
+                ((SyncAction) controller).setParentController(this);
+            }
             setPaneWithAnimation(loader.getRoot());
         } else {
             Task<FXMLLoader> loadTask = new Task<>() {

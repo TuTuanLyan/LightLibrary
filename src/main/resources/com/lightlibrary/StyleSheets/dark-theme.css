@@ -98,10 +98,14 @@
     -fx-font-weight: bold;
 }
 
-.overview-customer {
-    -fx-background-color: red;
+.overview-customer, .list-borrowing-book {
+    -fx-background-color:  #4d4948;
     -fx-background-radius: 15px;
     -fx-border-radius: 15px;
+}
+
+.overview-customer .label ,.top-choices-label{
+    -fx-text-fill: #ffffff;
 }
 
 

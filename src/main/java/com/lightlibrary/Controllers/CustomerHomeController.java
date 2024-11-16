@@ -1,8 +1,11 @@
 package com.lightlibrary.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -23,6 +26,24 @@ public class CustomerHomeController implements Initializable, SyncAction {
 
     @FXML
     private Label customerWelcomeNameLabel;
+
+    @FXML
+    private ImageView borrowedBookImage;
+
+    @FXML
+    private ImageView overdueBookImage;
+
+    @FXML
+    private ImageView returnedBookImage;
+
+    @FXML
+    private Label borrowedBookAmountLabel;
+
+    @FXML
+    private Label overdueBookAmountLabel;
+
+    @FXML
+    private Label returnedBookAmountLabel;
 
     CustomerDashboardController parentController;
 
@@ -47,9 +68,22 @@ public class CustomerHomeController implements Initializable, SyncAction {
         if (darkMode) {
             homeRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
+            borrowedBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/light-borrowed-book.png")).toExternalForm()));
+            overdueBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/light-overdue.png")).toExternalForm()));
+            returnedBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/light-return.png")).toExternalForm()));
         } else {
             homeRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
+
+            borrowedBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/dark-borrowed-book.png")).toExternalForm()));
+            overdueBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/dark-overdue.png")).toExternalForm()));
+            returnedBookImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/dark-return.png")).toExternalForm()));
         }
     }
 
@@ -66,5 +100,9 @@ public class CustomerHomeController implements Initializable, SyncAction {
         customerWelcomeNameLabel.setText(welcomeName);
         customerWelcomeNameLabel.setStyle("-fx-font-weight: bold;"
                 + "-fx-text-fill: linear-gradient(to bottom right, #08d792, #7096ff);");
+    }
+
+    public void viewHistoryTransaction(ActionEvent actionEvent) {
+        parentController.goToHistoryPage();
     }
 }
