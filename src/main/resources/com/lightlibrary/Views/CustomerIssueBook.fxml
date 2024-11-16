@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="issueBookRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="page-content-container" stylesheets="@../StyleSheets/dark-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerIssueBookController">
+    <children>
+      <Pane layoutX="15.0" layoutY="12.0" prefHeight="780.0" prefWidth="650.0" styleClass="box-container">
+         <children>
+            <ScrollPane layoutX="15.0" layoutY="15.0" prefHeight="750.0" prefWidth="620.0">
+              <content>
+                <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0" />
+              </content>
+            </ScrollPane>
+            <Label layoutX="18.0" prefHeight="53.0" prefWidth="605.0" styleClass="for-you-label" text="    For you" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children></Pane>
+      <Pane layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container">
+         <children>
+            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
+         </children>
+      </Pane>
+      <Pane fx:id="detailBookPane" layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container" visible="false">
+         <children>
+            <ImageView fx:id="detailThumbnailImage" fitHeight="160.0" fitWidth="125.0" layoutX="28.0" layoutY="61.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../Images/LightLibraryLogo.png" />
+               </image>
+            </ImageView>
+            <Pane layoutX="18.0" layoutY="51.0" prefHeight="180.0" prefWidth="145.0" styleClass="thumbnail-result-border" />
+            <Label alignment="CENTER" layoutX="28.0" layoutY="15.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
+            <Button fx:id="addToFavouriteListButton" layoutX="426.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
+            <Button fx:id="borrowBookButton" layoutX="537.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Borrow" />
+            <Button fx:id="detailCloseButton" layoutX="608.0" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="functional-detail-button">
+               <graphic>
+                  <FontAwesomeIcon glyphName="CLOSE" size="1.6em" styleClass="functional-detail-button" textAlignment="CENTER" />
+               </graphic>
+            </Button>
+            <Label fx:id="detailTItleLabel" alignment="CENTER" layoutX="181.0" layoutY="33.0" prefHeight="36.0" prefWidth="435.0" styleClass="book-title-label" text="Label" />
+            <Label fx:id="detailDescriptionLabel" layoutX="181.0" layoutY="69.0" prefHeight="222.0" prefWidth="435.0" styleClass="book-info-label" text="Label" />
+            <Label fx:id="detailAuthorLabel" layoutX="16.0" layoutY="231.0" prefHeight="60.0" prefWidth="150.0" styleClass="book-info-label" text="Label" />
+            <Label alignment="CENTER" layoutX="15.0" layoutY="290.0" prefHeight="48.0" prefWidth="150.0" text="Prices / day">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+            </Label>
+            <Label fx:id="detailPublishDateLabel" layoutX="416.0" layoutY="303.0" prefHeight="36.0" prefWidth="215.0" styleClass="book-info-label" text="Label" />
+            <Label fx:id="detailPriceLabel" alignment="CENTER" layoutX="19.0" layoutY="341.0" prefHeight="53.0" prefWidth="145.0" text="Label">
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label fx:id="detailISBNLabel" layoutX="176.0" layoutY="359.0" prefHeight="36.0" prefWidth="228.0" styleClass="book-info-label" text="Label" />
+            <Label fx:id="detailPublisherLabel" layoutX="176.0" layoutY="303.0" prefHeight="36.0" prefWidth="228.0" styleClass="book-info-label" text="Label" />
+         </children></Pane>
+      <Pane layoutX="680.0" layoutY="443.0" prefHeight="350.0" prefWidth="645.0" styleClass="box-container">
+         <children>
+            <ScrollPane layoutX="8.0" layoutY="8.0" prefHeight="335.0" prefWidth="630.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="615.0" />
+              </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+    </children>
+</AnchorPane>

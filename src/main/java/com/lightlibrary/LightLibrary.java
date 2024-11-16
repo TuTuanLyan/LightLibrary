@@ -18,6 +18,7 @@ public class LightLibrary extends Application {
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                 .getResource("Images/LightLibraryLogo.png")).toExternalForm()));
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 

@@ -38,7 +38,7 @@
 }
 
 .background {
-    -fx-background-color: linear-gradient(to bottom right, #a1f3c5, #f4f4c4);
+    -fx-background-color: linear-gradient(to bottom right, #08d792, #7096ff);
 }
 
 .login-register-background-container Button {
@@ -64,11 +64,12 @@
 }
 
 
-/*Dashboard*/
+/*
+!*Dashboard*!
 .navigation-bar {
     -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
-    -fx-border-radius: 0px 15px 15px 0px;
-    -fx-background-radius: 0px 15px 15px 0px;
+    -fx-border-radius: 0px 25px 25px 0px;
+    -fx-background-radius: 0px 25px 25px 0px;
 }
 
 .navigation-bar Button {
@@ -102,7 +103,7 @@
     -fx-border-radius: 20px;
     -fx-border-color: linear-gradient(to bottom right, #74d897, #c5ecc5);
     -fx-border-width: 2px;
-    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 0, 2, 2);
+    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 0, 2, 2);;
 }
 
 .search-bar-element {
@@ -115,75 +116,10 @@
 
 .individual-bar {
     -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
-    -fx-border-radius: 0px 0px 0px 15px;
-    -fx-background-radius: 0px 0px 0px 15px;
+    -fx-border-radius: 25px 0px 0px 25px;
+    -fx-background-radius: 025px 0px 0px 25px;
 }
 
 .individual-bar Label {
     -fx-text-fill: #ffffff;
-}
-
-.individual-button-container {
-    -fx-background-color: linear-gradient(to bottom right, #509a93, #89be94);
-    -fx-border-radius: 15px 0px 15px 15px;
-    -fx-background-radius: 15px 0px 15px 15px;
-}
-
-.individual-button-container Button {
-    -fx-background-color: transparent;
-    -fx-border-radius: 25px;
-    -fx-background-radius: 25px;
-    -fx-text-fill: #ffffff;
-}
-
-.individual-button-container Button:hover{
-    -fx-background-color: linear-gradient(to bottom right, #20957e, #3d9f4a);
-    -fx-text-fill: #ffffff;
-    -fx-border-radius: 25px;
-    -fx-background-radius: 25px;
-}
-
-.avatar {
-    -fx-background-color: transparent;
-}
-
-.navigation-button-border {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 28px 0px 0px 28px;
-    -fx-border-radius: 28px 0px 0px 28px;
-    -fx-border-width: 5px 0px 5px 5px;
-    -fx-border-color: linear-gradient(to right, #93f1ba, #b7fbaa) transparent
-    linear-gradient(to right, #93f1ba, #b7fbaa) #93f1ba;
-    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 0, -5, 5);
-}
-
-.sub-button-border {
-    -fx-background-color: #ffffff;
-    -fx-border-width: 5px 0px 5px 0px;
-    -fx-border-color: #b7fbaa;
-}
-
-.selected {
-    -fx-background-radius: 27px 0px 0px 27px;
-    -fx-border-radius: 27px 0px 0px 27px;
-    -fx-text-fill: #000000;
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-}
-
-.selected:hover {
-    -fx-background-radius: 27px 0px 0px 27px;
-    -fx-border-radius: 27px 0px 0px 27px;
-    -fx-text-fill: #000000;
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-}
-
-.main-content-container {
-    -fx-border-color: linear-gradient(to bottom right, #b7fbaa, #93f1ba);
-    -fx-background-radius: 15px;
-    -fx-background-color: #ffffff;
-    -fx-border-width: 5px;
-    -fx-border-radius: 15px;
-    -fx-effect: dropshadow(gaussian, rgba(25, 24, 24, 0.5), 10, 0, -5, 5);
-}
+}*/
