@@ -100,6 +100,17 @@
     -fx-font-weight: bold;
 }
 
+.overview-customer {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.overview-customer .label {
+    -fx-text-fill: red;
+}
+
+
 
 
 /*Issue Book*/

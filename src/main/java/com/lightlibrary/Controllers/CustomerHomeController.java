@@ -54,14 +54,11 @@ public class CustomerHomeController implements Initializable, SyncAction {
     }
 
     private void updateDate(Label label) {
-        // Lấy ngày hiện tại
         LocalDate today = LocalDate.now();
 
-        // Định dạng
-        String dayOfWeek = today.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH); // Thursday
-        String formattedDate = today.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"));      // Jan 12, 2023
+        String dayOfWeek = today.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String formattedDate = today.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"));
 
-        // Kết quả cuối cùng
         label.setText(String.format("%s | %s", formattedDate, dayOfWeek));
     }
 

@@ -98,7 +98,11 @@
     -fx-font-weight: bold;
 }
 
-
+.overview-customer {
+    -fx-background-color: red;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
 
 
 
