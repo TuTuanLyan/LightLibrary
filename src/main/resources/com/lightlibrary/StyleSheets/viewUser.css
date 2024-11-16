@@ -25,3 +25,29 @@
     -fx-background-color: #388E3C; /* Màu khi click */
     -fx-border-color: #1B5E20;
 }
+
+
+
+.grid-pane {
+    -fx-background-color: #000000; /* Màu nền đen */
+    -fx-border-color: #ffffff; /* Màu viền trắng */
+    -fx-border-radius: 20; /* Bo viền tròn */
+    -fx-background-radius: 20; /* Bo góc nền tròn */
+    -fx-padding: 10; /* Khoảng cách từ nội dung tới viền ngoài */
+    -fx-hgap: 0; /* Khoảng cách ngang giữa các ô */
+    -fx-vgap: 0; /* Khoảng cách dọc giữa các ô */
+}
+
+.grid-pane .label {
+    -fx-text-fill: white; /* Chữ màu trắng */
+    -fx-font-family: "Arial, Helvetica, sans-serif"; /* Font chữ đẹp */
+    -fx-font-size: 18px; /* Kích thước chữ */
+    -fx-background-color: transparent; /* Nền trong suốt */
+}
+.anchorPane {
+    -fx-background-color: #3498db;  /* Màu nền */
+    -fx-background-radius: 20;      /* Đặt độ bo tròn cho tất cả các góc */
+    -fx-border-radius: 20;         /* Đặt độ bo tròn cho viền */
+    -fx-border-color: #2980b9;     /* Màu viền */
+    -fx-border-width: 2;           /* Độ dày viền */
+}

@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -68,24 +69,12 @@ public class AdminUserManagementController implements Initializable, SyncAction 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         reLoad();
-        sortUserID.setOnKeyTyped(keyEvent -> {
-            reLoad();
-        });
-        sortFullname.setOnKeyTyped(keyEvent -> {
-            reLoad();
-        });
-        sortPassword.setOnKeyTyped(keyEvent -> {
-            reLoad();
-        });
-        sortUsername.setOnKeyTyped(keyEvent -> {
-            reLoad();
-        });
-        sortEmail.setOnKeyTyped(keyEvent -> {
-            reLoad();
-        });
-        sortPhone.setOnKeyTyped(keyEvent -> {
-            reLoad();
-        });
+        sortUserID.setOnKeyTyped(keyEvent ->reLoad());
+        sortFullname.setOnKeyTyped(keyEvent ->reLoad());
+        sortPassword.setOnKeyTyped(keyEvent ->reLoad());
+        sortUsername.setOnKeyTyped(keyEvent ->reLoad());
+        sortEmail.setOnKeyTyped(keyEvent ->reLoad());
+        sortPhone.setOnKeyTyped(keyEvent ->reLoad());
     }
 
     @Override
@@ -108,6 +97,7 @@ public class AdminUserManagementController implements Initializable, SyncAction 
         while (manageUserGrid.getChildren().size() > 1) {
             manageUserGrid.getChildren().removeLast();
         }
+        manageUserGrid.getRowConstraints().clear();
         String findFullname = sortFullname.getText();
         String findUsername = sortUsername.getText();
         String findPassword = sortPassword.getText();
@@ -119,7 +109,6 @@ public class AdminUserManagementController implements Initializable, SyncAction 
             System.out.println("Something were wrong connectDB is null!");
         }
 
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
         if(!sortPhone.getText().isEmpty()) {
             if(!sortUserID.getText().isEmpty()) {
                 int findUserID = -1;
@@ -183,6 +172,8 @@ public class AdminUserManagementController implements Initializable, SyncAction 
                         String phoneNumber = resultSet.getString("phoneNumber");
                         String email = resultSet.getString("email");
                         System.out.println(userID + " " + fullname + " " + username + " " + password + " " + phoneNumber + " " + email);
+
+
                         add(userID, fullname, username, password, phoneNumber, email);
                     }
 
@@ -282,9 +273,11 @@ public class AdminUserManagementController implements Initializable, SyncAction 
         Label emailLabel = new Label(email);
         Button editButton = new Button("Edit");
         Button deleteButton = new Button("Delete");
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setMinHeight(70);
+        manageUserGrid.getRowConstraints().add(rowConstraints);
+        manageUserGrid.addRow(manageUserGrid.getRowCount()-1, userIDLabel, fullnameLabel, usernameLabel, passwordLabel, phoneNumberLabel, emailLabel, editButton, deleteButton);
 
-
-        manageUserGrid.addRow(manageUserGrid.getRowCount(), userIDLabel, fullnameLabel, usernameLabel, passwordLabel, phoneNumberLabel, emailLabel, editButton, deleteButton);
 
         deleteButton.setOnAction(e -> {
             remove(userID);
