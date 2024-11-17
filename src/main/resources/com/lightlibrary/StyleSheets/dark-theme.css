@@ -90,7 +90,27 @@
 
 
 
-/*Issue Book*/
+
+
+/*Customer Home*/
+.welcome-customer-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.overview-customer, .list-borrowing-book {
+    -fx-background-color:  #4d4948;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.overview-customer .label ,.top-choices-label{
+    -fx-text-fill: #ffffff;
+}
+
+
+
+/*Customer Issue Book*/
 .box-container {
     -fx-background-color: #4d4948;
     -fx-background-radius: 20px;

@@ -1,15 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="issueBookRoot" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <Label layoutX="308.0" layoutY="250.0" prefHeight="334.0" prefWidth="896.0" text="This is Issue book page">
-            <font>
-                <Font size="61.0" />
-            </font>
-        </Label>
-    </children>
+<AnchorPane fx:id="issueBookRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="main-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminIssueBookController">
+   <children>
+      <Pane layoutX="15.0" layoutY="15.0" prefHeight="780.0" prefWidth="650.0" styleClass="box-container">
+         <children>
+            <ScrollPane layoutX="15.0" layoutY="15.0" prefHeight="750.0" prefWidth="620.0">
+               <content>
+                  <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0" />
+               </content>
+            </ScrollPane>
+            <Label layoutX="18.0" prefHeight="53.0" prefWidth="605.0" styleClass="for-you-label" text="    For you" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="680.0" layoutY="15.0" prefHeight="780.0" prefWidth="645.0" styleClass="box-container">
+         <children>
+            <ImageView fx:id="detailThumbnailImage" fitHeight="160.0" fitWidth="125.0" layoutX="28.0" layoutY="61.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../Images/LightLibraryLogo.png" />
+               </image>
+            </ImageView>
+            <Pane layoutX="18.0" layoutY="51.0" prefHeight="180.0" prefWidth="145.0" styleClass="thumbnail-result-border" />
+            <Label alignment="CENTER" layoutX="28.0" layoutY="15.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
+            <Button fx:id="addBookButton" layoutX="524.0" layoutY="703.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
+            <Label fx:id="detailTitleLabel" alignment="CENTER" layoutX="181.0" layoutY="25.0" prefHeight="36.0" prefWidth="446.0" styleClass="book-title-label" text="Label" />
+            <Label fx:id="detailDescriptionLabel" layoutX="181.0" layoutY="69.0" prefHeight="537.0" prefWidth="446.0" styleClass="book-info-label" text="Description" />
+            <Label fx:id="detailAuthorLabel" layoutX="16.0" layoutY="231.0" prefHeight="60.0" prefWidth="150.0" styleClass="book-info-label" text="Author" wrapText="true" />
+            <Label fx:id="detailPublishDateLabel" layoutX="16.0" layoutY="512.0" prefHeight="70.0" prefWidth="150.0" styleClass="book-info-label" text="Publish Date" wrapText="true" />
+            <Label fx:id="detailISBNLabel" layoutX="16.0" layoutY="291.0" prefHeight="116.0" prefWidth="150.0" styleClass="book-info-label" text="ISBN" wrapText="true" />
+            <Label fx:id="detailPublisherLabel" layoutX="16.0" layoutY="407.0" prefHeight="105.0" prefWidth="150.0" styleClass="book-info-label" text="Publisher" wrapText="true" />
+            <TextField fx:id="numbersOfAddBookTextField" layoutX="38.0" layoutY="685.0" prefHeight="60.0" prefWidth="200.0" promptText="Number of books">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="feePerDayTextField" layoutX="290.0" layoutY="685.0" prefHeight="60.0" prefWidth="200.0" promptText="Price / Day">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="38.0" layoutY="612.0" prefHeight="60.0" prefWidth="200.0" text="Enter the numbers of books to add" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="0.42654028436018954">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+            </Label>
+            <Label layoutX="290.0" layoutY="612.0" prefHeight="60.0" prefWidth="200.0" text="Enter the rental fee per day" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="0.42654028436018954">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+            </Label>
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>

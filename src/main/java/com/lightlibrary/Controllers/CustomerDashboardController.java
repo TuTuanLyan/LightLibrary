@@ -180,6 +180,11 @@ public class CustomerDashboardController implements Initializable {
     private void loadPane(final String fxmlPath) {
         if (cache.containsKey(fxmlPath)) {
             FXMLLoader loader = (FXMLLoader) cache.get(fxmlPath);
+            Object controller = loader.getController();
+            if (controller instanceof SyncAction) {
+                ((SyncAction) controller).setTheme(customer.isDarkMode());
+                ((SyncAction) controller).setParentController(this);
+            }
             setPaneWithAnimation(loader.getRoot());
         } else {
             Task<FXMLLoader> loadTask = new Task<>() {
@@ -217,17 +222,17 @@ public class CustomerDashboardController implements Initializable {
      */
     private void setPaneWithAnimation(Node newNode) {
         if (currentNode != null) {
-            FadeTransition fadeOut = ControllerUntil.creatFadeOutAnimation(currentNode);
+            FadeTransition fadeOut = ControllerUtil.creatFadeOutAnimation(currentNode);
             fadeOut.setOnFinished(e -> {
                 mainContentContainer.getChildren().clear();
                 mainContentContainer.getChildren().add(newNode);
-                FadeTransition fadeIn = ControllerUntil.creatFadeInAnimation(newNode);
+                FadeTransition fadeIn = ControllerUtil.creatFadeInAnimation(newNode);
                 fadeIn.play();
             });
             fadeOut.play();
         } else {
             mainContentContainer.getChildren().add(newNode);
-            FadeTransition fadeIn = ControllerUntil.creatFadeInAnimation(newNode);
+            FadeTransition fadeIn = ControllerUtil.creatFadeInAnimation(newNode);
             fadeIn.play();
         }
         currentNode = newNode;
