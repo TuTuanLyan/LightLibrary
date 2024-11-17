@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="viewBookRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1340.0" styleClass="main-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminViewBookController">
    <children>
-      <ScrollPane layoutX="21.0" layoutY="160.0" prefHeight="629.0" prefWidth="1308.0" stylesheets="@../StyleSheets/viewUser.css">
+      <ScrollPane layoutX="21.0" layoutY="160.0" prefHeight="629.0" prefWidth="1308.0">
          <content>
             <GridPane fx:id="manageBook" alignment="CENTER" prefHeight="0.0" prefWidth="1262.0" styleClass="user-info-table">
                <columnConstraints>
@@ -96,7 +96,7 @@
             <TextField fx:id="sortPrice" GridPane.columnIndex="5" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <AnchorPane fx:id="editPane" layoutX="297.0" layoutY="96.0" prefHeight="526.0" prefWidth="746.0" styleClass="anchorPane" stylesheets="@../StyleSheets/viewUser.css" visible="false">
+      <AnchorPane fx:id="editPane" layoutX="297.0" layoutY="96.0" prefHeight="526.0" prefWidth="746.0" visible="false">
          <children>
             <TextField fx:id="editTotalTextField" layoutX="119.0" layoutY="157.0" prefHeight="25.0" prefWidth="521.0" promptText="total" />
             <TextField fx:id="editAvailableTextField" layoutX="119.0" layoutY="292.0" prefHeight="25.0" prefWidth="521.0" promptText="available" />

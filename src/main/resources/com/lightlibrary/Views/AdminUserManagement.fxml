@@ -96,7 +96,7 @@
             <TextField fx:id="sortEmail" prefWidth="178.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <AnchorPane fx:id="editPane" layoutX="297.0" layoutY="96.0" prefHeight="526.0" prefWidth="746.0" style="-fx-background-color: blue;" styleClass="anchorPane" stylesheets="@../StyleSheets/viewUser.css" visible="false">
+      <AnchorPane fx:id="editPane" layoutX="297.0" layoutY="96.0" prefHeight="526.0" prefWidth="746.0" style="-fx-background-color: blue;" visible="false">
          <children>
             <TextField fx:id="editFullnameTextField" layoutX="119.0" layoutY="111.0" prefHeight="25.0" prefWidth="521.0" promptText="fullname" />
             <TextField fx:id="editPasswordTextField" layoutX="119.0" layoutY="192.0" prefHeight="25.0" prefWidth="521.0" promptText="password" />
