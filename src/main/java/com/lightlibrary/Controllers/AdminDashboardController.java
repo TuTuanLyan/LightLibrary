@@ -264,7 +264,7 @@ public class AdminDashboardController implements Initializable {
 
     public void goToUserManagementPage() {
         if (activeButton != ActiveButton.USER_MANAGEMENT) {
-            loadPane("/com/lightlibrary/Views/AdminUSerManagement.fxml");
+            loadPane("/com/lightlibrary/Views/AdminUserManagement.fxml");
             currentPageNameLabel.setText("User Management");
             navigationBorderAnimation(userButton);
             activeButton = ActiveButton.USER_MANAGEMENT;
