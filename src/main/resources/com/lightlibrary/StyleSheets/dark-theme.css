@@ -228,6 +228,35 @@
     -fx-border-radius: 20px; /* Bo viền tròn */
     -fx-background-radius: 20px; /* Bo góc nền tròn */
     -fx-padding: 10px; /* Khoảng cách từ nội dung tới viền ngoài */
-    -fx-hgap: 0; /* Khoảng cách ngang giữa các ô */
-    -fx-vgap: 0; /* Khoảng cách dọc giữa các ô */
+    -fx-hgap: 2px; /* Khoảng cách ngang giữa các ô */
+    -fx-vgap: 3px; /* Khoảng cách dọc giữa các ô */
+}
+
+.user-info-table .label {
+    -fx-wrap-text: true;
+    -fx-background-color: transparent;
+    -fx-text-fill: #aeaeae;
+    -fx-font-weight: bold;
+    -fx-font-size: 21px;
+    -fx-font-family: "Arial, Helvetica, sans-serif";
+}
+
+.user-info-table .button {
+    -fx-wrap-text: true;
+    -fx-background-color: transparent;
+    -fx-text-fill: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-font-family: "Arial, Helvetica, sans-serif";
+}
+
+.user-info-table .button:hover {
+    -fx-wrap-text: true;
+    -fx-background-color: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-text-fill: #4d4948;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-font-family: "Arial, Helvetica, sans-serif";
 }

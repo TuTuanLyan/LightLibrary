@@ -439,7 +439,9 @@ public class AdminViewBookController implements Initializable, SyncAction {
         Label availableLabel = new Label(Integer.toString(availableNumber));
         Label priceLabel = new Label(Double.toString(price));
         Button editButton = new Button("Edit");
+        editButton.setPrefSize(70, 30);
         Button deleteButton = new Button("Delete");
+        deleteButton.setPrefSize(70, 30);
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setMinHeight(70);
         manageBook.getRowConstraints().add(rowConstraints);

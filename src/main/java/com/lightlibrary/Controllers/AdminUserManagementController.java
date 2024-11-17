@@ -272,7 +272,9 @@ public class AdminUserManagementController implements Initializable, SyncAction 
         Label phoneNumberLabel = new Label(phoneNumber);
         Label emailLabel = new Label(email);
         Button editButton = new Button("Edit");
+        editButton.setPrefSize(70, 30);
         Button deleteButton = new Button("Delete");
+        deleteButton.setPrefSize(70, 30);
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setMinHeight(70);
         manageUserGrid.getRowConstraints().add(rowConstraints);

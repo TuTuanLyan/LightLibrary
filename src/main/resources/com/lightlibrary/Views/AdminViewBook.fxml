@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="viewBookRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminViewBookController">
+<AnchorPane fx:id="viewBookRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1340.0" styleClass="main-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminViewBookController">
    <children>
-      <ScrollPane layoutX="32.0" layoutY="160.0" prefHeight="588.0" prefWidth="1284.0" stylesheets="@../StyleSheets/viewUser.css">
+      <ScrollPane layoutX="21.0" layoutY="160.0" prefHeight="629.0" prefWidth="1308.0" stylesheets="@../StyleSheets/viewUser.css">
          <content>
-            <GridPane fx:id="manageBook" alignment="CENTER" gridLinesVisible="true" prefHeight="0.0" prefWidth="1262.0" styleClass="grid-pane" stylesheets="@../StyleSheets/viewUser.css">
+            <GridPane fx:id="manageBook" alignment="CENTER" prefHeight="0.0" prefWidth="1262.0" styleClass="user-info-table">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
@@ -32,7 +32,7 @@
             </GridPane>
          </content>
       </ScrollPane>
-      <GridPane fx:id="titleGrid" alignment="CENTER" gridLinesVisible="true" layoutX="34.0" layoutY="32.0" prefHeight="128.0" prefWidth="1262.0" styleClass="grid-pane" stylesheets="@../StyleSheets/viewUser.css">
+      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="21.0" layoutY="32.0" prefHeight="128.0" prefWidth="1262.0" styleClass="user-info-table">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
