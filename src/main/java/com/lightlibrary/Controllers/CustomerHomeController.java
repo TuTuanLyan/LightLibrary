@@ -52,6 +52,9 @@ public class CustomerHomeController implements Initializable, SyncAction {
     }
 
     @Override
+    public  void setParentController(AdminDashboardController parentController) {}
+
+    @Override
     public void setParentController(CustomerDashboardController parentController) {
         this.parentController = parentController;
         setWelcomeName(customerWelcomeNameLabel, parentController.getCustomer().getFullName());

@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SettingController {
+public class CustomerSettingController {
 
     @FXML
     private AnchorPane rootSettingContainer;

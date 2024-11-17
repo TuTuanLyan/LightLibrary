@@ -8,22 +8,19 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CustomerChatController implements Initializable, SyncAction {
+public class AdminChatController implements Initializable, SyncAction {
 
     @FXML
     private AnchorPane chatRoot;
 
-    CustomerDashboardController parentController;
+    AdminDashboardController parentController;
 
-    public CustomerDashboardController getParentController() {
+    public AdminDashboardController getParentController() {
         return parentController;
     }
 
     @Override
-    public  void setParentController(AdminDashboardController parentController) {}
-
-    @Override
-    public void setParentController(CustomerDashboardController parentController) {
+    public void setParentController(AdminDashboardController parentController) {
         this.parentController = parentController;
     }
 
@@ -44,4 +41,6 @@ public class CustomerChatController implements Initializable, SyncAction {
         }
     }
 
+    @Override
+    public void setParentController(CustomerDashboardController parentController) {}
 }
