@@ -153,7 +153,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                 Task<Pane> blockTask = new Task<Pane>() {
                     @Override
                     protected Pane call() throws Exception {
-                        Pane bookPane = ControllerUntil.createBookBlock(thumbnailURL, title, authors, ISBN, description);
+                        Pane bookPane = ControllerUtil.createBookBlock(thumbnailURL, title, authors, ISBN, description);
                         Button viewDetailButton = createViewDetailButton();
                         viewDetailButton.setOnAction(e -> {
                                 showBookDetail(thumbnailURL, title, authors, ISBN,

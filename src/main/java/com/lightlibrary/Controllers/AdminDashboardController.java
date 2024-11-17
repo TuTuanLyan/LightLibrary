@@ -1,7 +1,6 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.Admin;
-import com.lightlibrary.Models.Customer;
 import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.animation.TranslateTransition;
@@ -16,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -42,6 +42,11 @@ public class AdminDashboardController implements Initializable {
     private Map<String, FXMLLoader> cache = new HashMap<>();
 
     private Node currentNode;
+
+    @FXML
+    private TextField searchBar;
+    @FXML
+    private Button searchButton;
 
     @FXML
     private Button changeThemeButton;
@@ -116,15 +121,24 @@ public class AdminDashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         preLoad();
 
-        navigationButtonAction();
-
         loadPane("/com/lightlibrary/Views/AdminHome.fxml");
         activeButton = ActiveButton.HOME;
         currentPageNameLabel.setText("Dashboard");
 
+        searchBar.setOnAction(event -> {
+            String query = searchBar.getText();
+            updateIssueBookSearchResults(query);
+        });
+        searchButton.setOnAction(event -> {
+            String query = searchBar.getText();
+            updateIssueBookSearchResults(query);
+        });
+
         changeThemeButton.setOnAction(event -> {
             changeTheme();
         });
+
+        navigationButtonAction();
     }
 
     private void displayAdminInformation() {
@@ -205,17 +219,17 @@ public class AdminDashboardController implements Initializable {
 
     private void setPaneWithAnimation(Node newNode) {
         if (currentNode != null) {
-            FadeTransition fadeOut = ControllerUntil.creatFadeOutAnimation(currentNode);
+            FadeTransition fadeOut = ControllerUtil.creatFadeOutAnimation(currentNode);
             fadeOut.setOnFinished(e -> {
                 mainContentContainer.getChildren().clear();
                 mainContentContainer.getChildren().add(newNode);
-                FadeTransition fadeIn = ControllerUntil.creatFadeInAnimation(newNode);
+                FadeTransition fadeIn = ControllerUtil.creatFadeInAnimation(newNode);
                 fadeIn.play();
             });
             fadeOut.play();
         } else {
             mainContentContainer.getChildren().add(newNode);
-            FadeTransition fadeIn = ControllerUntil.creatFadeInAnimation(newNode);
+            FadeTransition fadeIn = ControllerUtil.creatFadeInAnimation(newNode);
             fadeIn.play();
         }
         currentNode = newNode;
@@ -233,11 +247,12 @@ public class AdminDashboardController implements Initializable {
     public void goToViewBookPage() {
         if (activeButton != ActiveButton.VIEW_BOOK) {
             loadPane("/com/lightlibrary/Views/AdminViewBook.fxml");
-            currentPageNameLabel.setText("Return Book");
+            currentPageNameLabel.setText("View Book");
             navigationBorderAnimation(viewBookButton);
             activeButton = ActiveButton.VIEW_BOOK;
         }
     }
+
     public void goToIssueBookPage() {
         if (activeButton != ActiveButton.ISSUE_BOOK) {
             loadPane("/com/lightlibrary/Views/AdminIssueBook.fxml");
@@ -250,7 +265,7 @@ public class AdminDashboardController implements Initializable {
     public void goToUserManagementPage() {
         if (activeButton != ActiveButton.USER_MANAGEMENT) {
             loadPane("/com/lightlibrary/Views/AdminUSerManagement.fxml");
-            currentPageNameLabel.setText("History");
+            currentPageNameLabel.setText("User Management");
             navigationBorderAnimation(userButton);
             activeButton = ActiveButton.USER_MANAGEMENT;
         }
@@ -292,6 +307,27 @@ public class AdminDashboardController implements Initializable {
                 navigationBorderPane);
         navigationButtonBorderTransition.setToY(activeButton.getLayoutY() - 10 - navigationBorderPane.getLayoutY());
         navigationButtonBorderTransition.play();
+    }
+
+    public void updateIssueBookSearchResults(String query) {
+        String fxmlPath = "/com/lightlibrary/Views/AdminIssueBook.fxml";
+
+        if (cache.containsKey(fxmlPath)) {
+            FXMLLoader loader = cache.get(fxmlPath);
+            AdminIssueBookController controller = loader.getController();
+            controller.updateSearchResults(query);
+        } else {
+            loadPane(fxmlPath);
+            Platform.runLater(() -> {
+                FXMLLoader loader = cache.get(fxmlPath);
+                if (loader != null) {
+                    AdminIssueBookController controller = loader.getController();
+                    controller.updateSearchResults(query);
+                }
+            });
+        }
+
+        goToIssueBookPage();
     }
 
     public void changeTheme() {

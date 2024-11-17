@@ -34,9 +34,9 @@
                 </ImageView>
             </children>
         </Pane>
-        <Label fx:id="currentPageNameLabel" layoutX="182.0" layoutY="21.0" prefHeight="47.0" prefWidth="212.0" styleClass="page-title">
+        <Label fx:id="currentPageNameLabel" layoutX="169.0" layoutY="21.0" prefHeight="47.0" prefWidth="245.0" styleClass="page-title">
             <font>
-                <Font size="32.0" />
+                <Font size="28.0" />
             </font>
         </Label>
         <Pane fx:id="avatarImageContainer" layoutX="1345.0" layoutY="10.0" prefHeight="70.0" prefWidth="70.0">

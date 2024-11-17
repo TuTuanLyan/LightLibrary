@@ -222,17 +222,17 @@ public class CustomerDashboardController implements Initializable {
      */
     private void setPaneWithAnimation(Node newNode) {
         if (currentNode != null) {
-            FadeTransition fadeOut = ControllerUntil.creatFadeOutAnimation(currentNode);
+            FadeTransition fadeOut = ControllerUtil.creatFadeOutAnimation(currentNode);
             fadeOut.setOnFinished(e -> {
                 mainContentContainer.getChildren().clear();
                 mainContentContainer.getChildren().add(newNode);
-                FadeTransition fadeIn = ControllerUntil.creatFadeInAnimation(newNode);
+                FadeTransition fadeIn = ControllerUtil.creatFadeInAnimation(newNode);
                 fadeIn.play();
             });
             fadeOut.play();
         } else {
             mainContentContainer.getChildren().add(newNode);
-            FadeTransition fadeIn = ControllerUntil.creatFadeInAnimation(newNode);
+            FadeTransition fadeIn = ControllerUtil.creatFadeInAnimation(newNode);
             fadeIn.play();
         }
         currentNode = newNode;

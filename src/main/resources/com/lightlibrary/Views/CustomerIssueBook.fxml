@@ -23,7 +23,7 @@
               <content>
                 <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0">
                      <children>
-                        <Pane layoutX="74.0" layoutY="129.0" prefHeight="415.0" prefWidth="417.0">
+                        <Pane layoutX="74.0" layoutY="129.0" prefHeight="283.0" prefWidth="406.0">
                            <children>
                               <DatePicker fx:id="pickDueDatePiker" layoutX="190.0" layoutY="48.0" prefHeight="42.0" prefWidth="194.0" promptText="Chose a due date" />
                               <TextField fx:id="borrowDaysAmount" layoutX="22.0" layoutY="48.0" prefHeight="42.0" prefWidth="160.0" promptText="Number of days " />

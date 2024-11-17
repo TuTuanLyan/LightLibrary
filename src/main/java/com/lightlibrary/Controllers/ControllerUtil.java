@@ -2,7 +2,6 @@ package com.lightlibrary.Controllers;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,9 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
-import java.util.Objects;
-
-public class ControllerUntil {
+public class ControllerUtil {
 
     /**
      * Create a Fade Out Animation with 0.3 seconds duration.
