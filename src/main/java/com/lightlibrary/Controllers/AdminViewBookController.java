@@ -375,7 +375,7 @@ public class AdminViewBookController implements Initializable, SyncAction {
                 preparedStatement.setInt(4, totalNumber);
 
 
-                System.out.println(preparedStatement);
+                //System.out.println(preparedStatement);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
@@ -404,11 +404,11 @@ public class AdminViewBookController implements Initializable, SyncAction {
             preparedStatement.setString(3, "%" + findAuthor + "%");
 
 
-            System.out.println(preparedStatement);
+            //System.out.println(preparedStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet != null) {
+            /*if(resultSet != null) {
                 System.out.println(resultSet);
-            }
+            }*/
             while (resultSet.next()) {
                 String ISBN = resultSet.getString("isbn");
                 String Title = resultSet.getString("title");
@@ -447,6 +447,7 @@ public class AdminViewBookController implements Initializable, SyncAction {
         manageBook.getRowConstraints().add(rowConstraints);
         manageBook.addRow(manageBook.getRowCount()-1, isbnLabel, titleLabel, authorLabel, totalLabel, availableLabel, priceLabel, editButton, deleteButton);
 
+        System.out.println(ISBN + ' ' + Title + ' ' + Author + ' ' + totalNumber + ' ' + availableNumber + ' ' + price);
 
         deleteButton.setOnAction(e -> {
             remove(ISBN);
