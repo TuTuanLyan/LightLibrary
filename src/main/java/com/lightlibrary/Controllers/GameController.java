@@ -1,10 +1,9 @@
 package com.lightlibrary.Controllers;
 
-import com.lightlibrary.Models.Admin;
 import com.lightlibrary.Models.Customer;
 import com.lightlibrary.Models.DatabaseConnection;
 import com.lightlibrary.Models.Game.Game;
-import com.lightlibrary.Models.User;
+import com.lightlibrary.Models.Sound;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +23,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GameController {
@@ -57,6 +55,8 @@ public class GameController {
         game = new Game();
         game.setController(this);
 
+        Sound.initialize();
+
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 
         game.startGame(gc);
@@ -87,13 +87,20 @@ public class GameController {
 
     private void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
-            case SPACE -> game.jump();
-            case ESCAPE -> togglePause();
+            case SPACE -> {
+                Sound.playSoundEffect("jump");
+                game.jump();
+            }
+            case ESCAPE -> {
+                Sound.playSoundEffect("button");
+                togglePause();
+            }
         }
     }
 
     private void handleMouseClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY && !isPaused && !isGameOver) {
+            Sound.playSoundEffect("jump");
             game.jump();
         }
     }
@@ -107,11 +114,18 @@ public class GameController {
             gameCanvas.setMouseTransparent(isPaused);
             scoreLabel.setVisible(!isPaused);
             collectedCoinLabel.setVisible(!isPaused);
+            if (isPaused) {
+                Sound.pauseBackgroundMusic();
+            } else {
+                Sound.playBackgroundMusic();
+            }
         }
     }
 
     @FXML
     private void restartGame() {
+        Sound.stopBackgroundMusic();
+        Sound.playBackgroundMusic();
         isGameOver = false;
         isPaused = false;
         gameOverMenu.setVisible(false);
@@ -124,6 +138,8 @@ public class GameController {
     @FXML
     private void handleStartGameButtonClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
+            Sound.playSoundEffect("button");
+            Sound.playBackgroundMusic();
             storyBox.setVisible(false);
             isPaused = false;
             game.setPaused(isPaused);
@@ -134,19 +150,24 @@ public class GameController {
     @FXML
     private void handleResumeButtonClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY && isPaused && !isGameOver) {
+            Sound.playSoundEffect("button");
             togglePause();
         }
     }
 
     @FXML
     private void handleRestartButtonClick(MouseEvent event) {
-        togglePause();
-        restartGame();
+        if (event.getButton() == MouseButton.PRIMARY) {
+            Sound.playSoundEffect("button");
+            togglePause();
+            restartGame();
+        }
     }
 
     @FXML
     private void handleRetryButtonClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY && isGameOver) {
+            Sound.playSoundEffect("button");
             restartGame();
         }
     }
@@ -154,6 +175,7 @@ public class GameController {
     @FXML
     private void handleReturnButtonClick(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY && (isGameOver || isPaused)) {
+            Sound.playSoundEffect("button");
             try {
                 FXMLLoader loader = new FXMLLoader(getClass()
                         .getResource("/com/lightlibrary/Views/CustomerDashboard.fxml"));
@@ -200,6 +222,8 @@ public class GameController {
         collectedCoinLabel.setVisible(false);
         gameOverMenu.setVisible(true);
         gameCanvas.setMouseTransparent(true);
+        Sound.stopBackgroundMusic();
+        Sound.playSoundEffect("gameOver");
     }
 
     public void updateCoinToSQL(int earnedCoin) {

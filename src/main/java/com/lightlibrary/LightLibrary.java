@@ -12,7 +12,7 @@ import java.util.Objects;
 public class LightLibrary extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LightLibrary.class.getResource("Views/GameView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LightLibrary.class.getResource("Views/LoginAndRegister.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 960, 640);
         stage.setTitle("Light Library");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass()

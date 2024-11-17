@@ -1,6 +1,7 @@
 package com.lightlibrary.Models.Game;
 
 import com.lightlibrary.Controllers.GameController;
+import com.lightlibrary.Models.Sound;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -113,6 +114,7 @@ public class Game {
                 collectable.y = GROUND_Y - 30 - Math.random() * 150;
             }
             if (robot.isColliding(collectable)) {
+                Sound.playSoundEffect("pickUp");
                 if (collectable instanceof Coin) {
                    collectedCoin++;
                    controller.updateCollectedCoin(collectedCoin);
