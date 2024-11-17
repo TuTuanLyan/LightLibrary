@@ -96,33 +96,33 @@
             <TextField fx:id="sortEmail" prefWidth="178.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <AnchorPane fx:id="editPane" layoutX="297.0" layoutY="96.0" prefHeight="526.0" prefWidth="746.0" style="-fx-background-color: blue;" visible="false">
+      <AnchorPane fx:id="editPane" layoutX="380.0" layoutY="139.0" prefHeight="460.0" prefWidth="640.0" styleClass="edit-table">
          <children>
-            <TextField fx:id="editFullnameTextField" layoutX="119.0" layoutY="111.0" prefHeight="25.0" prefWidth="521.0" promptText="fullname" />
-            <TextField fx:id="editPasswordTextField" layoutX="119.0" layoutY="192.0" prefHeight="25.0" prefWidth="521.0" promptText="password" />
-            <TextField fx:id="editPhoneTextField" layoutX="119.0" layoutY="276.0" prefHeight="25.0" prefWidth="521.0" promptText="phoneNumber" />
-            <TextField fx:id="editEmailTextField" layoutX="113.0" layoutY="359.0" prefHeight="25.0" prefWidth="521.0" promptText="email" />
-            <Label fx:id="editFullnameLabel" layoutX="119.0" layoutY="61.0" prefHeight="17.0" prefWidth="208.0" text="fullname">
+            <TextField fx:id="editFullnameTextField" layoutX="63.0" layoutY="78.0" prefHeight="37.0" prefWidth="521.0" promptText="fullname" />
+            <TextField fx:id="editPasswordTextField" layoutX="63.0" layoutY="168.0" prefHeight="37.0" prefWidth="521.0" promptText="password" />
+            <TextField fx:id="editPhoneTextField" layoutX="63.0" layoutY="249.0" prefHeight="37.0" prefWidth="521.0" promptText="phoneNumber" />
+            <TextField fx:id="editEmailTextField" layoutX="63.0" layoutY="333.0" prefHeight="37.0" prefWidth="521.0" promptText="email" />
+            <Label fx:id="editFullnameLabel" layoutX="63.0" layoutY="31.0" prefHeight="17.0" prefWidth="208.0" text="Full name">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </Label>
-            <Label fx:id="editPasswordLabel" layoutX="113.0" layoutY="149.0" prefHeight="17.0" prefWidth="208.0" text="password">
+            <Label fx:id="editPasswordLabel" layoutX="63.0" layoutY="121.0" prefHeight="17.0" prefWidth="208.0" text="Password">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </Label>
-            <Label fx:id="editPhoneLabel" layoutX="119.0" layoutY="226.0" prefHeight="17.0" prefWidth="208.0" text="phoneNumber">
+            <Label fx:id="editPhoneLabel" layoutX="63.0" layoutY="207.0" prefHeight="47.0" prefWidth="208.0" text="Phone Number">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </Label>
-            <Label fx:id="editEmailLabel" layoutX="113.0" layoutY="313.0" prefHeight="17.0" prefWidth="208.0" text="email">
+            <Label fx:id="editEmailLabel" layoutX="63.0" layoutY="286.0" prefHeight="17.0" prefWidth="208.0" text="Email">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </Label>
-            <Button fx:id="OkButton" layoutX="610.0" layoutY="460.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="OkButton" layoutX="505.0" layoutY="393.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="82.0" text="Confirm" />
          </children>
       </AnchorPane>
    </children>

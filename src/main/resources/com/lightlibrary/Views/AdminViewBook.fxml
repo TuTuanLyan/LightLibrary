@@ -96,7 +96,7 @@
             <TextField fx:id="sortPrice" GridPane.columnIndex="5" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <AnchorPane fx:id="editPane" layoutX="297.0" layoutY="96.0" prefHeight="526.0" prefWidth="746.0" visible="false">
+      <AnchorPane fx:id="editPane" layoutX="297.0" layoutY="96.0" prefHeight="526.0" prefWidth="746.0" styleClass="edit-table" visible="false">
          <children>
             <TextField fx:id="editTotalTextField" layoutX="119.0" layoutY="157.0" prefHeight="25.0" prefWidth="521.0" promptText="total" />
             <TextField fx:id="editAvailableTextField" layoutX="119.0" layoutY="292.0" prefHeight="25.0" prefWidth="521.0" promptText="available" />
