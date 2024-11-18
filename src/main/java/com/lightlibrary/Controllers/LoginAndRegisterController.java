@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -267,7 +268,40 @@ public class LoginAndRegisterController implements Initializable {
             valid = false;
         }
 
-        registerNotificationLabel.setText(valid ? "Success!" : "Create account fail! Please try again.");
+        if (valid) {
+            try {
+                Connection conn = DatabaseConnection.getConnection();
+                String sql = "INSERT INTO users (fullName, username, password) VALUES (?, ?, ?)";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+
+                stmt.setString(1, registerFullName.getText());
+                stmt.setString(2, registerUsername.getText());
+                stmt.setString(3, registerPassword.getText());
+
+                int rowsInserted = stmt.executeUpdate();
+
+                if (rowsInserted > 0) {
+                    registerNotificationLabel.setText("Account created successfully!");
+
+                    // Show success alert
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Registration Successful");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Your account has been successfully created!");
+                    alert.showAndWait();
+                } else {
+                    registerNotificationLabel.setText("Failed to create account. Please try again.");
+                }
+
+                stmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                registerNotificationLabel.setText("Database error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            registerNotificationLabel.setText("Create account fail! Please try again.");
+        }
     }
 
     /**
@@ -389,6 +423,12 @@ public class LoginAndRegisterController implements Initializable {
         loginFormSliding.setToX(-400);
         loginFormSliding.play();
 
+        registerFormSliding.setOnFinished(event -> {
+            loginUsername.clear();
+            loginPassword.clear();
+            loginNotificationLabel.setText("");
+        });
+
     }
 
     /**
@@ -409,5 +449,12 @@ public class LoginAndRegisterController implements Initializable {
         registerFormSliding.setToX(400);
         registerFormSliding.play();
 
+        loginFormSliding.setOnFinished(event -> {
+            registerFullName.clear();
+            registerUsername.clear();
+            registerPassword.clear();
+            registerConfirmPassword.clear();
+            registerNotificationLabel.setText("");
+        });
     }
 }
