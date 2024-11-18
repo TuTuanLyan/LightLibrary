@@ -78,6 +78,7 @@ public class AdminIssueBookController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addBookButton.setOnAction(this::addBookAction);
+        addBookButton.setDisable(true);
     }
 
     @Override
@@ -255,7 +256,9 @@ public class AdminIssueBookController implements Initializable, SyncAction {
 
     public void showBookDetail(String thumbnailUrl,String title, String author,String ISBN,
                                String description, String publisher, String publishDate) {
-        System.out.println("Call here " + ISBN);
+        addBookButton.setDisable(false);
+        numbersOfAddBookTextField.clear();
+        feePerDayTextField.clear();
 
         detailThumbnailImage.setImage(new Image(thumbnailUrl));
         detailAuthorLabel.setText(author);
@@ -342,6 +345,20 @@ public class AdminIssueBookController implements Initializable, SyncAction {
         }
     }
 
+    @FXML
+    public void cancelViewDetail(ActionEvent event) {
+        detailThumbnailImage.setImage(new Image(Objects
+                .requireNonNull(Objects.requireNonNull(getClass()
+                        .getResource("/com/lightlibrary/Images/LightLibraryLogo.png")).toExternalForm())));
+        detailAuthorLabel.setText("Author");
+        detailTitleLabel.setText("Title");
+        detailDescriptionLabel.setText("Description");
+        detailISBNLabel.setText("ISBN");
+        detailPublisherLabel.setText("Publisher");
+        detailPublishDateLabel.setText("Published Date");
+
+        addBookButton.setDisable(true);
+    }
 
     /**
      * Hiển thị thông báo cho người dùng.

@@ -38,7 +38,7 @@
             </ImageView>
             <Pane layoutX="18.0" layoutY="51.0" prefHeight="180.0" prefWidth="145.0" styleClass="thumbnail-result-border" />
             <Label alignment="CENTER" layoutX="28.0" layoutY="15.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
-            <Button fx:id="addBookButton" layoutX="524.0" layoutY="703.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
+            <Button fx:id="addBookButton" layoutX="523.0" layoutY="630.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
             <Label fx:id="detailTitleLabel" alignment="CENTER" layoutX="181.0" layoutY="25.0" prefHeight="36.0" prefWidth="446.0" styleClass="book-title-label" text="Label" />
             <Label fx:id="detailDescriptionLabel" layoutX="181.0" layoutY="69.0" prefHeight="537.0" prefWidth="446.0" styleClass="book-info-label" text="Description" />
             <Label fx:id="detailAuthorLabel" layoutX="16.0" layoutY="231.0" prefHeight="60.0" prefWidth="150.0" styleClass="book-info-label" text="Author" wrapText="true" />
@@ -97,6 +97,7 @@
                   </LinearGradient>
                </textFill>
             </Label>
+            <Button layoutX="523.0" layoutY="703.0" mnemonicParsing="false" onAction="#cancelViewDetail" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Cancle" />
          </children>
       </Pane>
    </children>
