@@ -162,6 +162,11 @@ public class CustomerDashboardController implements Initializable {
 
             loadTask.setOnSucceeded(event -> {
                 FXMLLoader loader = loadTask.getValue();
+                Object controller = loader.getController();
+                if (controller instanceof SyncAction) {
+                    ((SyncAction) controller).setTheme(customer.isDarkMode());
+                    ((SyncAction) controller).setParentController(this);
+                }
                 cache.put(fxmlPath, loader);
             });
 

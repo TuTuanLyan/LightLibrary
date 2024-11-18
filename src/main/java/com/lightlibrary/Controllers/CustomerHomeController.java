@@ -1,5 +1,8 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.DatabaseConnection;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,8 +10,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -63,6 +71,8 @@ public class CustomerHomeController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateDate(curentTimeLabel);
+
+        disPlayTopChoices();
     }
 
     @Override
@@ -107,5 +117,57 @@ public class CustomerHomeController implements Initializable, SyncAction {
 
     public void viewHistoryTransaction(ActionEvent actionEvent) {
         parentController.goToHistoryPage();
+    }
+
+    public void disPlayTopChoices() {
+        Task<Void> loadTopBooksTask = new Task<>() {
+
+            @Override
+            protected Void call() throws SQLException {
+                Connection connectDB = DatabaseConnection.getConnection();
+
+                if (connectDB == null) {
+                    throw new SQLException("Connection is null");
+                }
+
+                String query = "SELECT b.title, b.author, b.thumbnail \n" +
+                        "FROM transactions t\n" +
+                        "JOIN books b ON t.isbn = b.isbn\n" +
+                        "GROUP BY t.isbn\n" +
+                        "ORDER BY COUNT(b.title and t.isbn) DESC\n" +
+                        "LIMIT 8;";
+
+                try (PreparedStatement preparedStatement = connectDB.prepareStatement(query);
+                     ResultSet resultSet = preparedStatement.executeQuery()) {
+                    int index = 0;
+                    while (resultSet.next()) {
+                        if (index > 8) break;
+
+                        String title = resultSet.getString("title");
+                        String author = resultSet.getString("author");
+                        String thumbnailUrl = resultSet.getString("thumbnail");
+
+                        // Create UI components for each book
+                        Pane bookBox = ControllerUtil.createTopBookBlock(thumbnailUrl, title, author);
+                        bookBox.setLayoutX(index * 160 + 20);
+                        bookBox.setLayoutY(585);
+
+                        // Update the UI on the JavaFX Application Thread
+                        Platform.runLater(() -> homeRoot.getChildren().add(bookBox));
+
+                        index++;
+                    }
+                }
+                return null;
+            }
+        };
+
+        loadTopBooksTask.setOnFailed(event -> {
+            System.err.println("Failed to load top books: " + loadTopBooksTask.getException().getMessage());
+        });
+
+        Thread thread = new Thread(loadTopBooksTask);
+        thread.setDaemon(true); // Ensure thread exits when the application closes
+        thread.start();
     }
 }

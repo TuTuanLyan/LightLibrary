@@ -128,4 +128,32 @@ public class ControllerUtil {
         return new Pane(thumbnail, thumbnailBorder, titleLabel, authorLabel,
                 descriptionLabel, ISBNLabel, line);
     }
+
+    public static Pane createTopBookBlock(String thumbnailURL, String title, String author) {
+        ImageView thumbnail = new ImageView(new Image(thumbnailURL));
+        thumbnail.setFitHeight(140);
+        thumbnail.setFitWidth(140);
+        thumbnail.setLayoutX(0);
+        thumbnail.setLayoutY(0);
+
+        Label titleLabel = new Label(title);
+        titleLabel.setWrapText(true);
+        titleLabel.setPrefSize(140, 60);
+        titleLabel.setLayoutX(0);
+        titleLabel.setLayoutY(128);
+        titleLabel.getStyleClass().add("top-book-title");
+
+        Label authorLabel = new Label(author);
+        authorLabel.setWrapText(true);
+        authorLabel.setPrefSize(140, 35);
+        authorLabel.setLayoutX(0);
+        authorLabel.setLayoutY(175);
+        authorLabel.getStyleClass().add("top-book-author");
+
+        Pane topBookBlock = new Pane();
+        topBookBlock.getStyleClass().add("top-book-block");
+        topBookBlock.getChildren().addAll(thumbnail, titleLabel, authorLabel);
+        topBookBlock.setPrefSize(140, 210);
+        return topBookBlock;
+    }
 }
