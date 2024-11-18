@@ -17,9 +17,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class AdminUserManagementController implements Initializable {
+public class AdminUserManagementController implements Initializable, SyncAction {
 
     @FXML
     private AnchorPane userManagementRoot;
@@ -45,6 +46,32 @@ public class AdminUserManagementController implements Initializable {
 
     @FXML
     private TextField editPhoneNumber;
+
+    AdminDashboardController parentController;
+
+    public AdminDashboardController getParentController() {
+        return parentController;
+    }
+
+    @Override
+    public void setParentController(AdminDashboardController parentController) {
+        this.parentController = parentController;
+    }
+
+    @Override
+    public void setTheme(boolean darkMode) {
+        userManagementRoot.getStylesheets().clear();
+        if (darkMode) {
+            userManagementRoot.getStylesheets().add(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
+        } else {
+            userManagementRoot.getStylesheets().add(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
+        }
+    }
+
+    @Override
+    public void setParentController(CustomerDashboardController parentController) {}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,13 +104,13 @@ public class AdminUserManagementController implements Initializable {
 
                     while (resultSet.next()) {
                         int userID = resultSet.getInt("userID");
-                        String fullname = resultSet.getString("fullName");
+                        String fullName = resultSet.getString("fullName");
                         String username = resultSet.getString("username");
                         String password = resultSet.getString("password");
                         String phone = resultSet.getString("phoneNumber");
                         String email = resultSet.getString("email");
 
-                        Platform.runLater(() -> addRow(userID, fullname, username, password, phone, email));
+                        Platform.runLater(() -> addRow(userID, fullName, username, password, phone, email));
                     }
 
                 } catch (SQLException e) {
@@ -138,9 +165,9 @@ public class AdminUserManagementController implements Initializable {
         manageUserGrid.addRow(rowIndex, userIDLabel, fullnameLabel, usernameLabel, passwordLabel, phoneLabel, emailLabel, editButton, deleteButton);
     }
 
-    private Button createEditButton(int userID, String fullname, String password, String phone, String email) {
+    private Button createEditButton(int userID, String fullName, String password, String phone, String email) {
         Button button = new Button("Edit");
-        button.setOnAction(event -> editUser(userID, fullname, password, phone, email));
+        button.setOnAction(event -> editUser(userID, fullName, password, phone, email));
         return button;
     }
 
@@ -220,4 +247,3 @@ public class AdminUserManagementController implements Initializable {
         });
     }
 }
-
