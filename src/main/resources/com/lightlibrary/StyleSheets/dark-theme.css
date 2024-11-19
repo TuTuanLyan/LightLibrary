@@ -265,6 +265,28 @@
 
 /*Admin*/
 
+
+/*Admin Home*/
+.home-view-edit-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.home-view-edit-button:hover {
+    -fx-background-color: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+
+
+
+
 /*Admin View Book*/
 .user-info-table {
     -fx-background-color: #4d4948; /* Màu nền đen */
@@ -279,7 +301,7 @@
 .user-info-table .label {
     -fx-wrap-text: true;
     -fx-background-color: transparent;
-    -fx-text-fill: #aeaeae;
+    -fx-text-fill: #cfcfcf;
     -fx-font-weight: bold;
     -fx-font-size: 21px;
     -fx-font-family: "Arial, Helvetica, sans-serif";

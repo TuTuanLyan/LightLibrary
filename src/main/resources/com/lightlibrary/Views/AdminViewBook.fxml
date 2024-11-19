@@ -32,7 +32,7 @@
             </GridPane>
          </content>
       </ScrollPane>
-      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="21.0" layoutY="32.0" prefHeight="128.0" prefWidth="1262.0" styleClass="user-info-table">
+      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="21.0" layoutY="22.0" prefHeight="128.0" prefWidth="1262.0" styleClass="user-info-table">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />

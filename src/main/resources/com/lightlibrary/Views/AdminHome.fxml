@@ -1,15 +1,385 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="homeRoot" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <Label layoutX="308.0" layoutY="250.0" prefHeight="334.0" prefWidth="896.0" text="This is home page">
-            <font>
-                <Font size="61.0" />
-            </font>
-        </Label>
-    </children>
+<AnchorPane fx:id="homeRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="main-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminHomeController">
+   <children>
+      <Pane layoutX="15.0" layoutY="15.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container">
+         <children>
+            <Label layoutX="15.0" prefHeight="38.0" prefWidth="153.0" styleClass="for-you-label" text="List of Book" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ScrollPane layoutX="15.0" layoutY="66.0" prefHeight="309.0" prefWidth="622.0">
+               <content>
+                  <GridPane fx:id="listBookGridPane" prefHeight="41.0" prefWidth="605.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="109.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="195.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="223.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="269.0" minWidth="10.0" prefWidth="79.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label prefHeight="41.0" prefWidth="111.0" styleClass="page-title" text="123456789">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="47.0" prefWidth="196.0" styleClass="page-title" text="jadkajfnckzxcjkas" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="54.0" prefWidth="224.0" styleClass="page-title" text="DNMD" GridPane.columnIndex="2">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="41.0" prefWidth="87.0" styleClass="page-title" text="123456789" GridPane.columnIndex="3">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <Label layoutX="19.0" layoutY="38.0" prefHeight="25.0" prefWidth="50.0" styleClass="page-title" text="ISBN">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="126.0" layoutY="38.0" prefHeight="25.0" prefWidth="33.0" styleClass="page-title" text="Title">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="320.0" layoutY="38.0" prefHeight="25.0" prefWidth="50.0" styleClass="page-title" text="Author">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="549.0" layoutY="38.0" prefHeight="25.0" prefWidth="69.0" styleClass="page-title" text="Available">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Button layoutX="513.0" layoutY="377.0" mnemonicParsing="false" onAction="#viewAndEditBook" prefHeight="25.0" prefWidth="117.0" styleClass="home-view-edit-button" text="View and Edit">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane layoutX="680.0" layoutY="15.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container">
+         <children>
+            <Label layoutX="14.0" prefHeight="38.0" prefWidth="153.0" styleClass="for-you-label" text="List of User" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ScrollPane layoutX="15.0" layoutY="64.0" prefHeight="309.0" prefWidth="622.0">
+               <content>
+                  <GridPane fx:id="listUserGridPane" prefHeight="41.0" prefWidth="600.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="109.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="195.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="223.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="269.0" minWidth="10.0" prefWidth="79.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label prefHeight="41.0" prefWidth="111.0" styleClass="page-title" text="123456789">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="47.0" prefWidth="196.0" styleClass="page-title" text="jadkajfnckzxcjkas" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="54.0" prefWidth="224.0" styleClass="page-title" text="DNMD" GridPane.columnIndex="2">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="41.0" prefWidth="85.0" styleClass="page-title" text="123456789" GridPane.columnIndex="3">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <Button layoutX="513.0" layoutY="376.0" mnemonicParsing="false" onAction="#viewAndEditUser" prefHeight="25.0" prefWidth="117.0" styleClass="home-view-edit-button" text="View and Edit">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Label layoutX="19.0" layoutY="40.0" prefHeight="25.0" prefWidth="63.0" styleClass="page-title" text="User ID">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="122.0" layoutY="40.0" prefHeight="25.0" prefWidth="75.0" styleClass="page-title" text="Username">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="316.0" layoutY="40.0" prefHeight="25.0" prefWidth="75.0" styleClass="page-title" text="Full Name">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="540.0" layoutY="40.0" prefHeight="25.0" prefWidth="75.0" styleClass="page-title" text="Borrowed">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="15.0" layoutY="451.0" prefHeight="160.0" prefWidth="310.0" styleClass="box-container">
+         <children>
+            <Circle layoutX="239.0" layoutY="67.0" radius="53.0" strokeType="INSIDE">
+               <stroke>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Label layoutX="19.0" layoutY="111.0" prefHeight="35.0" prefWidth="160.0" styleClass="page-title" text="Total Book">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="totalBookImage" fitHeight="70.0" fitWidth="70.0" layoutX="204.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="totalBookLabel" layoutX="19.0" layoutY="17.0" prefHeight="85.0" prefWidth="160.0">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="350.0" layoutY="451.0" prefHeight="160.0" prefWidth="310.0" styleClass="box-container">
+         <children>
+            <Circle layoutX="239.0" layoutY="67.0" radius="53.0" strokeType="INSIDE">
+               <stroke>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Label layoutX="19.0" layoutY="111.0" prefHeight="35.0" prefWidth="160.0" styleClass="page-title" text="Total User">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="totalUserImage" fitHeight="70.0" fitWidth="70.0" layoutX="204.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="totalUserLabel" layoutX="19.0" layoutY="17.0" prefHeight="85.0" prefWidth="160.0">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="15.0" layoutY="631.0" prefHeight="160.0" prefWidth="310.0" styleClass="box-container">
+         <children>
+            <Circle layoutX="234.0" layoutY="67.0" radius="53.0" strokeType="INSIDE">
+               <stroke>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Label layoutX="14.0" layoutY="111.0" prefHeight="35.0" prefWidth="160.0" styleClass="page-title" text="Transactions">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="transactionsImage" fitHeight="70.0" fitWidth="70.0" layoutX="199.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="transactionsLabel" layoutX="14.0" layoutY="17.0" prefHeight="85.0" prefWidth="160.0">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="351.0" layoutY="631.0" prefHeight="160.0" prefWidth="310.0" styleClass="box-container">
+         <children>
+            <Circle layoutX="243.0" layoutY="67.0" radius="53.0" strokeType="INSIDE">
+               <stroke>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Label layoutX="23.0" layoutY="111.0" prefHeight="35.0" prefWidth="160.0" styleClass="page-title" text="Required Books">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="requiredBookImage" fitHeight="70.0" fitWidth="70.0" layoutX="208.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="requiredBookLabel" layoutX="23.0" layoutY="17.0" prefHeight="85.0" prefWidth="160.0">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="680.0" layoutY="451.0" prefHeight="340.0" prefWidth="645.0" styleClass="box-container">
+         <children>
+            <BarChart prefHeight="316.0" prefWidth="645.0">
+              <xAxis>
+                <CategoryAxis prefHeight="40.0" prefWidth="588.0" side="BOTTOM" tickLabelFill="#a4a4a4" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" styleClass="chart-legend-item" tickLabelFill="#a8a8a8" />
+              </yAxis>
+            </BarChart>
+            <Label layoutX="205.0" layoutY="314.0" styleClass="page-title" text="Borrow Book">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Label layoutX="371.0" layoutY="314.0" styleClass="page-title" text="Return book">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6ebbff" height="17.0" layoutX="180.0" layoutY="315.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2b88d3" height="17.0" layoutX="347.0" layoutY="316.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>
