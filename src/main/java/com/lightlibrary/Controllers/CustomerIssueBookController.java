@@ -6,10 +6,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -259,7 +256,6 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
     public void showBookDetail(String thumbnailUrl,String title, String author,String ISBN,
                                String description, String publisher, String publishDate) {
-        System.out.println("Call here " + ISBN);
 
         detailBookPane.setVisible(true);
 
@@ -287,7 +283,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
             String input = borrowDaysAmount.getText().trim();
 
             if (input.isEmpty()) {
-                //System.out.println("Vui lòng nhập số ngày hợp lệ.");
+                showAlert(Alert.AlertType.ERROR, "Invalid Date", "Invalid number of days entered!");
                 return;
             }
 
@@ -295,15 +291,14 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                 int daysToExtend = Integer.parseInt(input);
 
                 if (daysToExtend < 0) {
-                    //System.out.println("Số ngày gia hạn không thể nhỏ hơn 0.");
                     borrowDaysAmount.setText("0");
+                    showAlert(Alert.AlertType.ERROR, "Invalid Date", "The renewal date cannot be negative!");
                 } else {
                     LocalDate newDueDate = LocalDate.now().plusDays(daysToExtend);
                     pickDueDatePiker.setValue(newDueDate);
-                    //System.out.println("Ngày gia hạn được cập nhật thành: " + newDueDate);
                 }
             } catch (NumberFormatException e) {
-                //System.out.println("Định dạng không hợp lệ. Vui lòng nhập số nguyên.");
+                showAlert(Alert.AlertType.ERROR, "Invalid Date", "Invalid number of days entered!");
             }
         });
     }
@@ -312,21 +307,33 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         LocalDate selectedDate = pickDueDatePiker.getValue();
 
         if (selectedDate == null) {
-            //System.out.println("Ngày chọn không hợp lệ.");
+            showAlert(Alert.AlertType.ERROR, "Invalid Date", "The selected date is invalid!");
             return;
         }
 
         long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), selectedDate);
 
         if (daysBetween < 0) {
-            //System.out.println("Ngày gia hạn không thể trước hôm nay.");
+            showAlert(Alert.AlertType.ERROR, "Invalid Date", "The renewal date cannot before the current date.");
             pickDueDatePiker.setValue(LocalDate.now());
             borrowDaysAmount.setText("0");
         } else {
             borrowDaysAmount.setText(String.valueOf(daysBetween));
-            //System.out.println("Số ngày gia hạn được cập nhật thành: " + daysBetween);
         }
     }
 
-
+    /**
+     * Hiển thị thông báo cho người dùng.
+     *
+     * @param alertType Loại thông báo (ERROR, INFORMATION, etc.)
+     * @param title     Tiêu đề thông báo
+     * @param message   Nội dung thông báo
+     */
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
