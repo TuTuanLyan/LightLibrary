@@ -30,7 +30,7 @@
             </Label>
             <ScrollPane layoutX="15.0" layoutY="66.0" prefHeight="309.0" prefWidth="622.0">
                <content>
-                  <GridPane fx:id="listBookGridPane" prefHeight="41.0" prefWidth="605.0">
+                  <GridPane fx:id="listBookGridPane" prefHeight="41.0" prefWidth="605.0" styleClass="home-overview-list">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="109.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="195.0" />
@@ -41,22 +41,22 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label prefHeight="41.0" prefWidth="111.0" styleClass="page-title" text="123456789">
+                        <Label prefHeight="41.0" prefWidth="111.0" text="123456789">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="47.0" prefWidth="196.0" styleClass="page-title" text="jadkajfnckzxcjkas" GridPane.columnIndex="1">
+                        <Label prefHeight="47.0" prefWidth="196.0" text="jadkajfnckzxcjkas" GridPane.columnIndex="1">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="54.0" prefWidth="224.0" styleClass="page-title" text="DNMD" GridPane.columnIndex="2">
+                        <Label prefHeight="54.0" prefWidth="224.0" text="DNMD" GridPane.columnIndex="2">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="41.0" prefWidth="87.0" styleClass="page-title" text="123456789" GridPane.columnIndex="3">
+                        <Label prefHeight="54.0" prefWidth="224.0" text="712" GridPane.columnIndex="3">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -101,7 +101,7 @@
             </Label>
             <ScrollPane layoutX="15.0" layoutY="64.0" prefHeight="309.0" prefWidth="622.0">
                <content>
-                  <GridPane fx:id="listUserGridPane" prefHeight="41.0" prefWidth="600.0">
+                  <GridPane fx:id="listUserGridPane" prefHeight="41.0" prefWidth="600.0" styleClass="home-overview-list">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="109.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="195.0" />
@@ -112,22 +112,22 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label prefHeight="41.0" prefWidth="111.0" styleClass="page-title" text="123456789">
+                        <Label prefHeight="41.0" prefWidth="111.0" text="123456789">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="47.0" prefWidth="196.0" styleClass="page-title" text="jadkajfnckzxcjkas" GridPane.columnIndex="1">
+                        <Label prefHeight="47.0" prefWidth="196.0" text="jadkajfnckzxcjkas" GridPane.columnIndex="1">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="54.0" prefWidth="224.0" styleClass="page-title" text="DNMD" GridPane.columnIndex="2">
+                        <Label prefHeight="54.0" prefWidth="224.0" text="DNMD" GridPane.columnIndex="2">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="41.0" prefWidth="85.0" styleClass="page-title" text="123456789" GridPane.columnIndex="3">
+                        <Label prefHeight="41.0" prefWidth="85.0" text="123456789" GridPane.columnIndex="3">
                            <font>
                               <Font size="15.0" />
                            </font>

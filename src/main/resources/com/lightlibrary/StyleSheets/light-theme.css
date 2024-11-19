@@ -291,7 +291,11 @@
     -fx-font-weight: bold;
 }
 
-
+.home-overview-list .label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
 
 
 
