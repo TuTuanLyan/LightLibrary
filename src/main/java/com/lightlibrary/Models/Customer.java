@@ -1,5 +1,9 @@
 package com.lightlibrary.Models;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Customer extends User {
@@ -24,8 +28,28 @@ public class Customer extends User {
     }
 
     public long getCoins() {
-        return coins;
+        // Kết nối cơ sở dữ liệu
+        Connection connectDB = DatabaseConnection.getConnection();
+        if (connectDB == null) {
+            System.out.println("Failed to connect to the database.");
+            return 0; // Giá trị mặc định nếu không kết nối được
+        }
+
+        String query = "SELECT coin FROM users WHERE userID = ?";
+        try (PreparedStatement preparedStatement = connectDB.prepareStatement(query)) {
+            preparedStatement.setInt(1, this.userID); // userID là khóa chính của khách hàng
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                this.coins = resultSet.getLong("coin"); // Cập nhật giá trị coin từ SQL
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return this.coins;
     }
+
 
     public void setCoins(long coins) {
         this.coins = coins;

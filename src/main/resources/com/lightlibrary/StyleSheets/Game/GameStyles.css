@@ -1,0 +1,29 @@
+Rectangle {
+    -fx-fill: white;
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-font-size: 18;
+    -fx-text-fill: black;
+    -fx-underline: false;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
+StackPane:hover .button {
+    -fx-text-fill: white;
+}
+
+StackPane:hover Rectangle {
+    -fx-fill: #589f93;
+}
+
+.hover-effect-stackpane:hover .button {
+    -fx-text-fill: white;
+    -fx-underline: true;
+}
+
+.hover-effect-stackpane:hover Rectangle {
+    -fx-fill: #589f93;
+}

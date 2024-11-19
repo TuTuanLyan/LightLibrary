@@ -8,6 +8,7 @@ module com.lightlibrary {
     requires com.google.api.client;
     requires com.google.api.services.books;
     requires com.google.api.client.json.gson;
+    requires javafx.media;
 
     opens com.lightlibrary to javafx.fxml;
     exports com.lightlibrary;
