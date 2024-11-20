@@ -290,6 +290,38 @@
     -fx-text-fill: #d6d6d6;
 }
 
+.axis {
+    -fx-tick-label-fill: #ffffff; /* Màu cho các con số (nhãn) */
+    -fx-tick-mark-stroke: #ffffff; /* Màu các dấu gạch trên trục */
+    -fx-tick-label-font-size: 10px; /* Kích thước font nhãn */
+}
+
+.axis-label {
+    -fx-text-fill: #ffffff; /* Màu chữ của nhãn trục */
+    -fx-font-size: 15px;    /* Kích thước chữ */
+    -fx-font-weight: bold;  /* In đậm */
+}
+
+/* Đổi màu các thanh của biểu đồ */
+.chart-bar.series0 {
+    -fx-bar-fill: #08d792; /* Màu cho Borrowed */
+}
+
+.chart-bar.series1 {
+    -fx-bar-fill: #7096ff; /* Màu cho Returned */
+}
+
+/* Đổi màu trong phần chú thích */
+.chart-legend-item-symbol.default-color0 {
+    -fx-background-color: #08d792; /* Màu cho Borrowed */
+}
+
+.chart-legend-item-symbol.default-color1 {
+    -fx-background-color: #7096ff; /* Màu cho Returned */
+}
+
+
+
 
 
 

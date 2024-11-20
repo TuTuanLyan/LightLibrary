@@ -77,59 +77,12 @@ public class AdminHomeController implements Initializable, SyncAction {
         ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.execute(this::loadViewBook);
         executorService.execute(this::loadViewUser);
-        executorService.submit(() -> {
-            Connection connection = DatabaseConnection.getConnection();
-            String queryTotalBooks = "select count(*) as totalBooks from books";
-            try {
-                PreparedStatement preparedStatement = connection.prepareStatement(queryTotalBooks);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    totalBookLabel.setText(resultSet.getString("totalBooks"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            Connection connection = DatabaseConnection.getConnection();
-            String queryTotalUsers = "select count(*) as totalUsers from users";
-            try {
-                PreparedStatement preparedStatement = connection.prepareStatement(queryTotalUsers);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    totalUserLabel.setText(resultSet.getString("totalUsers"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            Connection connection = DatabaseConnection.getConnection();
-            String queryTotalTransactions = "select count(*) as totalTransactions from transactions";
-            try {
-                PreparedStatement preparedStatement = connection.prepareStatement(queryTotalTransactions);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    transactionsLabel.setText(resultSet.getString("totalTransactions"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            Connection connection = DatabaseConnection.getConnection();
-            String queryTotalRequired = "select count(*) as totalRequiredBooks from requiredBooks";
-            try {
-                PreparedStatement preparedStatement = connection.prepareStatement(queryTotalRequired);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    requiredBookLabel.setText(resultSet.getString("totalRequiredBooks"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+        executorService.submit(() -> loadTotalOverviewLabel(totalBookLabel, "books"));
+        executorService.submit(() -> loadTotalOverviewLabel(totalUserLabel, "users"));
+        executorService.submit(() -> loadTotalOverviewLabel(transactionsLabel, "transactions"));
+        executorService.submit(() -> loadTotalOverviewLabel(requiredBookLabel, "requiredBooks"));
         executorService.submit(this::graphController);
+        executorService.shutdown();
     }
 
     @Override
@@ -175,6 +128,19 @@ public class AdminHomeController implements Initializable, SyncAction {
         parentController.goToUserManagementPage();
     }
 
+    public void loadTotalOverviewLabel(Label label, String table) {
+        Connection connection = DatabaseConnection.getConnection();
+        String queryTotalBooks = "select count(*) as total from " + table;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(queryTotalBooks);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                label.setText(resultSet.getString("total"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void loadViewBook() {
         listBookGridPane.getChildren().clear();
@@ -249,9 +215,9 @@ public class AdminHomeController implements Initializable, SyncAction {
         XYChart.Series<String, Number> returnTotals = new XYChart.Series<>();
         returnTotals.setName("Returned");
 
-        graph.lookupAll(".chart-legend-item").forEach(node -> {
+        /*graph.lookupAll(".chart-legend-item").forEach(node -> {
             node.setStyle("-fx-font-size: 16px; -fx-font-family: Arial; -fx-text-fill: #4CAF50;");
-        });
+        });*/
 
         Connection connection = DatabaseConnection.getConnection();
         String queryConnect1 = "select t.borrowDate,count(t.borrowDate) as borrowPerDay from transactions t where t.borrowDate between current_date() - 6 and current_date() group by t.borrowDate order by t.borrowDate asc";
