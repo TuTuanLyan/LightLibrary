@@ -21,15 +21,7 @@
          <children>
             <ScrollPane layoutX="15.0" layoutY="15.0" prefHeight="750.0" prefWidth="620.0">
               <content>
-                <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0">
-                     <children>
-                        <Pane layoutX="74.0" layoutY="129.0" prefHeight="283.0" prefWidth="406.0">
-                           <children>
-                              <DatePicker fx:id="pickDueDatePiker" layoutX="190.0" layoutY="48.0" prefHeight="42.0" prefWidth="194.0" promptText="Chose a due date" />
-                              <TextField fx:id="borrowDaysAmount" layoutX="22.0" layoutY="48.0" prefHeight="42.0" prefWidth="160.0" promptText="Number of days " />
-                           </children>
-                        </Pane>
-                     </children></AnchorPane>
+                <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0" />
               </content>
             </ScrollPane>
             <Label layoutX="18.0" prefHeight="53.0" prefWidth="605.0" styleClass="for-you-label" text="    For you" textFill="WHITE">
@@ -65,8 +57,8 @@
             </ImageView>
             <Pane layoutX="18.0" layoutY="51.0" prefHeight="180.0" prefWidth="145.0" styleClass="thumbnail-result-border" />
             <Label alignment="CENTER" layoutX="28.0" layoutY="15.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
-            <Button fx:id="addToFavouriteListButton" layoutX="426.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
-            <Button fx:id="borrowBookButton" layoutX="537.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Borrow" />
+            <Button fx:id="addToFavouriteListButton" layoutX="426.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" visible="false" />
+            <Button fx:id="borrowBookButton" layoutX="537.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Borrow" visible="false" />
             <Button fx:id="detailCloseButton" layoutX="608.0" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="functional-detail-button">
                <graphic>
                   <FontAwesomeIcon glyphName="CLOSE" size="1.6em" styleClass="functional-detail-button" textAlignment="CENTER" />
@@ -75,29 +67,8 @@
             <Label fx:id="detailTItleLabel" alignment="CENTER" layoutX="181.0" layoutY="33.0" prefHeight="36.0" prefWidth="435.0" styleClass="book-title-label" text="Label" />
             <Label fx:id="detailDescriptionLabel" layoutX="181.0" layoutY="69.0" prefHeight="222.0" prefWidth="435.0" styleClass="book-info-label" text="Label" />
             <Label fx:id="detailAuthorLabel" layoutX="16.0" layoutY="231.0" prefHeight="60.0" prefWidth="150.0" styleClass="book-info-label" text="Label" />
-            <Label alignment="CENTER" layoutX="15.0" layoutY="290.0" prefHeight="48.0" prefWidth="150.0" text="Prices / day">
-               <font>
-                  <Font name="System Bold" size="25.0" />
-               </font>
-               <textFill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </textFill>
-            </Label>
             <Label fx:id="detailPublishDateLabel" layoutX="416.0" layoutY="303.0" prefHeight="36.0" prefWidth="215.0" styleClass="book-info-label" text="Label" />
-            <Label fx:id="detailPriceLabel" alignment="CENTER" layoutX="19.0" layoutY="341.0" prefHeight="53.0" prefWidth="145.0" text="Label">
+            <Label fx:id="detailPriceLabel" alignment="CENTER" layoutX="8.0" layoutY="294.0" prefHeight="119.0" prefWidth="180.0" text="Fee / Day" textAlignment="CENTER" wrapText="true">
                <textFill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -115,11 +86,12 @@
                   </LinearGradient>
                </textFill>
                <font>
-                  <Font name="System Bold" size="30.0" />
+                  <Font name="System Bold" size="24.0" />
                </font>
             </Label>
             <Label fx:id="detailISBNLabel" layoutX="176.0" layoutY="359.0" prefHeight="36.0" prefWidth="228.0" styleClass="book-info-label" text="Label" />
             <Label fx:id="detailPublisherLabel" layoutX="176.0" layoutY="303.0" prefHeight="36.0" prefWidth="228.0" styleClass="book-info-label" text="Label" />
+            <Button fx:id="requireBookButton" layoutX="443.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="159.0" styleClass="view-detail-button" text="Require Book" />
          </children></Pane>
       <Pane layoutX="680.0" layoutY="443.0" prefHeight="350.0" prefWidth="645.0" styleClass="box-container">
          <children>
@@ -130,5 +102,89 @@
             </ScrollPane>
          </children>
       </Pane>
+      <AnchorPane fx:id="confirmBorrowPane" prefHeight="810.0" prefWidth="1364.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);">
+         <children>
+            <Pane layoutX="476.0" layoutY="167.0" prefHeight="402.0" prefWidth="412.0" styleClass="box-container">
+               <children>
+                  <DatePicker fx:id="pickDueDatePiker" layoutX="194.0" layoutY="115.0" prefHeight="42.0" prefWidth="194.0" promptText="Chose a due date" />
+                  <TextField fx:id="borrowDaysAmount" layoutX="14.0" layoutY="115.0" prefHeight="42.0" prefWidth="165.0" promptText="Number of days " />
+                  <Label fx:id="totalPriceLabel" alignment="CENTER" layoutX="19.0" layoutY="205.0" prefHeight="60.0" prefWidth="375.0" text="Total Price: " textAlignment="CENTER">
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="6.0" layoutY="34.0" prefHeight="75.0" prefWidth="400.0" text="Please enter the number of days you want to borrow or return date" textAlignment="CENTER" wrapText="true">
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="confirmBorrowButton" layoutX="132.0" layoutY="271.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="150.0" styleClass="view-detail-button" text="Confirm Borrow" />
+                  <Button fx:id="cancleBorrowButton" layoutX="375.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="functional-detail-button">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="CLOSE" size="1.6em" styleClass="functional-detail-button" textAlignment="CENTER" />
+                     </graphic>
+                  </Button>
+                  <Label fx:id="confirmFeePerDay" alignment="CENTER" layoutX="28.0" layoutY="169.0" prefHeight="42.0" prefWidth="356.0" text="Fee / Days" textAlignment="CENTER">
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="6.0" layoutY="320.0" prefHeight="75.0" prefWidth="400.0" text="* If you choose the number of days please press enter to see the total price." textAlignment="CENTER" textFill="#a4a4a4" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
     </children>
 </AnchorPane>

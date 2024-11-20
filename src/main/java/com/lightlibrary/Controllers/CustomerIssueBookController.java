@@ -18,9 +18,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -40,6 +42,9 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
     @FXML
     private Button borrowBookButton;
+
+    @FXML
+    private Button requireBookButton;
 
     @FXML
     private Button detailCloseButton;
@@ -68,12 +73,26 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     @FXML
     private ImageView detailThumbnailImage;
 
-
     @FXML
     private DatePicker pickDueDatePiker;
 
     @FXML
     private TextField borrowDaysAmount;
+
+    @FXML
+    private  AnchorPane confirmBorrowPane;
+
+    @FXML
+    private Label confirmFeePerDay;
+
+    @FXML
+    private Label totalPriceLabel;
+
+    @FXML
+    private Button cancleBorrowButton;
+
+    @FXML
+    private Button confirmBorrowButton;
 
     private CustomerDashboardController parentController;
 
@@ -96,6 +115,15 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
         pickDueDatePiker.setOnAction(event -> handleDueDatePickerAction());
         setupOnActionForBorrowDays();
+
+        confirmBorrowPane.setVisible(false);
+        cancleBorrowButton.setOnAction(e -> {
+            confirmBorrowPane.setVisible(false);
+            borrowDaysAmount.clear();
+            pickDueDatePiker.cancelEdit();
+            confirmFeePerDay.setText("Fee / Days: ");
+            totalPriceLabel.setText("Total Price: ");
+        });
     }
 
     public void updateSearchResults(String query) {
@@ -266,6 +294,17 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         Task<Double> checkISBNTask = new Task<>() {
             @Override
             protected Double call() throws Exception {
+
+                Platform.runLater(() -> {
+                    detailThumbnailImage.setImage(new Image(thumbnailUrl));
+                    detailAuthorLabel.setText(author);
+                    detailTItleLabel.setText(title);
+                    detailDescriptionLabel.setText(description);
+                    detailISBNLabel.setText(ISBN);
+                    detailPublisherLabel.setText(publisher);
+                    detailPublishDateLabel.setText(publishDate);
+                });
+
                 try (Connection connection = DatabaseConnection.getConnection();
                      PreparedStatement preparedStatement = connection.prepareStatement(
                              "SELECT availableNumber, price FROM books WHERE isbn = ?")) {
@@ -290,31 +329,26 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
             double price = checkISBNTask.getValue();
             detailBookPane.setVisible(true);
 
-            Platform.runLater(() -> {
-                detailThumbnailImage.setImage(new Image(thumbnailUrl));
-                detailAuthorLabel.setText(author);
-                detailTItleLabel.setText(title);
-                detailDescriptionLabel.setText(description);
-                detailISBNLabel.setText(ISBN);
-                detailPublisherLabel.setText(publisher);
-                detailPublishDateLabel.setText(publishDate);
-            });
-
             if (price > 0.0D) {
                 addToFavouriteListButton.setVisible(true);
                 borrowBookButton.setVisible(true);
+                borrowBookButton.setOnAction(e -> {
+                    confirmBorrowPane.setVisible(true);
+                    confirmFeePerDay.setText("Fee / Day: " + formatPrice(price));
+                });
+                requireBookButton.setVisible(false);
 
-                detailPriceLabel.setText(Double.toString(price));
+                detailPriceLabel.setText("Fee / Day:\n" + price);
             } else {
                 addToFavouriteListButton.setVisible(false);
                 borrowBookButton.setVisible(false);
+                requireBookButton.setVisible(true);
 
                 detailPriceLabel.setText("This book is not available");
             }
         });
 
         checkISBNTask.setOnFailed(event -> {
-            //loadingPane.setVisible(false);
             System.out.println("Error checking ISBN in database.");
         });
 
@@ -351,6 +385,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                 } else {
                     LocalDate newDueDate = LocalDate.now().plusDays(daysToExtend);
                     pickDueDatePiker.setValue(newDueDate);
+                    updateTotalPrice(daysToExtend);
                 }
             } catch (NumberFormatException e) {
                 showAlert(Alert.AlertType.ERROR, "Invalid Date", "Invalid number of days entered!");
@@ -369,13 +404,16 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), selectedDate);
 
         if (daysBetween < 0) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Date", "The renewal date cannot before the current date.");
+            showAlert(Alert.AlertType.ERROR, "Invalid Date", "The renewal date cannot be before the current date.");
             pickDueDatePiker.setValue(LocalDate.now());
             borrowDaysAmount.setText("0");
+            updateTotalPrice(0);
         } else {
             borrowDaysAmount.setText(String.valueOf(daysBetween));
+            updateTotalPrice((int) daysBetween);
         }
     }
+
 
     /**
      * Hiển thị thông báo cho người dùng.
@@ -390,5 +428,33 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void updateTotalPrice(int days) {
+        try {
+            String detailPriceText = detailPriceLabel.getText().trim();
+
+            String[] lines = detailPriceText.split("\n");
+            String priceText = lines[lines.length - 1].trim();
+
+            double pricePerDay = Double.parseDouble(priceText);
+            double totalPrice = pricePerDay * days - (int)(days / 15)  * 0.02 * pricePerDay;
+
+            totalPriceLabel.setText("Total Price: " + formatPrice(totalPrice));
+        } catch (NumberFormatException e) {
+            totalPriceLabel.setText("0.00");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid price format in detailPriceLabel!");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            totalPriceLabel.setText("0.00");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid detailPriceLabel format!");
+        }
+    }
+
+    private String formatPrice(double price) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+
+        return numberFormat.format(price);
     }
 }
