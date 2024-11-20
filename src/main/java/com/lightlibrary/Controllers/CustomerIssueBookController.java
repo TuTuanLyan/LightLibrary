@@ -335,8 +335,6 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                     confirmFeePerDay.setText("Fee / Day: " + formatPrice(price));
 
                     confirmBorrowButton.setOnAction(confirmEvent -> {
-                        int userID = parentController.getCustomer().getUserID(); // Lấy ID người dùng hiện tại (hàm này bạn phải tự triển khai)
-                        // String ISBN = detailISBNLabel.getText();
                         LocalDate dueDate = pickDueDatePiker.getValue();
                         if (dueDate == null) {
                             showAlert(Alert.AlertType.ERROR, "Invalid Date", "Please select a due date!");

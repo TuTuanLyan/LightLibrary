@@ -357,6 +357,9 @@ public class AdminIssueBookController implements Initializable, SyncAction {
         detailPublisherLabel.setText("Publisher");
         detailPublishDateLabel.setText("Published Date");
 
+        numbersOfAddBookTextField.clear();
+        feePerDayTextField.clear();
+
         addBookButton.setDisable(true);
     }
 
