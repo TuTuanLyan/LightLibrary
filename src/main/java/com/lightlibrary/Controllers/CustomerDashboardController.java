@@ -372,6 +372,10 @@ public class CustomerDashboardController implements Initializable {
         }
     }
 
+    public void updateCoin(double coins) {
+        Platform.runLater(() -> customerCoinAmoutLabel.setText(coins + ""));
+    }
+
     private void navigationButtonAction() {
         homeButton.setOnAction(event -> {
             goToHomePage();

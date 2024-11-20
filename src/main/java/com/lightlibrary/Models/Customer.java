@@ -37,11 +37,11 @@ public class Customer extends User {
 
         String query = "SELECT coin FROM users WHERE userID = ?";
         try (PreparedStatement preparedStatement = connectDB.prepareStatement(query)) {
-            preparedStatement.setInt(1, this.userID); // userID là khóa chính của khách hàng
+            preparedStatement.setInt(1, this.userID);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                this.coins = resultSet.getDouble("coin"); // Cập nhật giá trị coin từ SQL
+                this.coins = resultSet.getDouble("coin");
             }
         } catch (SQLException e) {
             e.printStackTrace();

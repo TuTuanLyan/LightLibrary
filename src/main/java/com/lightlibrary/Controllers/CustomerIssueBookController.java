@@ -522,6 +522,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
             // Trừ coin người dùng
             double updatedCoin = customer.getCoins() - totalPrice;
             customer.setCoins(updatedCoin); // Cập nhật thông tin trên đối tượng
+            parentController.updateCoin(updatedCoin);
             String updateUserQuery = "UPDATE users SET coin = ? WHERE userID = ?";
             try (PreparedStatement updateUserStmt = connection.prepareStatement(updateUserQuery)) {
                 updateUserStmt.setDouble(1, updatedCoin);
