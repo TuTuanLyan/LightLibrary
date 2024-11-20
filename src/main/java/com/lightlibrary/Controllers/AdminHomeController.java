@@ -1,21 +1,31 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.DatabaseConnection;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAmount;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AdminHomeController implements Initializable, SyncAction {
 
@@ -50,7 +60,12 @@ public class AdminHomeController implements Initializable, SyncAction {
     private Label transactionsLabel;
 
     @FXML
+    private Pane paneHaveGraph;
+
+    @FXML
     private Label requiredBookLabel;
+
+
 
     AdminDashboardController parentController;
 
@@ -65,8 +80,63 @@ public class AdminHomeController implements Initializable, SyncAction {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadViewBook();
-        loadViewUser();
+        ExecutorService executorService = Executors.newFixedThreadPool(7);
+        executorService.execute(this::loadViewBook);
+        executorService.execute(this::loadViewUser);
+        executorService.submit(() ->{
+            Connection connection = DatabaseConnection.getConnection();
+            String queryTotalBooks = "select count(*) as totalBooks from books";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(queryTotalBooks);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    totalBookLabel.setText(resultSet.getString("totalBooks"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.submit(() ->{
+            Connection connection = DatabaseConnection.getConnection();
+            String queryTotalUsers = "select count(*) as totalUsers from users";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(queryTotalUsers);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    totalUserLabel.setText(resultSet.getString("totalUsers"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.submit(() ->{
+            Connection connection = DatabaseConnection.getConnection();
+            String queryTotalTransactions = "select count(*) as totalTransactions from transactions";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(queryTotalTransactions);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    transactionsLabel.setText(resultSet.getString("totalTransactions"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.submit(() ->{
+            Connection connection = DatabaseConnection.getConnection();
+            String queryTotalRequired = "select count(*) as totalRequiredBooks from requiredBooks";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(queryTotalRequired);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    requiredBookLabel.setText(resultSet.getString("totalRequiredBooks"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.submit(this::graphController);
+        executorService.shutdown();
     }
 
     @Override
@@ -171,4 +241,93 @@ public class AdminHomeController implements Initializable, SyncAction {
         }
 
     }
+
+    public void graphController() {
+        CategoryAxis xAxis = new CategoryAxis(); // Trục phân loại (category)
+        NumberAxis yAxis = new NumberAxis(); // Trục số (number)
+        xAxis.setLabel("Days");
+        yAxis.setLabel("Numbers");
+        BarChart<String,Number> graph = new BarChart<>(xAxis, yAxis);
+        XYChart.Series<String,Number> borrowTotals = new XYChart.Series<>();
+        borrowTotals.setName("Borrowed");
+
+        XYChart.Series<String,Number> returnTotals = new XYChart.Series<>();
+        returnTotals.setName("Returned");
+
+        Connection connection = DatabaseConnection.getConnection();
+        String queryConnect1 = "select t.borrowDate,count(t.borrowDate) as borrowPerDay from transactions t where t.borrowDate between current_date() - 6 and current_date() group by t.borrowDate order by t.borrowDate asc";
+        try {
+            Statement preparedStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet resultSet = preparedStatement.executeQuery(queryConnect1);
+            int index = 6;
+            // Đặt con trỏ về đầu ResultSet
+            while (index >= 0) {
+                LocalDate localDate = LocalDate.now().minusDays(index);
+                boolean found = false; // Biến để kiểm tra xem có tìm thấy ngày không
+                resultSet.beforeFirst();
+                // Lặp qua các hàng trong ResultSet
+                while (resultSet.next()) {
+                    LocalDate borrowDate = resultSet.getDate("borrowDate").toLocalDate();
+                    if (borrowDate.equals(localDate)) {
+                        int total = resultSet.getInt("borrowPerDay");
+                        borrowTotals.getData().add(new XYChart.Data<>(localDate.toString(), total));
+                        found = true; // Đánh dấu là đã tìm thấy
+                        break; // Thoát khỏi vòng lặp khi đã tìm thấy
+                    }
+                }
+
+                // Nếu không tìm thấy, có thể thêm giá trị 0 hoặc một giá trị mặc định
+                if (!found) {
+                    borrowTotals.getData().add(new XYChart.Data<>(localDate.toString(), 0));
+                }
+
+                index--;
+            }
+        } catch (SQLException e) {
+            System.out.println("cannot create connection");
+            e.printStackTrace();
+        }
+        String queryConnect2 = "select t.returnDate,count(t.returnDate) as returnPerDay from transactions t where t.returnDate between current_date() - 6 and current_date() group by t.returnDate order by t.returnDate asc";
+        try {
+            Statement preparedStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet resultSet = preparedStatement.executeQuery(queryConnect2);
+            int index = 6;
+            // Đặt con trỏ về đầu ResultSet
+
+            while (index >= 0) {
+                LocalDate localDate = LocalDate.now().minusDays(index);
+                boolean found = false; // Biến để kiểm tra xem có tìm thấy ngày không
+                resultSet.beforeFirst();
+                // Lặp qua các hàng trong ResultSet
+                while (resultSet.next()) {
+                    LocalDate returnDate = resultSet.getDate("returnDate").toLocalDate();
+                    if (returnDate.equals(localDate)) {
+                        int total = resultSet.getInt("returnPerDay");
+                        returnTotals.getData().add(new XYChart.Data<>(localDate.toString(), total));
+                        found = true; // Đánh dấu là đã tìm thấy
+                        break; // Thoát khỏi vòng lặp khi đã tìm thấy
+
+                    }
+                }
+
+                // Nếu không tìm thấy, có thể thêm giá trị 0 hoặc một giá trị mặc định
+                if (!found) {
+                    returnTotals.getData().add(new XYChart.Data<>(localDate.toString(), 0));
+                }
+
+                index--;
+            }
+        } catch (SQLException e) {
+            System.out.println("cannot create connection");
+            e.printStackTrace();
+        }
+        graph.getData().addAll(borrowTotals, returnTotals);
+
+
+        graph.setPrefWidth(paneHaveGraph.getPrefWidth());
+        graph.setPrefHeight(paneHaveGraph.getPrefHeight());
+        paneHaveGraph.getChildren().add(graph);
+
+    }
+
 }

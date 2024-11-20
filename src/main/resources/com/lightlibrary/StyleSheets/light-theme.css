@@ -293,6 +293,7 @@
 
 .home-overview-list .label {
     -fx-font-size: 15px;
+    -fx-wrap-text: true;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }
