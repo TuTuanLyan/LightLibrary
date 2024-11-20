@@ -397,7 +397,7 @@ public class LoginAndRegisterController implements Initializable {
 
     /**
      * Validate if the confirmation password matches the password.
-     *
+     * 
      * @param confirmPassword confirm password string need to check.
      * @return true if the confirmation password matches the password, false otherwise.
      */

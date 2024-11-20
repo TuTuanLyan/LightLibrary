@@ -1,6 +1,7 @@
 package com.lightlibrary.Controllers;
 
 import com.google.api.services.books.v1.model.Volume;
+import com.lightlibrary.Models.DatabaseConnection;
 import com.lightlibrary.Models.GoogleBooksAPIClient;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -13,6 +14,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -137,13 +142,13 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                 String title = volumeInfo.getTitle();
                 String authors = volumeInfo.getAuthors() != null ?
                         String.join(", ", volumeInfo.getAuthors()) : "Unknown Author";
-                String ISBN = "ISBN: " + GoogleBooksAPIClient.getISBN(volumeInfo);
+                String ISBN = GoogleBooksAPIClient.getISBN(volumeInfo);
                 String description = volumeInfo.getDescription() != null ?
                         volumeInfo.getDescription() : "There is no description for this book :(";
                 String publisher = volumeInfo.getPublisher() != null ?
-                        "Publish by " + volumeInfo.getPublisher() : "Unknown Publisher";
+                        volumeInfo.getPublisher() : "Unknown Publisher";
                 String publishedDate = volumeInfo.getPublishedDate() != null ?
-                        "Publish at " + volumeInfo.getPublishedDate() : "Unknown published date";
+                        volumeInfo.getPublishedDate() : "Unknown published date";
 
 
                 int blockIndex = index;
@@ -258,14 +263,64 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                                String description, String publisher, String publishDate) {
 
         detailBookPane.setVisible(true);
+        Task<Double> checkISBNTask = new Task<>() {
+            @Override
+            protected Double call() throws Exception {
+                try (Connection connection = DatabaseConnection.getConnection();
+                     PreparedStatement preparedStatement = connection.prepareStatement(
+                             "SELECT availableNumber, price FROM books WHERE isbn = ?")) {
+                    preparedStatement.setString(1, ISBN);
+                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                        if (resultSet.next()) {
+                            int availableNumber = resultSet.getInt("availableNumber");
+                            double price = resultSet.getDouble("price");
+                            if (availableNumber > 0) {
+                                return price;
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return 0.0;
+            }
+        };
 
-        detailThumbnailImage.setImage(new Image(thumbnailUrl));
-        detailAuthorLabel.setText(author);
-        detailTItleLabel.setText(title);
-        detailDescriptionLabel.setText(description);
-        detailISBNLabel.setText(ISBN);
-        detailPublisherLabel.setText(publisher);
-        detailPublishDateLabel.setText(publishDate);
+        checkISBNTask.setOnSucceeded(event -> {
+            double price = checkISBNTask.getValue();
+            detailBookPane.setVisible(true);
+
+            Platform.runLater(() -> {
+                detailThumbnailImage.setImage(new Image(thumbnailUrl));
+                detailAuthorLabel.setText(author);
+                detailTItleLabel.setText(title);
+                detailDescriptionLabel.setText(description);
+                detailISBNLabel.setText(ISBN);
+                detailPublisherLabel.setText(publisher);
+                detailPublishDateLabel.setText(publishDate);
+            });
+
+            if (price > 0.0D) {
+                addToFavouriteListButton.setVisible(true);
+                borrowBookButton.setVisible(true);
+
+                detailPriceLabel.setText(Double.toString(price));
+            } else {
+                addToFavouriteListButton.setVisible(false);
+                borrowBookButton.setVisible(false);
+
+                detailPriceLabel.setText("This book is not available");
+            }
+        });
+
+        checkISBNTask.setOnFailed(event -> {
+            //loadingPane.setVisible(false);
+            System.out.println("Error checking ISBN in database.");
+        });
+
+        Thread checkISBNThread = new Thread(checkISBNTask);
+        checkISBNThread.setDaemon(true);
+        checkISBNThread.start();
     }
 
     private Button createViewDetailButton() {
