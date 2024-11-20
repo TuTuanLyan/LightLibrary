@@ -119,8 +119,8 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         confirmBorrowPane.setVisible(false);
         cancleBorrowButton.setOnAction(e -> {
             confirmBorrowPane.setVisible(false);
+            pickDueDatePiker.setValue(null);
             borrowDaysAmount.clear();
-            pickDueDatePiker.cancelEdit();
             confirmFeePerDay.setText("Fee / Days: ");
             totalPriceLabel.setText("Total Price: ");
         });
@@ -396,7 +396,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     private void handleDueDatePickerAction() {
         LocalDate selectedDate = pickDueDatePiker.getValue();
 
-        if (selectedDate == null) {
+        if (selectedDate == null && borrowDaysAmount.getText() == null) {
             showAlert(Alert.AlertType.ERROR, "Invalid Date", "The selected date is invalid!");
             return;
         }
