@@ -123,3 +123,23 @@
 .individual-bar Label {
     -fx-text-fill: #ffffff;
 }*/
+.default-color0.chart-bar {
+    -fx-bar-fill: #08d792;
+}
+.default-color1.chart-bar {
+    -fx-bar-fill: #7096ff;
+}
+.chart-legend-item {
+    -fx-font-size: 12px; /* Larger font size for the legend text */
+    -fx-font-family: "Arial"; /* Font family for legend text */
+    -fx-text-fill: #4CAF50; /* Green color for legend text */
+}
+
+.chart-title {
+    -fx-font-size: 12px;
+    -fx-text-fill: #4CAF50;
+
+}
+.axis-label {
+    -fx-text-fill: #4CAF50;
+}

@@ -1,7 +1,7 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.DatabaseConnection;
-import javafx.concurrent.Task;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,16 +12,12 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.*;
 
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAmount;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -65,8 +61,6 @@ public class AdminHomeController implements Initializable, SyncAction {
     @FXML
     private Label requiredBookLabel;
 
-
-
     AdminDashboardController parentController;
 
     public AdminDashboardController getParentController() {
@@ -80,10 +74,10 @@ public class AdminHomeController implements Initializable, SyncAction {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ExecutorService executorService = Executors.newFixedThreadPool(7);
+        ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.execute(this::loadViewBook);
         executorService.execute(this::loadViewUser);
-        executorService.submit(() ->{
+        executorService.submit(() -> {
             Connection connection = DatabaseConnection.getConnection();
             String queryTotalBooks = "select count(*) as totalBooks from books";
             try {
@@ -96,7 +90,7 @@ public class AdminHomeController implements Initializable, SyncAction {
                 e.printStackTrace();
             }
         });
-        executorService.submit(() ->{
+        executorService.submit(() -> {
             Connection connection = DatabaseConnection.getConnection();
             String queryTotalUsers = "select count(*) as totalUsers from users";
             try {
@@ -109,7 +103,7 @@ public class AdminHomeController implements Initializable, SyncAction {
                 e.printStackTrace();
             }
         });
-        executorService.submit(() ->{
+        executorService.submit(() -> {
             Connection connection = DatabaseConnection.getConnection();
             String queryTotalTransactions = "select count(*) as totalTransactions from transactions";
             try {
@@ -122,7 +116,7 @@ public class AdminHomeController implements Initializable, SyncAction {
                 e.printStackTrace();
             }
         });
-        executorService.submit(() ->{
+        executorService.submit(() -> {
             Connection connection = DatabaseConnection.getConnection();
             String queryTotalRequired = "select count(*) as totalRequiredBooks from requiredBooks";
             try {
@@ -136,7 +130,6 @@ public class AdminHomeController implements Initializable, SyncAction {
             }
         });
         executorService.submit(this::graphController);
-        executorService.shutdown();
     }
 
     @Override
@@ -168,11 +161,13 @@ public class AdminHomeController implements Initializable, SyncAction {
     }
 
     @Override
-    public void setParentController(CustomerDashboardController parentController) {}
+    public void setParentController(CustomerDashboardController parentController) {
+    }
 
     @FXML
     public void viewAndEditBook(ActionEvent event) {
-        parentController.goToViewBookPage();;
+        parentController.goToViewBookPage();
+        ;
     }
 
     @FXML
@@ -196,14 +191,14 @@ public class AdminHomeController implements Initializable, SyncAction {
                 String title = resultSet.getString("TITLE");
                 String author = resultSet.getString("AUTHOR");
                 int available = resultSet.getInt("availableNumber");
-                listBookGridPane.addRow(listBookGridPane.getRowCount(),new Label(ISBN),new Label(title),new Label(author),new Label(Integer.toString(available)));
+                listBookGridPane.addRow(listBookGridPane.getRowCount(), new Label(ISBN), new Label(title), new Label(author), new Label(Integer.toString(available)));
                 RowConstraints curConstraints = new RowConstraints();
                 curConstraints.setMinHeight(70);
                 listBookGridPane.getRowConstraints().add(curConstraints);
             }
 
         } catch (SQLException e) {
-                throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -231,7 +226,7 @@ public class AdminHomeController implements Initializable, SyncAction {
                 String userName = resultSet.getString("userName");
                 int totalBorrowed = resultSet.getInt("totalBorrowed");
 
-                listUserGridPane.addRow(listUserGridPane.getRowCount(),new Label(Integer.toString(userID)),new Label(userName),new Label(fullName),new Label(Integer.toString(totalBorrowed)));
+                listUserGridPane.addRow(listUserGridPane.getRowCount(), new Label(Integer.toString(userID)), new Label(userName), new Label(fullName), new Label(Integer.toString(totalBorrowed)));
                 RowConstraints curConstraints = new RowConstraints();
                 curConstraints.setMinHeight(70);
                 listUserGridPane.getRowConstraints().add(curConstraints);
@@ -247,12 +242,16 @@ public class AdminHomeController implements Initializable, SyncAction {
         NumberAxis yAxis = new NumberAxis(); // Trục số (number)
         xAxis.setLabel("Days");
         yAxis.setLabel("Numbers");
-        BarChart<String,Number> graph = new BarChart<>(xAxis, yAxis);
-        XYChart.Series<String,Number> borrowTotals = new XYChart.Series<>();
+        BarChart<String, Number> graph = new BarChart<>(xAxis, yAxis);
+        XYChart.Series<String, Number> borrowTotals = new XYChart.Series<>();
         borrowTotals.setName("Borrowed");
 
-        XYChart.Series<String,Number> returnTotals = new XYChart.Series<>();
+        XYChart.Series<String, Number> returnTotals = new XYChart.Series<>();
         returnTotals.setName("Returned");
+
+        graph.lookupAll(".chart-legend-item").forEach(node -> {
+            node.setStyle("-fx-font-size: 16px; -fx-font-family: Arial; -fx-text-fill: #4CAF50;");
+        });
 
         Connection connection = DatabaseConnection.getConnection();
         String queryConnect1 = "select t.borrowDate,count(t.borrowDate) as borrowPerDay from transactions t where t.borrowDate between current_date() - 6 and current_date() group by t.borrowDate order by t.borrowDate asc";
@@ -270,7 +269,8 @@ public class AdminHomeController implements Initializable, SyncAction {
                     LocalDate borrowDate = resultSet.getDate("borrowDate").toLocalDate();
                     if (borrowDate.equals(localDate)) {
                         int total = resultSet.getInt("borrowPerDay");
-                        borrowTotals.getData().add(new XYChart.Data<>(localDate.toString(), total));
+                        XYChart.Data<String, Number> temporaryBar = new XYChart.Data<>(localDate.toString(), total);
+                        borrowTotals.getData().add(temporaryBar);
                         found = true; // Đánh dấu là đã tìm thấy
                         break; // Thoát khỏi vòng lặp khi đã tìm thấy
                     }
@@ -321,13 +321,26 @@ public class AdminHomeController implements Initializable, SyncAction {
             System.out.println("cannot create connection");
             e.printStackTrace();
         }
-        graph.getData().addAll(borrowTotals, returnTotals);
-
+        Platform.runLater(() -> {
+            setColor(borrowTotals, "#08d792");
+            setColor(returnTotals, "#7096ff");
+        });
+        graph.getData().addAll(Arrays.asList(borrowTotals, returnTotals));
 
         graph.setPrefWidth(paneHaveGraph.getPrefWidth());
         graph.setPrefHeight(paneHaveGraph.getPrefHeight());
         paneHaveGraph.getChildren().add(graph);
 
+    }
+
+    public void setColor(XYChart.Series<String, Number> series, String color) {
+        try {
+            for (XYChart.Data<String, Number> data : series.getData()) {
+                data.getNode().setStyle("-fx-bar-fill:" + color + ";");
+            }
+        } catch (Exception e) {
+            System.out.println("cannot load this color: " + color);
+        }
     }
 
 }
