@@ -227,7 +227,7 @@ public class GameController {
     }
 
     public void updateCoinToSQL(int earnedCoin) {
-        long newCoin = customer.getCoins() + earnedCoin;
+        double newCoin = customer.getCoins() + earnedCoin;
 
         Connection connectDB = DatabaseConnection.getConnection();
 
@@ -239,7 +239,7 @@ public class GameController {
         String connectQuery = "UPDATE users SET coin = ? WHERE userID = ?";
 
         try (PreparedStatement preparedStatement = connectDB.prepareStatement(connectQuery)) {
-            preparedStatement.setLong(1, newCoin);
+            preparedStatement.setDouble(1, newCoin);
             preparedStatement.setInt(2, customer.getUserID());
 
             int rowsAffected = preparedStatement.executeUpdate();

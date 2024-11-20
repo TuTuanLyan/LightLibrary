@@ -1,6 +1,7 @@
 package com.lightlibrary.Controllers;
 
 import com.google.api.services.books.v1.model.Volume;
+import com.lightlibrary.Models.Customer;
 import com.lightlibrary.Models.DatabaseConnection;
 import com.lightlibrary.Models.GoogleBooksAPIClient;
 import javafx.application.Platform;
@@ -14,10 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -119,7 +117,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         confirmBorrowPane.setVisible(false);
         cancleBorrowButton.setOnAction(e -> {
             confirmBorrowPane.setVisible(false);
-            pickDueDatePiker.setValue(null);
+            pickDueDatePiker.setValue(LocalDate.now().plusDays(1));
             borrowDaysAmount.clear();
             confirmFeePerDay.setText("Fee / Days: ");
             totalPriceLabel.setText("Total Price: ");
@@ -335,6 +333,20 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                 borrowBookButton.setOnAction(e -> {
                     confirmBorrowPane.setVisible(true);
                     confirmFeePerDay.setText("Fee / Day: " + formatPrice(price));
+
+                    confirmBorrowButton.setOnAction(confirmEvent -> {
+                        int userID = parentController.getCustomer().getUserID(); // Lấy ID người dùng hiện tại (hàm này bạn phải tự triển khai)
+                        // String ISBN = detailISBNLabel.getText();
+                        LocalDate dueDate = pickDueDatePiker.getValue();
+                        if (dueDate == null) {
+                            showAlert(Alert.AlertType.ERROR, "Invalid Date", "Please select a due date!");
+                            return;
+                        }
+
+                        double totalPrice = getTotalPrice(Integer.parseInt(borrowDaysAmount.getText()));
+                        borrowBook(parentController.getCustomer(), ISBN, totalPrice);
+                        confirmBorrowPane.setVisible(false);
+                    });
                 });
                 requireBookButton.setVisible(false);
 
@@ -430,16 +442,19 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         alert.showAndWait();
     }
 
+    private double getTotalPrice(int days) {
+        String detailPriceText = detailPriceLabel.getText().trim();
+
+        String[] lines = detailPriceText.split("\n");
+        String priceText = lines[lines.length - 1].trim();
+
+        double pricePerDay = Double.parseDouble(priceText);
+        return pricePerDay * days - (int)(days / 15)  * 0.02 * pricePerDay;
+    }
+
     private void updateTotalPrice(int days) {
         try {
-            String detailPriceText = detailPriceLabel.getText().trim();
-
-            String[] lines = detailPriceText.split("\n");
-            String priceText = lines[lines.length - 1].trim();
-
-            double pricePerDay = Double.parseDouble(priceText);
-            double totalPrice = pricePerDay * days - (int)(days / 15)  * 0.02 * pricePerDay;
-
+            double totalPrice = getTotalPrice(days);
             totalPriceLabel.setText("Total Price: " + formatPrice(totalPrice));
         } catch (NumberFormatException e) {
             totalPriceLabel.setText("0.00");
@@ -456,5 +471,73 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         numberFormat.setMaximumFractionDigits(2);
 
         return numberFormat.format(price);
+    }
+
+    private void borrowBook(Customer customer, String ISBN, double totalPrice) {
+        if (customer.getCoins() < totalPrice) {
+            Platform.runLater(() ->
+                    showAlert(Alert.AlertType.ERROR, "Insufficient Funds",
+                            "You do not have enough coins to borrow this book."));
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            connection.setAutoCommit(false); // Bắt đầu transaction
+
+            // Kiểm tra xem người dùng đã mượn cuốn sách này và chưa trả
+            String checkTransactionQuery = "SELECT * FROM transactions WHERE userID = ? AND isbn = ? AND returnDate IS NULL";
+            try (PreparedStatement checkStatement = connection.prepareStatement(checkTransactionQuery)) {
+                checkStatement.setInt(1, customer.getUserID());
+                checkStatement.setString(2, ISBN);
+                try (ResultSet resultSet = checkStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        // Nếu đã mượn và chưa trả, không thể mượn lại
+                        showAlert(Alert.AlertType.ERROR, "Book Already Borrowed", "You have already borrowed this book and have not returned it.");
+                        return;
+                    }
+                }
+            }
+
+            // Giảm số lượng sách
+            String updateBookQuery = "UPDATE books SET availableNumber = availableNumber - 1 WHERE isbn = ?";
+            try (PreparedStatement updateBookStmt = connection.prepareStatement(updateBookQuery)) {
+                updateBookStmt.setString(1, ISBN);
+                int rowsAffected = updateBookStmt.executeUpdate();
+                if (rowsAffected == 0) {
+                    throw new SQLException("Failed to update book availability.");
+                }
+            }
+
+            // Ghi vào bảng transactions
+            String insertTransactionQuery = "INSERT INTO transactions (userID, isbn, borrowDate, dueDate, borrowFee, totalPrice) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement insertTransactionStmt = connection.prepareStatement(insertTransactionQuery)) {
+                insertTransactionStmt.setInt(1, customer.getUserID());
+                insertTransactionStmt.setString(2, ISBN);
+                insertTransactionStmt.setDate(3, Date.valueOf(LocalDate.now()));
+                insertTransactionStmt.setDate(4, Date.valueOf(pickDueDatePiker.getValue()));
+                insertTransactionStmt.setDouble(5, totalPrice);
+                insertTransactionStmt.setDouble(6, totalPrice);
+                insertTransactionStmt.executeUpdate();
+            }
+
+            // Trừ coin người dùng
+            double updatedCoin = customer.getCoins() - totalPrice;
+            customer.setCoins(updatedCoin); // Cập nhật thông tin trên đối tượng
+            String updateUserQuery = "UPDATE users SET coin = ? WHERE userID = ?";
+            try (PreparedStatement updateUserStmt = connection.prepareStatement(updateUserQuery)) {
+                updateUserStmt.setDouble(1, updatedCoin);
+                updateUserStmt.setInt(2, customer.getUserID());
+                updateUserStmt.executeUpdate();
+            }
+
+            connection.commit(); // Commit transaction
+            Platform.runLater(() ->
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Book borrowed successfully!"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Platform.runLater(() ->
+                    showAlert(Alert.AlertType.ERROR, "Database Error", "An error occurred while borrowing the book."));
+        }
     }
 }

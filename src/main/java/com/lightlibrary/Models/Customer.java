@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Customer extends User {
 
-    private long coins;
+    private double coins;
     private String avatarImageUrl;
     private List<Book> listFavouriteBooks;
     private List<Transaction> listTransactions;
@@ -27,12 +27,12 @@ public class Customer extends User {
         super(userID, fullName, username, password, phoneNumber, email);
     }
 
-    public long getCoins() {
+    public double getCoins() {
         // Kết nối cơ sở dữ liệu
         Connection connectDB = DatabaseConnection.getConnection();
         if (connectDB == null) {
             System.out.println("Failed to connect to the database.");
-            return 0; // Giá trị mặc định nếu không kết nối được
+            return 0.0; // Giá trị mặc định nếu không kết nối được
         }
 
         String query = "SELECT coin FROM users WHERE userID = ?";
@@ -41,7 +41,7 @@ public class Customer extends User {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                this.coins = resultSet.getLong("coin"); // Cập nhật giá trị coin từ SQL
+                this.coins = resultSet.getDouble("coin"); // Cập nhật giá trị coin từ SQL
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +51,7 @@ public class Customer extends User {
     }
 
 
-    public void setCoins(long coins) {
+    public void setCoins(double coins) {
         this.coins = coins;
     }
 
