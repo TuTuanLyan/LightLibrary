@@ -75,13 +75,13 @@ public class AdminHomeController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.submit(this::graphController);
         executorService.execute(this::loadViewBook);
         executorService.execute(this::loadViewUser);
         executorService.submit(() -> loadTotalOverviewLabel(totalBookLabel, "books"));
         executorService.submit(() -> loadTotalOverviewLabel(totalUserLabel, "users"));
         executorService.submit(() -> loadTotalOverviewLabel(transactionsLabel, "transactions"));
         executorService.submit(() -> loadTotalOverviewLabel(requiredBookLabel, "requiredBooks"));
-        executorService.submit(this::graphController);
         executorService.shutdown();
     }
 

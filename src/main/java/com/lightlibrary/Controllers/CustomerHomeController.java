@@ -1,5 +1,6 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.Customer;
 import com.lightlibrary.Models.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -10,7 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -53,6 +56,9 @@ public class CustomerHomeController implements Initializable, SyncAction {
     @FXML
     private Label returnedBookAmountLabel;
 
+    @FXML
+    private GridPane borrowingGrid;
+
     CustomerDashboardController parentController;
 
     public CustomerDashboardController getParentController() {
@@ -71,7 +77,7 @@ public class CustomerHomeController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateDate(curentTimeLabel);
-
+        System.out.println(parentController.toString());
         disPlayTopChoices();
     }
 
@@ -169,5 +175,36 @@ public class CustomerHomeController implements Initializable, SyncAction {
         Thread thread = new Thread(loadTopBooksTask);
         thread.setDaemon(true); // Ensure thread exits when the application closes
         thread.start();
+    }
+
+
+    public void loadBorrowingGrid() {
+        borrowingGrid.getChildren().clear();
+        borrowingGrid.getRowConstraints().clear();
+
+        int userID = parentController.getCustomer().getUserID();
+        System.out.println(userID);
+        Connection connectDB = DatabaseConnection.getConnection();
+        String queryBorrowing = "select b.isbn,b.title,b.author,t.dueDate from transactions t left join books b on b.isbn = t.isbn where t.userID=?";
+        try {
+            PreparedStatement preparedStatement = connectDB.prepareStatement(queryBorrowing);
+            preparedStatement.setInt(1, userID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String isbn = resultSet.getString("isbn");
+                String title = resultSet.getString("title");
+                String author = resultSet.getString("author");
+                String dueDate = resultSet.getDate("dueDate").toLocalDate().toString();
+
+                RowConstraints rowConstraints = new RowConstraints();
+                rowConstraints.setMinHeight(70);
+                borrowingGrid.getRowConstraints().add(rowConstraints);
+                borrowingGrid.addRow(borrowingGrid.getRowCount(),new Label(isbn),new Label(title),new Label(author),new Label(dueDate));
+
+            }
+        } catch (SQLException e) {
+            System.err.println("cannot send queryBorrowing in Customer");
+        }
+
     }
 }
