@@ -1,6 +1,8 @@
 package com.lightlibrary.Models.Chat;
 
 import jakarta.websocket.*;
+
+import java.io.IOException;
 import java.net.URI;
 import java.util.Scanner;
 
@@ -12,7 +14,7 @@ public class UserClient {
     public void connectToServer() {
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            URI serverUri = new URI("ws://localhost:8080/ws/chat"); // Đảm bảo đúng URL
+            URI serverUri = new URI("ws://localhost:8080/ws/chat?role=user"); // Thêm tham số role=user
             container.connectToServer(this, serverUri);
             System.out.println("Connected to WebSocket server as User.");
         } catch (Exception e) {
@@ -54,11 +56,15 @@ public class UserClient {
         }
     }
 
+    public void registerName(String userName) throws IOException {
+        session.getBasicRemote().sendText("user:" + userName + ":register");
+    }
+
     public static void main(String[] args) {
         try {
             // Kết nối WebSocket
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container.connectToServer(UserClient.class, URI.create("ws://localhost:8080/ws/chat"));
+            container.connectToServer(UserClient.class, URI.create("ws://10.10.69.203:8080/ws/chat?role=user"));
 
             // Scanner cho đầu vào từ bàn phím
             Scanner scanner = new Scanner(System.in);
@@ -76,7 +82,7 @@ public class UserClient {
 
             // Vòng lặp gửi tin nhắn
             while (true) {
-                System.out.println("Enter message:");
+                System.out.println("Enter message (format: recipient message):");
                 String input = scanner.nextLine();
                 session.getBasicRemote().sendText("user:" + userName + ":" + input);
             }

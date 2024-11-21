@@ -1,5 +1,6 @@
 package com.lightlibrary.Models.Chat;
 
+import com.lightlibrary.Models.User;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 import java.util.*;
@@ -36,21 +37,22 @@ public class ChatServer {
             }
 
             // Chat message
+            String recipient = content.split(" ", 2)[0]; // target user name
+            String msg = content.split(" ", 2)[1];       // actual message
+
+            System.out.println(recipient + " " + msg);
+
             if ("admin".equalsIgnoreCase(type)) {
-                String recipient = content.split(" ", 2)[0]; // target user name
-                String msg = content.split(" ", 2)[1];       // actual message
                 if (users.containsKey(recipient)) {
                     users.get(recipient).getBasicRemote().sendText("Admin " + name + ": " + msg);
                 } else {
                     session.getBasicRemote().sendText("User " + recipient + " not found.");
                 }
             } else if ("user".equalsIgnoreCase(type)) {
-                // Send message to any admin (pick the first available)
-                if (!admins.isEmpty()) {
-                    Session adminSession = admins.values().iterator().next();
-                    adminSession.getBasicRemote().sendText("User " + name + ": " + content);
+                if (admins.containsKey(recipient)) {
+                    admins.get(recipient).getBasicRemote().sendText("User " + name + ": " + msg);
                 } else {
-                    session.getBasicRemote().sendText("No admin available!");
+                    session.getBasicRemote().sendText("Admin " + recipient + " not found.");
                 }
             }
         } catch (Exception e) {
@@ -65,4 +67,3 @@ public class ChatServer {
         System.out.println("Connection closed: " + session.getId());
     }
 }
-

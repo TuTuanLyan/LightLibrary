@@ -12,7 +12,7 @@ public class AdminClient {
     public void connectToServer() {
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            URI serverUri = new URI("ws://localhost:8080/ws/chat"); // Đảm bảo đúng URL
+            URI serverUri = new URI("ws://localhost:8080/ws/chat?role=admin"); // Thêm tham số role=admin
             container.connectToServer(this, serverUri);
             System.out.println("Connected to WebSocket server as Admin.");
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class AdminClient {
         try {
             // Kết nối WebSocket
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container.connectToServer(AdminClient.class, URI.create("ws://localhost:8080/ws/chat"));
+            container.connectToServer(AdminClient.class, URI.create("ws://10.10.69.203:8080/ws/chat?role=admin"));
 
             // Scanner cho đầu vào từ bàn phím
             Scanner scanner = new Scanner(System.in);
