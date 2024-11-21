@@ -195,12 +195,12 @@
          <children>
             <ScrollPane layoutX="10.0" layoutY="70.0" prefHeight="400.0" prefWidth="960.0">
                <content>
-                  <GridPane fx:id="borrowingGrid" prefHeight="0.0" prefWidth="956.0">
+                  <GridPane fx:id="borrowingGrid" prefHeight="0.0" prefWidth="956.0" styleClass="home-overview-list" stylesheets="@../StyleSheets/Style.css">
                     <columnConstraints>
-                      <ColumnConstraints fx:id="ISBNCol" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints fx:id="TitleCol" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints fx:id="AuthorCol" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints fx:id="OverdueCol" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints fx:id="ISBNCol" halignment="LEFT" hgrow="SOMETIMES" maxWidth="296.0" minWidth="183.0" prefWidth="183.0" />
+                        <ColumnConstraints fx:id="TitleCol" halignment="LEFT" hgrow="SOMETIMES" maxWidth="557.0" minWidth="419.0" prefWidth="419.0" />
+                        <ColumnConstraints fx:id="AuthorCol" halignment="LEFT" hgrow="SOMETIMES" maxWidth="275.0" minWidth="243.0" prefWidth="243.0" />
+                      <ColumnConstraints fx:id="OverdueCol" halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -208,31 +208,28 @@
                   </GridPane>
                </content>
             </ScrollPane>
-            <Label layoutX="28.0" layoutY="49.0" prefHeight="21.0" prefWidth="35.0" text="ISBN" textFill="#aeaeae">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
             <Label layoutX="25.0" prefHeight="49.0" prefWidth="255.0" styleClass="page-title" text="Borrowing Book">
                <font>
                   <Font size="31.0" />
                </font>
             </Label>
-            <Label layoutX="226.0" layoutY="49.0" prefHeight="21.0" prefWidth="35.0" text="Title" textFill="#aeaeae">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="484.0" layoutY="49.0" prefHeight="21.0" prefWidth="55.0" text="Author" textFill="#aeaeae">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="786.0" layoutY="49.0" prefHeight="21.0" prefWidth="113.0" text="Due to" textFill="#aeaeae">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
+            <GridPane layoutX="14.0" layoutY="40.0" prefHeight="30.0" prefWidth="930.0" styleClass="home-overview-list" stylesheets="@../StyleSheets/Style.css">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="228.0" minWidth="183.0" prefWidth="0.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="483.0" minWidth="419.0" prefWidth="262.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="342.0" minWidth="243.0" prefWidth="196.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="132.0" minWidth="10.0" prefWidth="132.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="ISBN" />
+                  <Label text="Title" GridPane.columnIndex="1" />
+                  <Label text="Author" GridPane.columnIndex="2" />
+                  <Label text="Due to " GridPane.columnIndex="3" />
+               </children>
+            </GridPane>
          </children>
       </Pane>
       <Pane layoutX="20.0" layoutY="585.0" prefHeight="210.0" prefWidth="140.0" visible="false">

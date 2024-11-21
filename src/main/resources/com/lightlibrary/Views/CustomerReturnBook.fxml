@@ -42,28 +42,19 @@
       </GridPane>
       <ScrollPane layoutX="16.0" layoutY="212.0" prefHeight="586.0" prefWidth="1320.0">
          <content>
-            <GridPane fx:id="notReturnBookTable" prefHeight="74.0" prefWidth="1308.0" styleClass="user-info-table">
+            <GridPane fx:id="notReturnBookTable" prefHeight="0.0" prefWidth="1308.0" styleClass="user-info-table">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="201.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="254.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="10.0" prefWidth="243.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="449.0" minWidth="10.0" prefWidth="169.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="494.0" minWidth="10.0" prefWidth="157.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="344.0" minWidth="10.0" prefWidth="130.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="201.0" prefWidth="201.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="254.0" prefWidth="254.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="243.0" prefWidth="243.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="449.0" minWidth="169.0" prefWidth="169.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="494.0" minWidth="157.0" prefWidth="157.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="344.0" minWidth="130.0" prefWidth="130.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="90.0" prefWidth="90.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
-               <children>
-                  <Label prefHeight="53.0" prefWidth="174.0" text="ISBN" />
-                  <Label prefHeight="48.0" prefWidth="351.0" text="Title" GridPane.columnIndex="1" />
-                  <Label prefHeight="48.0" prefWidth="254.0" text="Author" GridPane.columnIndex="2" />
-                  <Label prefHeight="53.0" prefWidth="174.0" text="Borrow Date" GridPane.columnIndex="3" />
-                  <Label prefHeight="53.0" prefWidth="174.0" text="Due Date" GridPane.columnIndex="4" />
-                  <Label prefHeight="53.0" prefWidth="174.0" text="Overdue Fee" GridPane.columnIndex="5" />
-                  <Label prefHeight="48.0" prefWidth="96.0" text="Return " GridPane.columnIndex="6" />
-               </children>
             </GridPane>
          </content>
       </ScrollPane>

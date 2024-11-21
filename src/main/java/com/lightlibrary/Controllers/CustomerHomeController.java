@@ -7,7 +7,10 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +26,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -59,6 +64,7 @@ public class CustomerHomeController implements Initializable, SyncAction {
     @FXML
     private GridPane borrowingGrid;
 
+
     CustomerDashboardController parentController;
 
     public CustomerDashboardController getParentController() {
@@ -72,12 +78,20 @@ public class CustomerHomeController implements Initializable, SyncAction {
     public void setParentController(CustomerDashboardController parentController) {
         this.parentController = parentController;
         setWelcomeName(customerWelcomeNameLabel, parentController.getCustomer().getFullName());
+        Task<Void> task = new Task<>() {
+            protected Void call() throws Exception {
+                loadBorrowingGrid();
+                return null;
+            }
+        };
+        new Thread(task).start();
+        countBorrowedAndReturned();
+        countOverdue();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateDate(curentTimeLabel);
-        System.out.println(parentController.toString());
         disPlayTopChoices();
     }
 
@@ -177,15 +191,13 @@ public class CustomerHomeController implements Initializable, SyncAction {
         thread.start();
     }
 
-
     public void loadBorrowingGrid() {
         borrowingGrid.getChildren().clear();
         borrowingGrid.getRowConstraints().clear();
 
         int userID = parentController.getCustomer().getUserID();
-        System.out.println(userID);
         Connection connectDB = DatabaseConnection.getConnection();
-        String queryBorrowing = "select b.isbn,b.title,b.author,t.dueDate from transactions t left join books b on b.isbn = t.isbn where t.userID=?";
+        String queryBorrowing = "select b.isbn,b.title,b.author,t.dueDate from transactions t left join books b on b.isbn = t.isbn where t.userID= ?";
         try {
             PreparedStatement preparedStatement = connectDB.prepareStatement(queryBorrowing);
             preparedStatement.setInt(1, userID);
@@ -196,10 +208,10 @@ public class CustomerHomeController implements Initializable, SyncAction {
                 String author = resultSet.getString("author");
                 String dueDate = resultSet.getDate("dueDate").toLocalDate().toString();
 
+                borrowingGrid.addRow(borrowingGrid.getRowCount(),new Label(isbn),new Label(title),new Label(author),new Label(dueDate));
                 RowConstraints rowConstraints = new RowConstraints();
                 rowConstraints.setMinHeight(70);
                 borrowingGrid.getRowConstraints().add(rowConstraints);
-                borrowingGrid.addRow(borrowingGrid.getRowCount(),new Label(isbn),new Label(title),new Label(author),new Label(dueDate));
 
             }
         } catch (SQLException e) {
@@ -207,4 +219,40 @@ public class CustomerHomeController implements Initializable, SyncAction {
         }
 
     }
+
+    public void countBorrowedAndReturned() {
+        Connection connectDB = DatabaseConnection.getConnection();
+        String query = "select count(t.returnDate) as returned, count(t.borrowDate) as borrowed from transactions t where t.userID = ?";
+        try {
+            PreparedStatement preparedStatement = connectDB.prepareStatement(query);
+            preparedStatement.setInt(1, parentController.getCustomer().getUserID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            int borrowed = resultSet.getInt("borrowed");
+            int returned = resultSet.getInt("returned");
+            borrowedBookAmountLabel.setText(Integer.toString(borrowed));
+            returnedBookAmountLabel.setText(Integer.toString(returned));
+        } catch (SQLException e) {
+            System.out.println("cannot send query about borrowed and returned in Customer");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void countOverdue() {
+        Connection connectDB = DatabaseConnection.getConnection();
+        String query = "select count(t.borrowDate) as overdue from transactions t where t.returnDate is null and current_date() > t.dueDate and t.userID = ?";
+        try {
+            PreparedStatement preparedStatement = connectDB.prepareStatement(query);
+            preparedStatement.setInt(1, parentController.getCustomer().getUserID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            int overdue = resultSet.getInt("overdue");
+            overdueBookAmountLabel.setText(Integer.toString(overdue));
+        } catch ( SQLException e ) {
+            System.err.println("cannot send query about overdue in Customer");
+        }
+    }
+
+
+
 }
