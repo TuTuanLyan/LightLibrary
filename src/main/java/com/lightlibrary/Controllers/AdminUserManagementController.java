@@ -161,7 +161,7 @@ public class AdminUserManagementController implements Initializable, SyncAction 
         Button deleteButton = createDeleteButton(userID);
 
         int rowIndex = manageUserGrid.getRowCount();
-        manageUserGrid.getRowConstraints().add(new RowConstraints(40));
+        manageUserGrid.getRowConstraints().add(new RowConstraints(70));
         manageUserGrid.addRow(rowIndex, userIDLabel, fullnameLabel, usernameLabel, passwordLabel, phoneLabel, emailLabel, editButton, deleteButton);
     }
 

@@ -354,7 +354,7 @@ public class AdminDashboardController implements Initializable {
             issueBookImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/light-borrowed-book.png")).toExternalForm()));
             userImage.setImage(new Image(Objects.requireNonNull(getClass()
-                    .getResource("/com/lightlibrary/Images/light-history.png")).toExternalForm()));
+                    .getResource("/com/lightlibrary/Images/light-user.png")).toExternalForm()));
             chatImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/light-help.png")).toExternalForm()));
         } else {
@@ -367,7 +367,7 @@ public class AdminDashboardController implements Initializable {
             issueBookImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/dark-borrowed-book.png")).toExternalForm()));
             userImage.setImage(new Image(Objects.requireNonNull(getClass()
-                    .getResource("/com/lightlibrary/Images/dark-history.png")).toExternalForm()));
+                    .getResource("/com/lightlibrary/Images/dark-user.png")).toExternalForm()));
             chatImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/dark-help.png")).toExternalForm()));
         }
