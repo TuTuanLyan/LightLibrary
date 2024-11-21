@@ -1,7 +1,6 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.Admin;
-import com.lightlibrary.Models.Customer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -54,7 +53,8 @@ public class AdminChatController implements Initializable, SyncAction {
         this.parentController = parentController;
     }
 
-
+    @Override
+    public void setParentController(CustomerDashboardController parentController) {}
 
     @Override
     public void setTheme(boolean darkMode) {
@@ -66,11 +66,6 @@ public class AdminChatController implements Initializable, SyncAction {
             chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
         }
-    }
-
-    @Override
-    public void setParentController(CustomerDashboardController parentController) {
-
     }
 
     @Override
@@ -101,7 +96,7 @@ public class AdminChatController implements Initializable, SyncAction {
             }
 
             // Xây dựng URI kết nối
-            serverUri = "ws://" + serverIp + ":8080/ws/chat?role=user";
+            serverUri = "ws://" + serverIp + ":8080/ws/chat?role=admin";
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             URI uri = new URI(serverUri);
 
@@ -114,7 +109,7 @@ public class AdminChatController implements Initializable, SyncAction {
 
             String userName = admin.getUsername();
             System.out.println(userName);
-            session.getBasicRemote().sendText("user:" + userName + ":register");
+            session.getBasicRemote().sendText("admin:" + userName + ":register");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,7 +151,7 @@ public class AdminChatController implements Initializable, SyncAction {
         System.out.println("Session closed: " + session.getId() + ". Reason: " + reason);
     }
 
-    // Gửi tin nhắn từ User đến server
+    // Gửi tin nhắn từ Admin đến server
     @FXML
     private void sendMessage() {
         try {

@@ -54,9 +54,7 @@ public class CustomerChatController implements Initializable, SyncAction {
     }
 
     @Override
-    public void setParentController(AdminDashboardController parentController) {
-
-    }
+    public void setParentController(AdminDashboardController parentController) {}
 
     @Override
     public void setTheme(boolean darkMode) {
