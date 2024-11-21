@@ -283,6 +283,7 @@
     -fx-font-weight: bold;
     -fx-font-size: 21px;
     -fx-font-family: "Arial, Helvetica, sans-serif";
+    -fx-alignment: center;
 }
 
 .user-info-table .button {

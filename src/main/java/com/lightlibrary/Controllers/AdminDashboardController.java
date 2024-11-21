@@ -187,6 +187,11 @@ public class AdminDashboardController implements Initializable {
         if (cache.containsKey(fxmlPath)) {
             FXMLLoader loader = (FXMLLoader) cache.get(fxmlPath);
             setPaneWithAnimation(loader.getRoot());
+            Object controller = loader.getController();
+            if (controller instanceof SyncAction) {
+                ((SyncAction) controller).setTheme(admin.isDarkMode());
+                ((SyncAction) controller).setParentController(this);
+            }
         } else {
             Task<FXMLLoader> loadTask = new Task<>() {
                 @Override
