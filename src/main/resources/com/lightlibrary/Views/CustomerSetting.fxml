@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
 
-
-<AnchorPane fx:id="rootSettingContainer" prefHeight="640.0" prefWidth="960.0" styleClass="setting-root" stylesheets="@../StyleSheets/dark-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerSettingController">
+<AnchorPane fx:id="rootSettingContainer" prefHeight="613.0" prefWidth="984.0" styleClass="setting-root" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerSettingController">
    <children>
-      <Pane layoutX="561.0" layoutY="418.0" prefHeight="200.0" prefWidth="368.0">
-         <children>
-            <Button layoutX="44.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="129.0" text="Change theme" />
-            <Button layoutX="44.0" layoutY="100.0" mnemonicParsing="false" onAction="#goBackToDashBoard" prefHeight="25.0" prefWidth="145.0" text="Go back to dashboard" />
-         </children>
-      </Pane>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="293.0" layoutX="207.0" layoutY="110.0" stroke="BLACK" strokeType="INSIDE" width="407.0" />
+      <Button layoutX="802.0" layoutY="550.0" mnemonicParsing="false" onAction="#goBackToDashBoard" prefHeight="34.0" prefWidth="145.0" text="Go back to dashboard" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="300.0" layoutX="657.0" layoutY="110.0" stroke="BLACK" strokeType="INSIDE" width="290.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="34.0" layoutX="33.0" layoutY="533.0" stroke="BLACK" strokeType="INSIDE" width="145.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="61.0" layoutX="758.0" layoutY="22.0" stroke="BLACK" strokeType="INSIDE" width="185.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="54.0" layoutX="40.0" layoutY="25.0" stroke="BLACK" strokeType="INSIDE" width="259.0" />
+      <Button fx:id="changeAvatarButton" layoutX="46.0" layoutY="294.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="129.0" text="Change Avatar" />
+      <ImageView fx:id="avatarView" fitHeight="162.0" fitWidth="161.0" layoutX="24.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="54.0" layoutX="35.0" layoutY="444.0" stroke="BLACK" strokeType="INSIDE" width="290.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="61.0" layoutX="689.0" layoutY="441.0" stroke="BLACK" strokeType="INSIDE" width="259.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="61.0" layoutX="362.0" layoutY="441.0" stroke="BLACK" strokeType="INSIDE" width="290.0" />
    </children>
 </AnchorPane>
