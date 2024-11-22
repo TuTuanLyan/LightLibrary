@@ -32,7 +32,7 @@
             </GridPane>
          </content>
       </ScrollPane>
-      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="21.0" layoutY="32.0" prefHeight="128.0" prefWidth="1262.0" styleClass="user-info-table">
+      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="21.0" layoutY="22.0" prefHeight="128.0" prefWidth="1262.0" styleClass="user-info-table">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
@@ -48,42 +48,42 @@
             <RowConstraints maxHeight="60.0" minHeight="22.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label fx:id="colUserID" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="userID">
+            <Label fx:id="colUserID" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="User ID">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colFullName" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="177.0" text="fullname" GridPane.columnIndex="1">
+            <Label fx:id="colFullName" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="177.0" text="Full Name" GridPane.columnIndex="1">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colUsername" alignment="CENTER" prefHeight="30.0" prefWidth="230.0" text="username" GridPane.columnIndex="2">
+            <Label fx:id="colUsername" alignment="CENTER" prefHeight="30.0" prefWidth="230.0" text="Username" GridPane.columnIndex="2">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colPassword" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="password" GridPane.columnIndex="3">
+            <Label fx:id="colPassword" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Password" GridPane.columnIndex="3">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colPhoneNumber" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="phoneNumber" GridPane.columnIndex="4">
+            <Label fx:id="colPhoneNumber" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Phone Number" GridPane.columnIndex="4">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colEmail" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="email" GridPane.columnIndex="5">
+            <Label fx:id="colEmail" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Email" GridPane.columnIndex="5">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="117.0" text="edit" GridPane.columnIndex="6">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="117.0" text="Edit" GridPane.columnIndex="6">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="180.0" text="remove" GridPane.columnIndex="7">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="180.0" text="Remove" GridPane.columnIndex="7">
                <font>
                   <Font size="20.0" />
                </font>

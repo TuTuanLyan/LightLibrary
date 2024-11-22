@@ -25,6 +25,11 @@ public class AdminChatController implements Initializable, SyncAction {
     }
 
     @Override
+    public void autoUpdate() {
+
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }

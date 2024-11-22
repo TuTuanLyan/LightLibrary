@@ -6,13 +6,14 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="homeRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="page-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerHomeController">
@@ -194,46 +195,41 @@
          <children>
             <ScrollPane layoutX="10.0" layoutY="70.0" prefHeight="400.0" prefWidth="960.0">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="532.0" prefWidth="950.0">
-                     <children>
-                        <Pane layoutX="14.0" layoutY="14.0" prefHeight="85.0" prefWidth="920.0">
-                           <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="43.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="180.0" />
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="43.0" layoutX="200.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="240.0" />
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="43.0" layoutX="460.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="275.0" />
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="43.0" layoutX="760.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="160.0" />
-                              <Line endX="711.0" layoutX="147.0" layoutY="71.0" startX="-100.0" />
-                           </children>
-                        </Pane>
-                     </children>
-                  </AnchorPane>
+                  <GridPane fx:id="borrowingGrid" prefHeight="0.0" prefWidth="956.0" styleClass="home-overview-list" stylesheets="@../StyleSheets/Style.css">
+                    <columnConstraints>
+                      <ColumnConstraints fx:id="ISBNCol" halignment="LEFT" hgrow="SOMETIMES" maxWidth="296.0" minWidth="183.0" prefWidth="183.0" />
+                        <ColumnConstraints fx:id="TitleCol" halignment="LEFT" hgrow="SOMETIMES" maxWidth="557.0" minWidth="419.0" prefWidth="419.0" />
+                        <ColumnConstraints fx:id="AuthorCol" halignment="LEFT" hgrow="SOMETIMES" maxWidth="275.0" minWidth="243.0" prefWidth="243.0" />
+                      <ColumnConstraints fx:id="OverdueCol" halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
                </content>
             </ScrollPane>
-            <Label layoutX="28.0" layoutY="49.0" prefHeight="21.0" prefWidth="35.0" text="ISBN" textFill="#aeaeae">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
             <Label layoutX="25.0" prefHeight="49.0" prefWidth="255.0" styleClass="page-title" text="Borrowing Book">
                <font>
                   <Font size="31.0" />
                </font>
             </Label>
-            <Label layoutX="226.0" layoutY="49.0" prefHeight="21.0" prefWidth="35.0" text="Title" textFill="#aeaeae">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="484.0" layoutY="49.0" prefHeight="21.0" prefWidth="55.0" text="Author" textFill="#aeaeae">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="786.0" layoutY="49.0" prefHeight="21.0" prefWidth="113.0" text="Overdue Date" textFill="#aeaeae">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
+            <GridPane layoutX="14.0" layoutY="40.0" prefHeight="30.0" prefWidth="930.0" styleClass="home-overview-list" stylesheets="@../StyleSheets/Style.css">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="228.0" minWidth="183.0" prefWidth="0.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="483.0" minWidth="419.0" prefWidth="262.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="342.0" minWidth="243.0" prefWidth="196.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="132.0" minWidth="10.0" prefWidth="132.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="ISBN" />
+                  <Label text="Title" GridPane.columnIndex="1" />
+                  <Label text="Author" GridPane.columnIndex="2" />
+                  <Label text="Due to " GridPane.columnIndex="3" />
+               </children>
+            </GridPane>
          </children>
       </Pane>
       <Pane layoutX="20.0" layoutY="585.0" prefHeight="210.0" prefWidth="140.0" visible="false">

@@ -23,6 +23,11 @@ public class CustomerHistoryController implements Initializable, SyncAction {
     public  void setParentController(AdminDashboardController parentController) {}
 
     @Override
+    public void autoUpdate() {
+
+    }
+
+    @Override
     public void setParentController(CustomerDashboardController parentController) {
         this.parentController = parentController;
     }

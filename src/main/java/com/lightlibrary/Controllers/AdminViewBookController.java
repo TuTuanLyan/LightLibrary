@@ -52,6 +52,11 @@ public class AdminViewBookController implements Initializable, SyncAction {
     }
 
     @Override
+    public void autoUpdate() {
+        reLoad();
+    }
+
+    @Override
     public void setTheme(boolean darkMode) {
         viewBookRoot.getStylesheets().clear();
         if (darkMode) {
@@ -69,7 +74,7 @@ public class AdminViewBookController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupSortEvents();
-        reLoad();
+        autoUpdate();
     }
 
     private void setupSortEvents() {

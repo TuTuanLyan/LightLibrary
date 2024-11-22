@@ -59,6 +59,11 @@ public class AdminUserManagementController implements Initializable, SyncAction 
     }
 
     @Override
+    public void autoUpdate() {
+        reLoad();
+    }
+
+    @Override
     public void setTheme(boolean darkMode) {
         userManagementRoot.getStylesheets().clear();
         if (darkMode) {
@@ -76,7 +81,7 @@ public class AdminUserManagementController implements Initializable, SyncAction 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupFilters();
-        reLoad();
+        autoUpdate();
     }
 
     private void setupFilters() {
@@ -161,7 +166,7 @@ public class AdminUserManagementController implements Initializable, SyncAction 
         Button deleteButton = createDeleteButton(userID);
 
         int rowIndex = manageUserGrid.getRowCount();
-        manageUserGrid.getRowConstraints().add(new RowConstraints(40));
+        manageUserGrid.getRowConstraints().add(new RowConstraints(70));
         manageUserGrid.addRow(rowIndex, userIDLabel, fullnameLabel, usernameLabel, passwordLabel, phoneLabel, emailLabel, editButton, deleteButton);
     }
 
