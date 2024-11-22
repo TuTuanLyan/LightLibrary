@@ -1,6 +1,7 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.Customer;
+import com.lightlibrary.Models.DatabaseConnection;
 import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.animation.TranslateTransition;
@@ -27,7 +28,14 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class CustomerDashboardController implements Initializable {
 
@@ -297,6 +305,37 @@ public class CustomerDashboardController implements Initializable {
         dashBoardRoot.getStylesheets().clear();
         setTheme(this.customer.isDarkMode());
         changeThemeToggleButtonAnimation(this.customer.isDarkMode());
+
+        debounceSaveTheme(this.customer.isDarkMode());
+    }
+
+    private void debounceSaveTheme(boolean isDarkMode) {
+        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        ScheduledFuture<?> future = scheduler.schedule(() -> {
+            saveThemeToDatabase(isDarkMode);
+            scheduler.shutdown(); // Shutdown sau khi task hoàn thành
+        }, 800, TimeUnit.MILLISECONDS);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (!scheduler.isShutdown()) {
+                future.cancel(false);
+                scheduler.shutdownNow();
+            }
+        }));
+    }
+
+    private void saveThemeToDatabase(boolean isDarkMode) {
+        try {
+            String sql = "UPDATE users SET darkMode = ? WHERE userID = ?";
+            try (Connection conn = DatabaseConnection.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setBoolean(1, isDarkMode);
+                stmt.setInt(2, this.customer.getUserID());
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void changeThemeToggleButtonAnimation(boolean darkMode) {
