@@ -1,22 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootSettingContainer" prefHeight="613.0" prefWidth="984.0" styleClass="setting-root" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerSettingController">
+<AnchorPane fx:id="rootSettingContainer" prefHeight="640.0" prefWidth="960.0" styleClass="setting-root" stylesheets="@../StyleSheets/dark-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerSettingController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="293.0" layoutX="207.0" layoutY="110.0" stroke="BLACK" strokeType="INSIDE" width="407.0" />
-      <Button layoutX="802.0" layoutY="550.0" mnemonicParsing="false" onAction="#goBackToDashBoard" prefHeight="34.0" prefWidth="145.0" text="Go back to dashboard" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="300.0" layoutX="657.0" layoutY="110.0" stroke="BLACK" strokeType="INSIDE" width="290.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="34.0" layoutX="33.0" layoutY="533.0" stroke="BLACK" strokeType="INSIDE" width="145.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="61.0" layoutX="758.0" layoutY="22.0" stroke="BLACK" strokeType="INSIDE" width="185.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="54.0" layoutX="40.0" layoutY="25.0" stroke="BLACK" strokeType="INSIDE" width="259.0" />
-      <Button fx:id="changeAvatarButton" layoutX="46.0" layoutY="294.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="129.0" text="Change Avatar" />
-      <ImageView fx:id="avatarView" fitHeight="162.0" fitWidth="161.0" layoutX="24.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="54.0" layoutX="35.0" layoutY="444.0" stroke="BLACK" strokeType="INSIDE" width="290.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="61.0" layoutX="689.0" layoutY="441.0" stroke="BLACK" strokeType="INSIDE" width="259.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="61.0" layoutX="362.0" layoutY="441.0" stroke="BLACK" strokeType="INSIDE" width="290.0" />
+      <Button layoutX="25.0" layoutY="26.0" mnemonicParsing="false" onAction="#goBackToDashBoard" prefHeight="54.0" prefWidth="156.0" styleClass="go-to-dashboard-button" text="Dashboard">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Pane layoutX="25.0" layoutY="110.0" prefHeight="300.0" prefWidth="585.0" styleClass="box-container">
+         <children>
+            <ImageView fx:id="avatarView" fitHeight="157.0" fitWidth="156.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../Images/LightLibraryLogo.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="changeAvatarButton" layoutX="28.0" layoutY="201.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="129.0" text="Change Avatar" />
+         </children>
+      </Pane>
+      <Pane layoutX="637.0" layoutY="110.0" prefHeight="300.0" prefWidth="300.0" styleClass="box-container">
+         <children>
+            <Label alignment="CENTER" layoutX="25.0" prefHeight="54.0" prefWidth="251.0" text="Update your password">
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <PasswordField layoutX="25.0" layoutY="67.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
+            <PasswordField layoutX="25.0" layoutY="125.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter new password" />
+            <PasswordField layoutX="25.0" layoutY="184.0" prefHeight="41.0" prefWidth="250.0" promptText="Confirm new password" />
+            <Button layoutX="33.0" layoutY="242.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="236.0" styleClass="go-to-dashboard-button" text="Change Password">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane layoutX="25.0" layoutY="440.0" prefHeight="110.0" prefWidth="280.0" styleClass="box-container">
+         <children>
+            <PasswordField layoutX="15.0" layoutY="55.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
+            <Label alignment="CENTER" layoutX="15.0" layoutY="8.0" prefHeight="35.0" prefWidth="251.0" text="Update your name">
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="330.0" layoutY="440.0" prefHeight="110.0" prefWidth="280.0" styleClass="box-container">
+         <children>
+            <PasswordField layoutX="15.0" layoutY="55.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
+            <Label alignment="CENTER" layoutX="15.0" layoutY="11.0" prefHeight="35.0" prefWidth="251.0" text="Update phone number">
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="637.0" layoutY="440.0" prefHeight="110.0" prefWidth="300.0" styleClass="box-container">
+         <children>
+            <PasswordField layoutX="10.0" layoutY="55.0" prefHeight="41.0" prefWidth="280.0" promptText="Enter your current password" />
+            <Label alignment="CENTER" layoutX="25.0" layoutY="9.0" prefHeight="35.0" prefWidth="251.0" text="Update your email">
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Button layoutX="25.0" layoutY="569.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="156.0" styleClass="go-to-dashboard-button" text="Log Out">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Pane layoutX="679.0" layoutY="23.0" prefHeight="60.0" prefWidth="258.0" styleClass="box-container">
+         <children>
+            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="13.0" prefHeight="35.0" prefWidth="129.0" styleClass="page-title" text="1000000000" textAlignment="CENTER">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="159.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/coin-icon.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="197.0" layoutY="10.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="51.0" styleClass="functional-detail-button">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIcon glyphName="PLUS" size="2em" textAlignment="CENTER" wrappingWidth="30.785714149475098" />
+               </graphic>
+            </Button>
+         </children>
+      </Pane>
+      <AnchorPane prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: rgba(0, 0, 0, 0.54);" visible="false">
+         <children>
+            <Pane layoutX="222.0" layoutY="95.0" prefHeight="450.0" prefWidth="516.0" styleClass="box-container" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

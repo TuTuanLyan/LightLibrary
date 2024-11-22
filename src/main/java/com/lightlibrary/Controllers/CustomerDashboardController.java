@@ -115,6 +115,7 @@ public class CustomerDashboardController implements Initializable {
         this.customer = customer;
         displayCustomerInformation();
         setTheme(customer.isDarkMode());
+        changeThemeToggleButtonAnimation(customer.isDarkMode());
     }
 
     @Override
@@ -321,6 +322,8 @@ public class CustomerDashboardController implements Initializable {
     }
 
     private void setTheme(boolean darkMode) {
+        updateChildThemes(darkMode);
+
         if (darkMode) {
             dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
@@ -348,8 +351,6 @@ public class CustomerDashboardController implements Initializable {
             chatImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/dark-chat.png")).toExternalForm()));
         }
-
-        updateChildThemes(darkMode);
     }
 
     private void updateChildThemes(boolean darkMode) {
