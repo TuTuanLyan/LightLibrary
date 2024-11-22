@@ -115,6 +115,7 @@ public class AdminDashboardController implements Initializable {
         this.admin = admin;
         displayAdminInformation();
         setTheme(admin.isDarkMode());
+        changeThemeToggleButtonAnimation(admin.isDarkMode());
     }
 
     @Override
@@ -172,6 +173,13 @@ public class AdminDashboardController implements Initializable {
 
             loadTask.setOnSucceeded(event -> {
                 FXMLLoader loader = loadTask.getValue();
+
+                Object controller = loader.getController();
+                if (controller instanceof SyncAction) {
+                    ((SyncAction) controller).setTheme(admin.isDarkMode());
+                    ((SyncAction) controller).setParentController(this);
+                    ((SyncAction) controller).autoUpdate();
+                }
                 cache.put(fxmlPath, loader);
             });
 
@@ -191,6 +199,7 @@ public class AdminDashboardController implements Initializable {
             if (controller instanceof SyncAction) {
                 ((SyncAction) controller).setTheme(admin.isDarkMode());
                 ((SyncAction) controller).setParentController(this);
+                ((SyncAction) controller).autoUpdate();
             }
         } else {
             Task<FXMLLoader> loadTask = new Task<>() {
@@ -211,6 +220,7 @@ public class AdminDashboardController implements Initializable {
                 if (controller instanceof SyncAction) {
                     ((SyncAction) controller).setTheme(admin.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
+                    ((SyncAction) controller).autoUpdate();
                 }
             });
 

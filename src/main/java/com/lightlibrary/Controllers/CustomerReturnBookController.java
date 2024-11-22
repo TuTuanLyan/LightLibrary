@@ -55,6 +55,11 @@ public class CustomerReturnBookController implements Initializable, SyncAction {
     public  void setParentController(AdminDashboardController parentController) {}
 
     @Override
+    public void autoUpdate() {
+
+    }
+
+    @Override
     public void setParentController(CustomerDashboardController parentController) {
         this.parentController = parentController;
         sortReturn();
@@ -161,9 +166,6 @@ public class CustomerReturnBookController implements Initializable, SyncAction {
 
         notReturnBookTable.addRow(notReturnBookTable.getRowCount(),isbnLabel,titleLabel,authorLabel,borrowedLabel,dueDateLabel,overDueFeeLabel,returnNow);
         notReturnBookTable.getRowConstraints().add(new RowConstraints(70));
-
-
-
     }
 
     private Button createReturnButton(int userID, String isbn) {
@@ -194,6 +196,7 @@ public class CustomerReturnBookController implements Initializable, SyncAction {
                 return null;
             }
         };
+
         sortReturn();
         new Thread(task).start();
     }

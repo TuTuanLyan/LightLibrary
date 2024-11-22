@@ -1,7 +1,6 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.DatabaseConnection;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -73,7 +72,7 @@ public class AdminHomeController implements Initializable, SyncAction {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void autoUpdate() {
         ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.submit(this::graphController);
         executorService.execute(this::loadViewBook);
@@ -83,6 +82,11 @@ public class AdminHomeController implements Initializable, SyncAction {
         executorService.submit(() -> loadTotalOverviewLabel(transactionsLabel, "transactions"));
         executorService.submit(() -> loadTotalOverviewLabel(requiredBookLabel, "requiredBooks"));
         executorService.shutdown();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        autoUpdate();
     }
 
     @Override
@@ -215,34 +219,27 @@ public class AdminHomeController implements Initializable, SyncAction {
         XYChart.Series<String, Number> returnTotals = new XYChart.Series<>();
         returnTotals.setName("Returned");
 
-        /*graph.lookupAll(".chart-legend-item").forEach(node -> {
-            node.setStyle("-fx-font-size: 16px; -fx-font-family: Arial; -fx-text-fill: #4CAF50;");
-        });*/
-
         Connection connection = DatabaseConnection.getConnection();
         String queryConnect1 = "select t.borrowDate,count(t.borrowDate) as borrowPerDay from transactions t where t.borrowDate between current_date() - 6 and current_date() group by t.borrowDate order by t.borrowDate asc";
         try {
             Statement preparedStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = preparedStatement.executeQuery(queryConnect1);
             int index = 6;
-            // Đặt con trỏ về đầu ResultSet
             while (index >= 0) {
                 LocalDate localDate = LocalDate.now().minusDays(index);
-                boolean found = false; // Biến để kiểm tra xem có tìm thấy ngày không
+                boolean found = false;
                 resultSet.beforeFirst();
-                // Lặp qua các hàng trong ResultSet
                 while (resultSet.next()) {
                     LocalDate borrowDate = resultSet.getDate("borrowDate").toLocalDate();
                     if (borrowDate.equals(localDate)) {
                         int total = resultSet.getInt("borrowPerDay");
                         XYChart.Data<String, Number> temporaryBar = new XYChart.Data<>(localDate.toString(), total);
                         borrowTotals.getData().add(temporaryBar);
-                        found = true; // Đánh dấu là đã tìm thấy
-                        break; // Thoát khỏi vòng lặp khi đã tìm thấy
+                        found = true;
+                        break;
                     }
                 }
 
-                // Nếu không tìm thấy, có thể thêm giá trị 0 hoặc một giá trị mặc định
                 if (!found) {
                     borrowTotals.getData().add(new XYChart.Data<>(localDate.toString(), 0));
                 }
@@ -287,10 +284,7 @@ public class AdminHomeController implements Initializable, SyncAction {
             System.out.println("cannot create connection");
             e.printStackTrace();
         }
-        Platform.runLater(() -> {
-            setColor(borrowTotals, "#08d792");
-            setColor(returnTotals, "#7096ff");
-        });
+
         graph.getData().addAll(Arrays.asList(borrowTotals, returnTotals));
 
         graph.setPrefWidth(paneHaveGraph.getPrefWidth());
@@ -298,15 +292,4 @@ public class AdminHomeController implements Initializable, SyncAction {
         paneHaveGraph.getChildren().add(graph);
 
     }
-
-    public void setColor(XYChart.Series<String, Number> series, String color) {
-        try {
-            for (XYChart.Data<String, Number> data : series.getData()) {
-                data.getNode().setStyle("-fx-bar-fill:" + color + ";");
-            }
-        } catch (Exception e) {
-            System.out.println("cannot load this color: " + color);
-        }
-    }
-
 }

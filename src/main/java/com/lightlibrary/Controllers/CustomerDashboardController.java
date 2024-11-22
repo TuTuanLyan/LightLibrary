@@ -115,6 +115,7 @@ public class CustomerDashboardController implements Initializable {
         this.customer = customer;
         displayCustomerInformation();
         setTheme(customer.isDarkMode());
+        changeThemeToggleButtonAnimation(customer.isDarkMode());
     }
 
     @Override
@@ -166,6 +167,7 @@ public class CustomerDashboardController implements Initializable {
                 if (controller instanceof SyncAction) {
                     ((SyncAction) controller).setTheme(customer.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
+                    ((SyncAction) controller).autoUpdate();
                 }
                 cache.put(fxmlPath, loader);
             });
@@ -189,6 +191,7 @@ public class CustomerDashboardController implements Initializable {
             if (controller instanceof SyncAction) {
                 ((SyncAction) controller).setTheme(customer.isDarkMode());
                 ((SyncAction) controller).setParentController(this);
+                ((SyncAction) controller).autoUpdate();
             }
             setPaneWithAnimation(loader.getRoot());
         } else {
@@ -210,6 +213,7 @@ public class CustomerDashboardController implements Initializable {
                 if (controller instanceof SyncAction) {
                     ((SyncAction) controller).setTheme(customer.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
+                    ((SyncAction) controller).autoUpdate();
                 }
             });
 

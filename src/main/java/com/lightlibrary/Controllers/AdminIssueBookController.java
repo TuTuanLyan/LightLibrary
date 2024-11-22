@@ -76,6 +76,11 @@ public class AdminIssueBookController implements Initializable, SyncAction {
     }
 
     @Override
+    public void autoUpdate() {
+
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addBookButton.setOnAction(this::addBookAction);
         addBookButton.setDisable(true);

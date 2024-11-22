@@ -59,6 +59,11 @@ public class AdminUserManagementController implements Initializable, SyncAction 
     }
 
     @Override
+    public void autoUpdate() {
+        reLoad();
+    }
+
+    @Override
     public void setTheme(boolean darkMode) {
         userManagementRoot.getStylesheets().clear();
         if (darkMode) {
@@ -76,7 +81,7 @@ public class AdminUserManagementController implements Initializable, SyncAction 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupFilters();
-        reLoad();
+        autoUpdate();
     }
 
     private void setupFilters() {
