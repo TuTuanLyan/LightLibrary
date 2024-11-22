@@ -1,15 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="historyRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="page-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerHistoryController">
-    <children>
-        <Label alignment="CENTER" layoutX="146.0" layoutY="202.0" prefHeight="416.0" prefWidth="1086.0" text="This is History">
-            <font>
-                <Font size="47.0" />
-            </font>
-        </Label>
-    </children>
+   <children>
+      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="10.0" layoutY="74.0" prefHeight="128.0" prefWidth="1315.0" styleClass="user-info-table">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="177.0" prefWidth="218.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="205.0" minWidth="177.0" prefWidth="190.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="196.0" minWidth="177.0" prefWidth="183.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="183.0" minWidth="176.0" prefWidth="176.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="192.0" minWidth="154.0" prefWidth="177.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="144.0" minWidth="100.0" prefWidth="121.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="60.0" minHeight="22.0" prefHeight="52.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="60.0" minHeight="22.0" prefHeight="51.0" valignment="CENTER" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="ISBN">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="177.0" text="Title" GridPane.columnIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="230.0" text="Author" GridPane.columnIndex="2">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Borrow Date" GridPane.columnIndex="3">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Due Date" GridPane.columnIndex="4">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Return Date" GridPane.columnIndex="5">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="180.0" text="Total" GridPane.columnIndex="6">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="fillISBNField" prefHeight="36.0" prefWidth="185.0" GridPane.rowIndex="1" />
+            <TextField fx:id="fillTitleField" prefHeight="36.0" prefWidth="185.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="fillAuthorField" prefHeight="36.0" prefWidth="185.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="fillTotalField" prefHeight="36.0" prefWidth="185.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <DatePicker fx:id="borrowDatePicker" prefHeight="36.0" prefWidth="189.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <DatePicker fx:id="dueDatePicker" prefHeight="36.0" prefWidth="189.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <DatePicker fx:id="returnDatePicker" prefHeight="36.0" prefWidth="189.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+      <Label fx:id="spenrTotalCoinLabel" layoutX="21.0" layoutY="21.0" prefHeight="36.0" prefWidth="723.0" styleClass="page-title" text="You have spent a total of xxxxxx coins on the books. ">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutX="10.0" layoutY="215.0" prefHeight="581.0" prefWidth="1330.0">
+         <content>
+            <GridPane fx:id="historyTableGrid" alignment="CENTER" prefHeight="52.0" prefWidth="1315.0" styleClass="user-info-table">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="177.0" prefWidth="218.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="205.0" minWidth="177.0" prefWidth="190.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="196.0" minWidth="177.0" prefWidth="183.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="183.0" minWidth="176.0" prefWidth="176.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="192.0" minWidth="154.0" prefWidth="177.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="144.0" minWidth="100.0" prefWidth="121.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="60.0" minHeight="22.0" prefHeight="52.0" valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </children>
 </AnchorPane>
