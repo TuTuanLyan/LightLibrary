@@ -5,20 +5,40 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="chatRoot" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminChatController">
+<AnchorPane fx:id="chatRoot" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminChatController">
    <children>
-      <!-- Label for "IP" and Connect Button -->
-      <Label layoutX="20.0" layoutY="10.0" text="Server IP:"/>
-      <TextField fx:id="ipField" layoutX="80.0" layoutY="10.0" prefWidth="200.0"/>
-      <Button fx:id="connectButton" layoutX="300.0" layoutY="10.0" text="Connect"/>
+      <!-- Vùng connect tới IP xác định -->
+      <HBox fx:id="connectionBox" layoutX="918.0" layoutY="762.0" prefHeight="25.0" prefWidth="396.0" spacing="5.0">
+         <Label prefHeight="25.0" prefWidth="47.0" text="Server IP" />
+         <TextField fx:id="ipField" prefHeight="25.0" prefWidth="199.0" promptText="Enter server IP" text="192.168.0.104" />
+         <Button fx:id="connectButton" onAction="#connectToServer" text="Connect" />
+         <Button fx:id="disconnectButton" mnemonicParsing="false" text="Disconnect" />
+      </HBox>
 
-      <!-- Area to Display Messages -->
-      <TextArea fx:id="messageDisplay" layoutX="20.0" layoutY="50.0" prefHeight="500.0" prefWidth="1300.0" editable="false" wrapText="true"/>
+      <!-- Vùng hiển thị tin nhắn -->
+      <VBox fx:id="messageBox" layoutX="20.0" layoutY="19.0" spacing="10.0">
+         <TextArea fx:id="messageDisplay" editable="false" prefHeight="719.0" prefWidth="861.0" wrapText="true" />
+      </VBox>
 
-      <!-- TextField and Send Button for Message Input -->
-      <TextField fx:id="messageInput" layoutX="20.0" layoutY="570.0" prefWidth="1100.0"/>
-      <Button fx:id="sendButton" layoutX="1130.0" layoutY="570.0" text="Send"/>
+      <!-- Vùng nhập tin nhắn và nút send -->
+      <HBox fx:id="inputBox" layoutX="20.0" layoutY="762.0" prefHeight="25.0" prefWidth="861.0" spacing="10.0">
+         <TextField fx:id="messageInput" prefHeight="25.0" prefWidth="824.0" promptText="Enter message (format @recipient message)" />
+         <Button fx:id="sendButton" onAction="#sendMessage" prefHeight="25.0" prefWidth="59.0" text="Send" />
+      </HBox>
+
+      <!-- Vùng hiển thị admin online -->
+      <VBox fx:id="adminOnlineBox" layoutX="917.0" layoutY="19.0" spacing="5.0">
+         <Label fx:id="adminLabel" text="Online admin (0)" />
+         <TextArea fx:id="adminListField" editable="false" prefHeight="327.0" prefWidth="396.0" />
+      </VBox>
+
+      <!-- Vùng hiển thị user online -->
+      <VBox fx:id="userOnlineBox" layoutX="917.0" layoutY="379.0" spacing="5.0">
+         <Label fx:id="userLabel" text="Online user (0)" />
+         <TextArea fx:id="userListField" editable="false" prefHeight="333.0" prefWidth="396.0" />
+      </VBox>
    </children>
 </AnchorPane>
