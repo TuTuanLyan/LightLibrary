@@ -96,7 +96,7 @@
             <TextField fx:id="sortPrice" GridPane.columnIndex="5" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <AnchorPane fx:id="editPane" layoutX="300.0" layoutY="101.0" prefHeight="492.0" prefWidth="653.0" styleClass="edit-table" visible="false">
+      <AnchorPane fx:id="editPane" layoutX="300.0" layoutY="101.0" prefHeight="492.0" prefWidth="653.0" styleClass="edit-table">
          <children>
             <TextField fx:id="editTotalTextField" layoutX="66.0" layoutY="95.0" prefHeight="47.0" prefWidth="521.0" promptText="total" />
             <TextField fx:id="editAvailableTextField" layoutX="66.0" layoutY="223.0" prefHeight="47.0" prefWidth="521.0" promptText="available" />
@@ -113,6 +113,7 @@
             </Label>
             <Label fx:id="editPriceLabel" contentDisplay="CENTER" layoutX="66.0" layoutY="298.0" prefHeight="37.0" prefWidth="110.0" text="Price" />
             <Button fx:id="confirmButton" layoutX="509.0" layoutY="413.0" mnemonicParsing="false" text="Confirm" />
+            <Button fx:id="cancelEditButton" layoutX="413.0" layoutY="413.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="78.0" text="Cancel" />
          </children>
       </AnchorPane>
    </children>

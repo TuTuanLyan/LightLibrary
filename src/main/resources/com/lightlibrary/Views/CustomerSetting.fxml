@@ -22,12 +22,33 @@
       </Button>
       <Pane layoutX="25.0" layoutY="110.0" prefHeight="300.0" prefWidth="585.0" styleClass="box-container">
          <children>
-            <ImageView fx:id="avatarView" fitHeight="157.0" fitWidth="156.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true">
+            <ImageView fx:id="avatarView" fitHeight="157.0" fitWidth="156.0" layoutX="15.0" layoutY="24.0" pickOnBounds="true">
                <image>
                   <Image url="@../Images/LightLibraryLogo.png" />
                </image>
             </ImageView>
-            <Button fx:id="changeAvatarButton" layoutX="28.0" layoutY="201.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="129.0" text="Change Avatar" />
+            <Button fx:id="changeAvatarButton" layoutX="29.0" layoutY="202.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="129.0" text="Change Avatar" />
+            <Label fx:id="userIDLabel" layoutX="186.0" layoutY="20.0" prefHeight="44.0" prefWidth="375.0" styleClass="page-title" text="User ID: ">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="userNameLabel" layoutX="186.0" layoutY="81.0" prefHeight="44.0" prefWidth="375.0" styleClass="page-title" text="Name: ">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="phoneNumberLabel" layoutX="186.0" layoutY="137.0" prefHeight="44.0" prefWidth="375.0" styleClass="page-title" text="Phone number: ">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="emailLabel" layoutX="186.0" layoutY="188.0" prefHeight="77.0" prefWidth="395.0" styleClass="page-title" text="Email: nguyentuanhtuan3102005@gmail.com" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="saveAvatarButton" layoutX="29.0" layoutY="253.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="129.0" text="Save Avatar" />
          </children>
       </Pane>
       <Pane layoutX="637.0" layoutY="110.0" prefHeight="300.0" prefWidth="300.0" styleClass="box-container">
@@ -53,10 +74,10 @@
                   <Font name="System Bold" size="22.0" />
                </font>
             </Label>
-            <PasswordField layoutX="25.0" layoutY="67.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
-            <PasswordField layoutX="25.0" layoutY="125.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter new password" />
-            <PasswordField layoutX="25.0" layoutY="184.0" prefHeight="41.0" prefWidth="250.0" promptText="Confirm new password" />
-            <Button layoutX="33.0" layoutY="242.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="236.0" styleClass="go-to-dashboard-button" text="Change Password">
+            <PasswordField fx:id="currentPasswordField" layoutX="25.0" layoutY="67.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
+            <PasswordField fx:id="updateNewPasswordField" layoutX="25.0" layoutY="125.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter new password" />
+            <PasswordField fx:id="confirmNewPasswordField" layoutX="25.0" layoutY="184.0" prefHeight="41.0" prefWidth="250.0" promptText="Confirm new password" />
+            <Button fx:id="changePasswordButton" layoutX="33.0" layoutY="242.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="236.0" styleClass="go-to-dashboard-button" text="Change Password">
                <font>
                   <Font size="20.0" />
                </font>
@@ -65,7 +86,7 @@
       </Pane>
       <Pane layoutX="25.0" layoutY="440.0" prefHeight="110.0" prefWidth="280.0" styleClass="box-container">
          <children>
-            <PasswordField layoutX="15.0" layoutY="55.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
+            <PasswordField fx:id="updateNameTextField" layoutX="15.0" layoutY="55.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
             <Label alignment="CENTER" layoutX="15.0" layoutY="8.0" prefHeight="35.0" prefWidth="251.0" text="Update your name">
                <textFill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -91,7 +112,7 @@
       </Pane>
       <Pane layoutX="330.0" layoutY="440.0" prefHeight="110.0" prefWidth="280.0" styleClass="box-container">
          <children>
-            <PasswordField layoutX="15.0" layoutY="55.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
+            <PasswordField fx:id="updatePhoneNumberField" layoutX="15.0" layoutY="55.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
             <Label alignment="CENTER" layoutX="15.0" layoutY="11.0" prefHeight="35.0" prefWidth="251.0" text="Update phone number">
                <textFill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -117,7 +138,7 @@
       </Pane>
       <Pane layoutX="637.0" layoutY="440.0" prefHeight="110.0" prefWidth="300.0" styleClass="box-container">
          <children>
-            <PasswordField layoutX="10.0" layoutY="55.0" prefHeight="41.0" prefWidth="280.0" promptText="Enter your current password" />
+            <PasswordField fx:id="updateEmailField" layoutX="10.0" layoutY="55.0" prefHeight="41.0" prefWidth="280.0" promptText="Enter your current password" />
             <Label alignment="CENTER" layoutX="25.0" layoutY="9.0" prefHeight="35.0" prefWidth="251.0" text="Update your email">
                <textFill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -148,7 +169,7 @@
       </Button>
       <Pane layoutX="679.0" layoutY="23.0" prefHeight="60.0" prefWidth="258.0" styleClass="box-container">
          <children>
-            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="13.0" prefHeight="35.0" prefWidth="129.0" styleClass="page-title" text="1000000000" textAlignment="CENTER">
+            <Label fx:id="userCoinLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="13.0" prefHeight="35.0" prefWidth="129.0" styleClass="page-title" text="1000000000" textAlignment="CENTER">
                <font>
                   <Font size="22.0" />
                </font>
@@ -168,9 +189,66 @@
             </Button>
          </children>
       </Pane>
-      <AnchorPane prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: rgba(0, 0, 0, 0.54);" visible="false">
+      <AnchorPane fx:id="paymentPane" prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: rgba(0, 0, 0, 0.54);">
          <children>
-            <Pane layoutX="222.0" layoutY="95.0" prefHeight="450.0" prefWidth="516.0" styleClass="box-container" />
+            <Pane layoutX="188.0" layoutY="51.0" prefHeight="538.0" prefWidth="585.0" styleClass="box-container">
+               <children>
+                  <Label alignment="CENTER" layoutX="18.0" layoutY="29.0" prefHeight="131.0" prefWidth="555.0" text="Please scan the QR code above to pay. You will receive the corresponding coin amount 1VND = 1 coin. Coins will be transferred to your account immediately after confirmation" textAlignment="CENTER" wrapText="true">
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="220.0" fitWidth="236.0" layoutX="179.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/payment-QR-image.jpg" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="538.0" layoutY="4.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="35.0" styleClass="functional-detail-button">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon glyphName="CLOSE" size="1.6em" />
+                     </graphic>
+                  </Button>
+                  <Label alignment="CENTER" layoutX="18.0" layoutY="393.0" prefHeight="131.0" prefWidth="555.0" text="Syntax: " textAlignment="CENTER" wrapText="true">
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children></Pane>
          </children>
       </AnchorPane>
    </children>

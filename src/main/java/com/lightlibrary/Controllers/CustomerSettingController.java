@@ -9,6 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -29,7 +31,49 @@ public class CustomerSettingController implements Initializable {
     private Button changeAvatarButton;
 
     @FXML
-    private ImageView avatarView; // ImageView để hiển thị ảnh đại diện
+    private ImageView avatarView;
+
+    @FXML
+    private Button saveAvatarButton;
+
+    @FXML
+    private Button changePasswordButton;
+
+    @FXML
+    private PasswordField confirmNewPasswordField;
+
+    @FXML
+    private PasswordField currentPasswordField;
+
+    @FXML
+    private Label emailLabel;
+
+    @FXML
+    private Label phoneNumberLabel;
+
+    @FXML
+    private PasswordField updateEmailField;
+
+    @FXML
+    private PasswordField updateNameTextField;
+
+    @FXML
+    private PasswordField updateNewPasswordField;
+
+    @FXML
+    private PasswordField updatePhoneNumberField;
+
+    @FXML
+    private Label userCoinLabel;
+
+    @FXML
+    private Label userIDLabel;
+
+    @FXML
+    private Label userNameLabel;
+
+    @FXML
+    private AnchorPane paymentPane;
 
     private CustomerDashboardController customerDashboardController;
 
