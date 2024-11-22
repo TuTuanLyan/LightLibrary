@@ -276,6 +276,13 @@
     -fx-font-weight: bold;
 }
 
+.transfer-content {
+    -fx-background-color: transparent;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to bottom right, #08d792, #7096ff);
+}
+
 
 
 

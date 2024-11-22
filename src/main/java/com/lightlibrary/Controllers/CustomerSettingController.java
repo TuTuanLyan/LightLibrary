@@ -1,5 +1,6 @@
 package com.lightlibrary.Controllers;
 
+import com.lightlibrary.Models.Customer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -20,6 +22,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CustomerSettingController implements Initializable {
@@ -75,6 +80,9 @@ public class CustomerSettingController implements Initializable {
     @FXML
     private AnchorPane paymentPane;
 
+    @FXML
+    private TextField paymentContentField;
+
     private CustomerDashboardController customerDashboardController;
 
     public CustomerDashboardController getCustomerDashboardController() {
@@ -83,10 +91,17 @@ public class CustomerSettingController implements Initializable {
 
     public void setCustomerDashboardController(CustomerDashboardController customerDashboardController) {
         this.customerDashboardController = customerDashboardController;
+        Customer customer = customerDashboardController.getCustomer();
+        userCoinLabel.setText(formatPrice(customer.getCoins()));
+        userIDLabel.setText(String.format("#%08d", customer.getUserID()));
+        userNameLabel.setText(customer.getFullName());
+        emailLabel.setText(customer.getEmail() != null ? customer.getEmail() : "You have not set your email");
+        phoneNumberLabel.setText(customer.getPhoneNumber() != null ? customer.getPhoneNumber() : "You have not set your phone number");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        paymentContentField.setEditable(false);
         // Gắn sự kiện cho nút "Đổi ảnh đại diện"
         changeAvatarButton.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
@@ -108,6 +123,12 @@ public class CustomerSettingController implements Initializable {
                 // Ví dụ: saveAvatarPathToDatabase(selectedFile.getAbsolutePath());
             }
         });
+    }
+
+    public void setPaymentPrompt() {
+        String userID = String.format("#%08d ", customerDashboardController.getCustomer().getUserID());
+        String name = customerDashboardController.getCustomer().getFullName();
+        paymentContentField.setText(userID + name);
     }
 
     public void goBackToDashBoard(ActionEvent event) {
@@ -132,7 +153,35 @@ public class CustomerSettingController implements Initializable {
         return (Stage) rootSettingContainer.getScene().getWindow();
     }
 
-    public void log() {
-        // Thực hiện hành động khác nếu cần
+    private String formatPrice(double price) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+
+        return numberFormat.format(price);
+    }
+
+
+
+
+    @FXML
+    public void cancelPayment() {
+        paymentPane.setVisible(false);
+    }
+
+    @FXML
+    public void goToPayment(ActionEvent event) {
+        setPaymentPrompt();
+        paymentPane.setVisible(true);
+    }
+
+    @FXML
+    public void logout(ActionEvent event) throws IOException {
+        Parent login = FXMLLoader.load(Objects.requireNonNull(getClass()
+                .getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Platform.runLater(stage::centerOnScreen);
+        stage.setScene(new Scene(login, 960, 640));
+        stage.show();
     }
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -162,24 +163,24 @@
             </Label>
          </children>
       </Pane>
-      <Button layoutX="25.0" layoutY="569.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="156.0" styleClass="go-to-dashboard-button" text="Log Out">
+      <Button layoutX="25.0" layoutY="569.0" mnemonicParsing="false" onAction="#logout" prefHeight="54.0" prefWidth="156.0" styleClass="go-to-dashboard-button" text="Log Out">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Pane layoutX="679.0" layoutY="23.0" prefHeight="60.0" prefWidth="258.0" styleClass="box-container">
+      <Pane layoutX="637.0" layoutY="23.0" prefHeight="60.0" prefWidth="300.0" styleClass="box-container">
          <children>
-            <Label fx:id="userCoinLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="13.0" prefHeight="35.0" prefWidth="129.0" styleClass="page-title" text="1000000000" textAlignment="CENTER">
+            <Label fx:id="userCoinLabel" alignment="CENTER_RIGHT" layoutX="2.0" layoutY="13.0" prefHeight="35.0" prefWidth="208.0" styleClass="page-title" text="1000000000" textAlignment="CENTER">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="159.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="214.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/coin-icon.png" />
                </image>
             </ImageView>
-            <Button layoutX="197.0" layoutY="10.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="51.0" styleClass="functional-detail-button">
+            <Button layoutX="247.0" layoutY="11.0" mnemonicParsing="false" onAction="#goToPayment" prefHeight="41.0" prefWidth="51.0" styleClass="functional-detail-button">
                <font>
                   <Font size="15.0" />
                </font>
@@ -189,7 +190,7 @@
             </Button>
          </children>
       </Pane>
-      <AnchorPane fx:id="paymentPane" prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: rgba(0, 0, 0, 0.54);">
+      <AnchorPane fx:id="paymentPane" prefHeight="640.0" prefWidth="960.0" style="-fx-background-color: rgba(0, 0, 0, 0.54);" visible="false">
          <children>
             <Pane layoutX="188.0" layoutY="51.0" prefHeight="538.0" prefWidth="585.0" styleClass="box-container">
                <children>
@@ -219,7 +220,7 @@
                         <Image url="@../Images/payment-QR-image.jpg" />
                      </image>
                   </ImageView>
-                  <Button layoutX="538.0" layoutY="4.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="35.0" styleClass="functional-detail-button">
+                  <Button layoutX="538.0" layoutY="4.0" mnemonicParsing="false" onAction="#cancelPayment" prefHeight="31.0" prefWidth="35.0" styleClass="functional-detail-button">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -227,7 +228,7 @@
                         <FontAwesomeIcon glyphName="CLOSE" size="1.6em" />
                      </graphic>
                   </Button>
-                  <Label alignment="CENTER" layoutX="18.0" layoutY="393.0" prefHeight="131.0" prefWidth="555.0" text="Syntax: " textAlignment="CENTER" wrapText="true">
+                  <Label alignment="CENTER" layoutX="18.0" layoutY="393.0" prefHeight="44.0" prefWidth="555.0" text="Payment Transfer Content:" textAlignment="CENTER" wrapText="true">
                      <textFill>
                         <LinearGradient endX="1.0" endY="1.0">
                            <stops>
@@ -248,6 +249,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
+                  <TextField fx:id="paymentContentField" alignment="CENTER" layoutY="437.0" prefHeight="77.0" prefWidth="585.0" styleClass="transfer-content" text="wefwefsdf jfjhdsaj jdsjajd" />
                </children></Pane>
          </children>
       </AnchorPane>
