@@ -87,7 +87,6 @@
       </Pane>
       <Pane layoutX="25.0" layoutY="440.0" prefHeight="110.0" prefWidth="280.0" styleClass="box-container">
          <children>
-            <PasswordField fx:id="updateNameTextField" layoutX="15.0" layoutY="55.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
             <Label alignment="CENTER" layoutX="15.0" layoutY="8.0" prefHeight="35.0" prefWidth="251.0" text="Update your name">
                <textFill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -109,11 +108,11 @@
                   <Font name="System Bold" size="22.0" />
                </font>
             </Label>
+            <TextField fx:id="updateNameTextField" layoutX="10.0" layoutY="52.0" prefHeight="44.0" prefWidth="260.0" promptText="Update your name" />
          </children>
       </Pane>
       <Pane layoutX="330.0" layoutY="440.0" prefHeight="110.0" prefWidth="280.0" styleClass="box-container">
          <children>
-            <PasswordField fx:id="updatePhoneNumberField" layoutX="15.0" layoutY="55.0" prefHeight="41.0" prefWidth="250.0" promptText="Enter your current password" />
             <Label alignment="CENTER" layoutX="15.0" layoutY="11.0" prefHeight="35.0" prefWidth="251.0" text="Update phone number">
                <textFill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -135,11 +134,11 @@
                   <Font name="System Bold" size="22.0" />
                </font>
             </Label>
+            <TextField fx:id="updatePhoneNumberField" layoutX="10.0" layoutY="50.0" prefHeight="44.0" prefWidth="260.0" promptText="Update your phone number" />
          </children>
       </Pane>
       <Pane layoutX="637.0" layoutY="440.0" prefHeight="110.0" prefWidth="300.0" styleClass="box-container">
          <children>
-            <PasswordField fx:id="updateEmailField" layoutX="10.0" layoutY="55.0" prefHeight="41.0" prefWidth="280.0" promptText="Enter your current password" />
             <Label alignment="CENTER" layoutX="25.0" layoutY="9.0" prefHeight="35.0" prefWidth="251.0" text="Update your email">
                <textFill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -161,6 +160,7 @@
                   <Font name="System Bold" size="22.0" />
                </font>
             </Label>
+            <TextField fx:id="updateEmailField" layoutX="11.0" layoutY="49.0" prefHeight="44.0" prefWidth="280.0" promptText="Update your email" />
          </children>
       </Pane>
       <Button layoutX="25.0" layoutY="569.0" mnemonicParsing="false" onAction="#logout" prefHeight="54.0" prefWidth="156.0" styleClass="go-to-dashboard-button" text="Log Out">

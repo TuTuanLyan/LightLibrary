@@ -79,7 +79,7 @@ public class Customer extends User {
         this.listTransactions = listTransactions;
     }
 
-    private boolean checkPasswordValidation(String password) {
+    public boolean checkPasswordValidation(String password) {
         if (password.length() < 8) {
             return false;
         }

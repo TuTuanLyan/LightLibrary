@@ -1,6 +1,7 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.Customer;
+import com.lightlibrary.Models.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,10 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,6 +20,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
@@ -57,16 +58,16 @@ public class CustomerSettingController implements Initializable {
     private Label phoneNumberLabel;
 
     @FXML
-    private PasswordField updateEmailField;
+    private TextField updateEmailField;
 
     @FXML
-    private PasswordField updateNameTextField;
+    private TextField updateNameTextField;
 
     @FXML
     private PasswordField updateNewPasswordField;
 
     @FXML
-    private PasswordField updatePhoneNumberField;
+    private TextField updatePhoneNumberField;
 
     @FXML
     private Label userCoinLabel;
@@ -97,6 +98,22 @@ public class CustomerSettingController implements Initializable {
         userNameLabel.setText(customer.getFullName());
         emailLabel.setText(customer.getEmail() != null ? customer.getEmail() : "You have not set your email");
         phoneNumberLabel.setText(customer.getPhoneNumber() != null ? customer.getPhoneNumber() : "You have not set your phone number");
+
+        changePasswordButton.setOnAction(event -> {
+            updatePassword();
+        });
+
+        updateNameTextField.setOnAction(event -> {
+            updateName();
+        });
+
+        updatePhoneNumberField.setOnAction(event -> {
+            updatePhoneNumber();
+        });
+
+        updateEmailField.setOnAction(event -> {
+            updateEmail();
+        });
     }
 
     @Override
@@ -161,11 +178,94 @@ public class CustomerSettingController implements Initializable {
         return numberFormat.format(price);
     }
 
+    @FXML
     public void updatePassword() {
+        String currentPassword = currentPasswordField.getText();
+        String newPassword = updateNewPasswordField.getText();
+        String confirmPassword = confirmNewPasswordField.getText();
         Customer customer = customerDashboardController.getCustomer();
 
+        if (!customer.getPassword().equals(currentPassword)) {
+            showAlert("Error", "Current password is incorrect.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (!customer.checkPasswordValidation(newPassword)) {
+            showAlert("Error", "New password is not valid. It must contain at least 8 characters, a letter, and no consecutive numbers.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (currentPassword.equals(newPassword)) {
+            showAlert("Error", "New password cannot be the same as the old password.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            showAlert("Error", "Confirm password does not match new password.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Cập nhật mật khẩu
+        try {
+            String sql = "UPDATE users SET password = ? WHERE userID = ?";
+            try (Connection conn = DatabaseConnection.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, newPassword);
+                stmt.setInt(2, customer.getUserID());
+                stmt.executeUpdate();
+                customer.setPassword(newPassword);
+                showAlert("Success", "Password updated successfully.", Alert.AlertType.INFORMATION);
+            }
+        } catch (SQLException e) {
+            showAlert("Error", "Failed to update password.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
 
+    private void updateField(String field, String value) {
+        Customer customer = customerDashboardController.getCustomer();
+        String sql = "UPDATE users SET " + field + " = ? WHERE userID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, value);
+            stmt.setInt(2, customer.getUserID());
+            stmt.executeUpdate();
+            showAlert("Success", "Updated " + field + " successfully.", Alert.AlertType.INFORMATION);
+        } catch (SQLException e) {
+            showAlert("Error", "Failed to update " + field + ".", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    public void updateName() {
+        String newName = updateNameTextField.getText().trim();
+        if (!customerDashboardController.getCustomer().checkNameValidation(newName)) {
+            showAlert("Error", "Invalid name. Name must be at least 2 characters and contain only letters or spaces.", Alert.AlertType.ERROR);
+            return;
+        }
+        customerDashboardController.getCustomer().setFullName(newName);
+        updateField("name", newName);
+    }
+
+    public void updateEmail() {
+        String newEmail = updateEmailField.getText().trim();
+        if (!customerDashboardController.getCustomer().checkEmailValidation(newEmail)) {
+            showAlert("Error", "Invalid email address. Please provide a valid email.", Alert.AlertType.ERROR);
+            return;
+        }
+        customerDashboardController.getCustomer().setEmail(newEmail);
+        updateField("email", newEmail);
+    }
+
+    public void updatePhoneNumber() {
+        String newPhoneNumber = updatePhoneNumberField.getText().trim();
+        if (!customerDashboardController.getCustomer().checkPhoneNumberValidation(newPhoneNumber)) {
+            showAlert("Error", "Invalid phone number. It must contain only digits and be between 10-15 characters.", Alert.AlertType.ERROR);
+            return;
+        }
+        customerDashboardController.getCustomer().setPhoneNumber(newPhoneNumber);
+        updateField("phoneNumber", newPhoneNumber);
+    }
 
     @FXML
     public void cancelPayment() {
@@ -187,4 +287,15 @@ public class CustomerSettingController implements Initializable {
         stage.setScene(new Scene(login, 960, 640));
         stage.show();
     }
+
+    private void showAlert(String title, String content, Alert.AlertType type) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(type);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(content);
+            alert.showAndWait();
+        });
+    }
+
 }
