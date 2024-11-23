@@ -9,7 +9,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -21,7 +24,7 @@
          <children>
             <ScrollPane layoutX="15.0" layoutY="15.0" prefHeight="750.0" prefWidth="620.0">
               <content>
-                <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0" />
+                <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="735.0" prefWidth="610.0" />
               </content>
             </ScrollPane>
             <Label layoutX="18.0" prefHeight="53.0" prefWidth="605.0" styleClass="for-you-label" text="    For you" textFill="WHITE">
@@ -57,17 +60,17 @@
             </ImageView>
             <Pane layoutX="18.0" layoutY="51.0" prefHeight="180.0" prefWidth="145.0" styleClass="thumbnail-result-border" />
             <Label alignment="CENTER" layoutX="28.0" layoutY="15.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
-            <Button fx:id="addToFavouriteListButton" layoutX="426.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" visible="false" />
-            <Button fx:id="borrowBookButton" layoutX="537.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Borrow" visible="false" />
-            <Button fx:id="detailCloseButton" layoutX="608.0" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="functional-detail-button">
+            <Button fx:id="addToFavouriteListButton" layoutX="436.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
+            <Button fx:id="borrowBookButton" layoutX="542.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Borrow" />
+            <Button fx:id="detailCloseButton" layoutX="605.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="functional-detail-button">
                <graphic>
                   <FontAwesomeIcon glyphName="CLOSE" size="1.6em" styleClass="functional-detail-button" textAlignment="CENTER" />
                </graphic>
             </Button>
-            <Label fx:id="detailTItleLabel" alignment="CENTER" layoutX="181.0" layoutY="33.0" prefHeight="36.0" prefWidth="435.0" styleClass="book-title-label" text="Label" />
-            <Label fx:id="detailDescriptionLabel" layoutX="181.0" layoutY="69.0" prefHeight="222.0" prefWidth="435.0" styleClass="book-info-label" text="Label" />
-            <Label fx:id="detailAuthorLabel" layoutX="16.0" layoutY="231.0" prefHeight="60.0" prefWidth="150.0" styleClass="book-info-label" text="Label" />
-            <Label fx:id="detailPublishDateLabel" layoutX="416.0" layoutY="303.0" prefHeight="36.0" prefWidth="215.0" styleClass="book-info-label" text="Label" />
+            <Label fx:id="detailTItleLabel" alignment="CENTER" layoutX="181.0" layoutY="33.0" prefHeight="36.0" prefWidth="453.0" styleClass="book-title-label" text="Title" />
+            <Label fx:id="detailDescriptionLabel" layoutX="181.0" layoutY="69.0" prefHeight="222.0" prefWidth="453.0" styleClass="book-info-label" text="Description" />
+            <Label fx:id="detailAuthorLabel" layoutX="16.0" layoutY="231.0" prefHeight="60.0" prefWidth="150.0" styleClass="book-info-label" text="Author" />
+            <Label fx:id="detailPublishDateLabel" layoutX="428.0" layoutY="303.0" prefHeight="36.0" prefWidth="207.0" styleClass="book-info-label" text="Publish date" />
             <Label fx:id="detailPriceLabel" alignment="CENTER" layoutX="8.0" layoutY="294.0" prefHeight="119.0" prefWidth="180.0" text="Fee / Day" textAlignment="CENTER" wrapText="true">
                <textFill>
                   <LinearGradient endX="1.0" endY="1.0">
@@ -89,20 +92,61 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="detailISBNLabel" layoutX="176.0" layoutY="359.0" prefHeight="36.0" prefWidth="228.0" styleClass="book-info-label" text="Label" />
-            <Label fx:id="detailPublisherLabel" layoutX="176.0" layoutY="303.0" prefHeight="36.0" prefWidth="228.0" styleClass="book-info-label" text="Label" />
-            <Button fx:id="requireBookButton" layoutX="443.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="159.0" styleClass="view-detail-button" text="Require Book" />
+            <Label fx:id="detailISBNLabel" layoutX="170.0" layoutY="359.0" prefHeight="36.0" prefWidth="249.0" styleClass="book-info-label" text="ISBN" />
+            <Label fx:id="detailPublisherLabel" layoutX="176.0" layoutY="303.0" prefHeight="36.0" prefWidth="236.0" styleClass="book-info-label" text="Publisher" />
+            <Button fx:id="requireBookButton" layoutX="446.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="159.0" styleClass="view-detail-button" text="Require Book" visible="false" />
          </children></Pane>
-      <Pane layoutX="680.0" layoutY="443.0" prefHeight="350.0" prefWidth="645.0" styleClass="box-container">
+      <Pane layoutX="680.0" layoutY="442.0" prefHeight="350.0" prefWidth="645.0" styleClass="box-container">
          <children>
-            <ScrollPane layoutX="8.0" layoutY="8.0" prefHeight="335.0" prefWidth="630.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="615.0" />
-              </content>
+            <ScrollPane layoutX="8.0" layoutY="69.0" prefHeight="274.0" prefWidth="645.0">
+               <content>
+                  <GridPane fx:id="favouriteBookTable" prefHeight="54.0" prefWidth="633.0" styleClass="user-info-table">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="143.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="180.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="254.0" minWidth="10.0" prefWidth="196.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="99.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label prefHeight="32.0" prefWidth="138.0" text="1234567891010" />
+                        <Label prefHeight="27.0" prefWidth="196.0" text="Favourit title" GridPane.columnIndex="1" />
+                        <Label prefHeight="27.0" prefWidth="182.0" text="Your favour author" GridPane.columnIndex="2" />
+                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="81.0" text="Remove" GridPane.columnIndex="3" />
+                     </children>
+                  </GridPane>
+               </content>
             </ScrollPane>
+            <Label alignment="CENTER" layoutX="11.0" prefHeight="42.0" prefWidth="207.0" styleClass="page-title" text="Your favourite books">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="60.0" layoutY="36.0" prefHeight="15.0" prefWidth="54.0" styleClass="page-title" text="ISBN">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="239.0" layoutY="36.0" prefHeight="27.0" prefWidth="48.0" styleClass="page-title" text="Title">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="387.0" layoutY="36.0" prefHeight="27.0" prefWidth="81.0" styleClass="page-title" text="Author">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="538.0" layoutY="36.0" prefHeight="27.0" prefWidth="81.0" styleClass="page-title" text="Remove">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
-      <AnchorPane fx:id="confirmBorrowPane" prefHeight="810.0" prefWidth="1364.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);">
+      <AnchorPane fx:id="confirmBorrowPane" prefHeight="810.0" prefWidth="1340.0" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
          <children>
             <Pane layoutX="476.0" layoutY="167.0" prefHeight="402.0" prefWidth="412.0" styleClass="box-container">
                <children>

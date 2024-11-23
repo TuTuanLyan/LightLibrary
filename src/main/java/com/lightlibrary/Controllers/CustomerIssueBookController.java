@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
@@ -92,6 +93,9 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     @FXML
     private Button confirmBorrowButton;
 
+    @FXML
+    private GridPane favouriteBookTable;
+
     private CustomerDashboardController parentController;
 
     public CustomerDashboardController getParentController() {
@@ -113,8 +117,17 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        detailBookPane.setVisible(false);
-        detailCloseButton.setOnAction(e -> detailBookPane.setVisible(false));
+        detailCloseButton.setOnAction(e -> {
+            detailThumbnailImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/LightLibraryLogo.png")).toExternalForm()));
+            detailPriceLabel.setText("Fee / Day");
+            detailTItleLabel.setText("Title");
+            detailDescriptionLabel.setText("Description");
+            detailPublisherLabel.setText("Publisher");
+            detailPublishDateLabel.setText("Publish Date");
+            detailISBNLabel.setText("ISBN");
+            detailAuthorLabel.setText("Author");
+        });
 
         pickDueDatePiker.setOnAction(event -> handleDueDatePickerAction());
         setupOnActionForBorrowDays();
@@ -334,6 +347,10 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
             if (price > 0.0D) {
                 addToFavouriteListButton.setVisible(true);
+                addToFavouriteListButton.setOnAction(e -> {
+                    Customer customer = parentController.getCustomer();
+                    addFavoriteBook(customer.getUserID(), ISBN);
+                });
                 borrowBookButton.setVisible(true);
                 borrowBookButton.setOnAction(e -> {
                     confirmBorrowPane.setVisible(true);
@@ -358,6 +375,10 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                 addToFavouriteListButton.setVisible(false);
                 borrowBookButton.setVisible(false);
                 requireBookButton.setVisible(true);
+                requireBookButton.setOnAction(e -> {
+                    Customer customer = parentController.getCustomer();
+                    addRequiredBook(customer.getUserID(), ISBN, title);
+                });
 
                 detailPriceLabel.setText("This book is not available");
             }
@@ -542,6 +563,77 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
             e.printStackTrace();
             Platform.runLater(() ->
                     showAlert(Alert.AlertType.ERROR, "Database Error", "An error occurred while borrowing the book."));
+        }
+    }
+
+    public void addRequiredBook(int userID, String ISBN, String title) {
+        String checkSql = "SELECT * FROM requiredBooks WHERE userID = ? AND ISBN = ?";
+        String insertSql = "INSERT INTO requiredBooks (userID, ISBN, title) VALUES (?, ?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
+
+            // Check if the required book already exists for the user
+            checkStatement.setInt(1, userID);
+            checkStatement.setString(2, ISBN);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                showAlert(Alert.AlertType.WARNING, "Duplicate Entry", "This book is already in your requiredBooks list and unresolved.");
+                return;
+            }
+
+            // Add the required book
+            insertStatement.setInt(1, userID);
+            insertStatement.setString(2, ISBN);
+            insertStatement.setString(3, title);
+
+            int rowsAffected = insertStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Book added to requiredBooks successfully!");
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Warning", "No rows were affected. Please try again.");
+            }
+
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error adding book to requiredBooks: " + e.getMessage());
+        }
+    }
+
+    public void addFavoriteBook(int userID, String ISBN) {
+        String checkSql = "SELECT * FROM favoriteBooks WHERE userID = ? AND ISBN = ?";
+        String insertSql = "INSERT INTO favoriteBooks (userID, ISBN) VALUES (?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
+
+            // Check if the book is already in the favorite list
+            checkStatement.setInt(1, userID);
+            checkStatement.setString(2, ISBN);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                showAlert(Alert.AlertType.WARNING, "Duplicate Entry", "This book is already in your favoriteBooks list.");
+                return;
+            }
+
+            // Add the book to favoriteBooks
+            insertStatement.setInt(1, userID);
+            insertStatement.setString(2, ISBN);
+
+            int rowsAffected = insertStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Book added to favoriteBooks successfully!");
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Warning", "No rows were affected. Please try again.");
+            }
+
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error adding book to favoriteBooks: " + e.getMessage());
         }
     }
 }

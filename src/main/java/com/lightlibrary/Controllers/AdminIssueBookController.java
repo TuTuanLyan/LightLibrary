@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
@@ -63,6 +64,9 @@ public class AdminIssueBookController implements Initializable, SyncAction {
 
     @FXML
     private Button addBookButton;
+
+    @FXML
+    private GridPane requireBookTable;
 
     AdminDashboardController parentController;
 
