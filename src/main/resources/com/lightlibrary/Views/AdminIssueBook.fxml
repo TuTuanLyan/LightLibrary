@@ -107,22 +107,16 @@
          <children>
             <ScrollPane layoutY="57.0" prefHeight="238.0" prefWidth="645.0">
                <content>
-                  <GridPane fx:id="requireBookTable" prefHeight="54.0" prefWidth="633.0" styleClass="user-info-table">
+                  <GridPane fx:id="requireBookTable" prefHeight="0.0" prefWidth="633.0" styleClass="user-info-table">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="170.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="172.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="163.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="4.0" prefWidth="119.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="250.0" minWidth="83.0" prefWidth="90.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="176.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="362.0" minWidth="180.0" prefWidth="223.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="148.0" minWidth="81.0" prefWidth="119.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
-                     <children>
-                        <Label prefHeight="32.0" prefWidth="207.0" text="1234567891010" />
-                        <Label prefHeight="27.0" prefWidth="217.0" text="Favourit title" GridPane.columnIndex="1" />
-                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="121.0" text="Remove" GridPane.columnIndex="3" />
-                        <Label prefHeight="27.0" prefWidth="217.0" text="Favourit title" GridPane.columnIndex="2" />
-                     </children>
                   </GridPane>
                </content>
             </ScrollPane>
@@ -131,12 +125,12 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="14.0" layoutY="30.0" prefHeight="30.0" prefWidth="150.0" styleClass="page-title" text="User ID">
+            <Label alignment="CENTER" layoutX="14.0" layoutY="30.0" prefHeight="30.0" prefWidth="83.0" styleClass="page-title" text="User ID">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="185.0" layoutY="30.0" prefHeight="30.0" prefWidth="145.0" styleClass="page-title" text="ISBN">
+            <Label alignment="CENTER" layoutX="121.0" layoutY="30.0" prefHeight="30.0" prefWidth="145.0" styleClass="page-title" text="ISBN">
                <font>
                   <Font size="20.0" />
                </font>
@@ -146,7 +140,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="347.0" layoutY="30.0" prefHeight="30.0" prefWidth="145.0" styleClass="page-title" text="Title">
+            <Label alignment="CENTER" layoutX="307.0" layoutY="30.0" prefHeight="30.0" prefWidth="145.0" styleClass="page-title" text="Title">
                <font>
                   <Font size="20.0" />
                </font>

@@ -137,7 +137,7 @@ public class AdminUserManagementController implements Initializable, SyncAction 
     }
 
     private String buildQuery() {
-        StringBuilder query = new StringBuilder("SELECT * FROM users WHERE 1=1");
+        StringBuilder query = new StringBuilder("SELECT * FROM users WHERE role = 'CUSTOMER' ");
         if (!sortUserID.getText().isEmpty()) query.append(" AND userID LIKE ?");
         if (!sortFullname.getText().isEmpty()) query.append(" AND fullName LIKE ?");
         if (!sortUsername.getText().isEmpty()) query.append(" AND username LIKE ?");
