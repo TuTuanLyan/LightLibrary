@@ -106,8 +106,6 @@ public class CustomerReturnBookController implements Initializable, SyncAction {
                         String borrowedDate = resultSet.getDate("borrowDate").toLocalDate().toString();
                         String dueDate = resultSet.getDate("dueDate").toLocalDate().toString();
                         Double priceOnce = resultSet.getDouble("price");
-                        System.out.println(borrowedDate);
-                        System.out.println(dueDate);
                         Platform.runLater(() -> addRow(isbn,title,author,borrowedDate,dueDate,priceOnce));
                     }
 
@@ -159,8 +157,6 @@ public class CustomerReturnBookController implements Initializable, SyncAction {
             minusDay = ChronoUnit.DAYS.between(LocalDate.parse(borrowed),LocalDate.parse(dueDate));
         }
         double totalPrice = priceOnce*minusDay;
-        System.out.println(totalPrice);
-
         Label overDueFeeLabel = new Label(Double.toString(totalPrice));
         Button returnNow = createReturnButton(parentController.getCustomer().getUserID(),isbn);
 
