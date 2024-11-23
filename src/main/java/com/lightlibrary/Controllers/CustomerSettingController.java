@@ -96,8 +96,8 @@ public class CustomerSettingController implements Initializable {
         userCoinLabel.setText(formatPrice(customer.getCoins()));
         userIDLabel.setText(String.format("#%08d", customer.getUserID()));
         userNameLabel.setText(customer.getFullName());
-        emailLabel.setText(customer.getEmail() != null ? customer.getEmail() : "You have not set your email");
-        phoneNumberLabel.setText(customer.getPhoneNumber() != null ? customer.getPhoneNumber() : "You have not set your phone number");
+        emailLabel.setText(customer.getEmail() != null ? "Email: " + customer.getEmail() : "You have not set your email");
+        phoneNumberLabel.setText(customer.getPhoneNumber() != null ? "Phone number: " + customer.getPhoneNumber() : "You have not set your phone number");
 
         changePasswordButton.setOnAction(event -> {
             updatePassword();
@@ -222,7 +222,7 @@ public class CustomerSettingController implements Initializable {
         }
     }
 
-    private void updateField(String field, String value) {
+    private boolean updateField(String field, String value) {
         Customer customer = customerDashboardController.getCustomer();
         String sql = "UPDATE users SET " + field + " = ? WHERE userID = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -231,9 +231,11 @@ public class CustomerSettingController implements Initializable {
             stmt.setInt(2, customer.getUserID());
             stmt.executeUpdate();
             showAlert("Success", "Updated " + field + " successfully.", Alert.AlertType.INFORMATION);
+            return true;
         } catch (SQLException e) {
             showAlert("Error", "Failed to update " + field + ".", Alert.AlertType.ERROR);
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -244,7 +246,9 @@ public class CustomerSettingController implements Initializable {
             return;
         }
         customerDashboardController.getCustomer().setFullName(newName);
-        updateField("name", newName);
+        if (updateField("fullName", newName)) {
+            userNameLabel.setText(newName);
+        }
     }
 
     public void updateEmail() {
@@ -254,7 +258,9 @@ public class CustomerSettingController implements Initializable {
             return;
         }
         customerDashboardController.getCustomer().setEmail(newEmail);
-        updateField("email", newEmail);
+        if (updateField("email", newEmail)) {
+            emailLabel.setText("Email: " + newEmail);
+        }
     }
 
     public void updatePhoneNumber() {
@@ -264,7 +270,9 @@ public class CustomerSettingController implements Initializable {
             return;
         }
         customerDashboardController.getCustomer().setPhoneNumber(newPhoneNumber);
-        updateField("phoneNumber", newPhoneNumber);
+        if (updateField("phoneNumber", newPhoneNumber)) {
+            phoneNumberLabel.setText("Phone number: " + newPhoneNumber);
+        }
     }
 
     @FXML
