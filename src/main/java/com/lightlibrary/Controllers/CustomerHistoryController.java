@@ -183,7 +183,6 @@ public class CustomerHistoryController implements Initializable, SyncAction {
                             returnDate = "null";
                         }
                         Double totalFee = resultSet.getDouble("totalFee");
-                        System.out.println(isbn + " " + title + " " + author + " " + borrowedDate + " " + dueDate + " " + returnDate + " " + totalFee);
                         Platform.runLater(() -> addRow(isbn,title,author,borrowedDate,dueDate,returnDate,totalFee));
                     }
 

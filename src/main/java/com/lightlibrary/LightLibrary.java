@@ -15,6 +15,7 @@ public class LightLibrary extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(LightLibrary.class.getResource("Views/LoginAndRegister.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 960, 640);
         stage.setTitle("Light Library");
+        stage.setResizable(false);
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                 .getResource("Images/LightLibraryLogo.png")).toExternalForm()));
         stage.setScene(scene);

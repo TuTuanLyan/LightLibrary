@@ -606,7 +606,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
     public void addFavoriteBook(int userID, String ISBN, String title,String author) {
         String checkSql = "SELECT * FROM favoriteBooks WHERE userID = ? AND ISBN = ?";
-        String insertSql = "INSERT INTO favoriteBooks (userID, ISBN,title,author) VALUES (?, ?,?,?)";
+        String insertSql = "INSERT INTO favoriteBooks (userID, ISBN) VALUES (?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkSql);
@@ -625,8 +625,6 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
             // Add the book to favoriteBooks
             insertStatement.setInt(1, userID);
             insertStatement.setString(2, ISBN);
-            insertStatement.setString(3, title);
-            insertStatement.setString(4, author);
 
             int rowsAffected = insertStatement.executeUpdate();
 
@@ -644,7 +642,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
     public void loadingFavor() {
         Connection connection = DatabaseConnection.getConnection();
-        String loadingQuery = "select f.isbn,f.title,f.author from favoriteBooks f where f.userID = ?";
+        String loadingQuery = "SELECT b.isbn, b.title, b.author FROM favoriteBooks f JOIN books b ON f.isbn = b.isbn WHERE f.userID = ?";
         Platform.runLater(this::clearRow);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(loadingQuery);
@@ -659,6 +657,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Error loading favoriteBooks");
         }
 

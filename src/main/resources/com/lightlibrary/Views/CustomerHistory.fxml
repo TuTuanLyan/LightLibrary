@@ -43,7 +43,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="180.0" text="Total" GridPane.columnIndex="6">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="180.0" text="Penalty Fee" GridPane.columnIndex="6">
                <font>
                   <Font size="20.0" />
                </font>
