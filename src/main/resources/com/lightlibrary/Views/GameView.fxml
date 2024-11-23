@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import java.net.URL?>
 <?import javafx.scene.layout.AnchorPane?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23" fx:controller="com.lightlibrary.Controllers.GameController">
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="com.lightlibrary.Controllers.GameController">
     <!-- Liên kết CSS -->
     <stylesheets>
         <URL value="@../StyleSheets/Game/GameStyles.css" />

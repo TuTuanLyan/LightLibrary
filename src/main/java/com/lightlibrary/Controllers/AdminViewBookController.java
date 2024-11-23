@@ -1,6 +1,8 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.DatabaseConnection;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -36,6 +38,9 @@ public class AdminViewBookController implements Initializable, SyncAction {
     private Button confirmButton;
 
     @FXML
+    private Button cancelEditButton;
+
+    @FXML
     private TextField editAvailableTextField, editPriceTextField, editTotalTextField;
 
     private String currentEditingISBN;
@@ -49,6 +54,11 @@ public class AdminViewBookController implements Initializable, SyncAction {
     @Override
     public void setParentController(AdminDashboardController parentController) {
         this.parentController = parentController;
+    }
+
+    @Override
+    public void autoUpdate() {
+        reLoad();
     }
 
     @Override
@@ -69,7 +79,7 @@ public class AdminViewBookController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupSortEvents();
-        reLoad();
+        autoUpdate();
     }
 
     private void setupSortEvents() {
@@ -182,6 +192,13 @@ public class AdminViewBookController implements Initializable, SyncAction {
         editPane.setVisible(true);
 
         confirmButton.setOnAction(event -> confirmEdit());
+
+        cancelEditButton.setOnAction(event -> {
+            editPane.setVisible(false);
+            editAvailableTextField.clear();
+            editTotalTextField.clear();
+            editPriceTextField.clear();
+        });
     }
 
     @FXML
@@ -211,16 +228,54 @@ public class AdminViewBookController implements Initializable, SyncAction {
     }
 
     private void removeBook(String ISBN) {
-        String query = "DELETE FROM books WHERE ISBN = ?";
-        try (Connection connectDB = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connectDB.prepareStatement(query)) {
-            preparedStatement.setString(1, ISBN);
-            if (preparedStatement.executeUpdate() > 0) {
-                reLoad();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            // Tạo hộp thoại xác nhận
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirm Deletion");
+            confirmationAlert.setHeaderText("Are you sure you want to delete this book?");
+            confirmationAlert.setContentText("ISBN: " + ISBN);
+
+            // Hiển thị hộp thoại xác nhận và chờ phản hồi từ người dùng
+            confirmationAlert.showAndWait().ifPresent(response -> {
+                if (response.getText().equals("OK") || response.getText().equals("Yes")) {
+                    // Tiến hành xóa sách
+                    Task<Void> task = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            String query = "DELETE FROM books WHERE ISBN = ?";
+                            try (Connection connectDB = DatabaseConnection.getConnection();
+                                 PreparedStatement preparedStatement = connectDB.prepareStatement(query)) {
+                                preparedStatement.setString(1, ISBN);
+                                if (preparedStatement.executeUpdate() > 0) {
+                                    Platform.runLater(() -> {
+                                        showAlert(Alert.AlertType.INFORMATION, "Success", "Book removed successfully.");
+                                        reLoad(); // Làm mới giao diện sau khi xóa
+                                    });
+                                } else {
+                                    Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Failed to remove the book."));
+                                }
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Database Error", "An error occurred while deleting the book."));
+                            }
+                            return null;
+                        }
+                    };
+
+                    new Thread(task).start();
+                } else {
+                    // Hủy thao tác xóa sách
+                    showAlert(Alert.AlertType.INFORMATION, "Cancelled", "Book removal cancelled.");
+                }
+            });
+        });
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void showAlert(String message) {

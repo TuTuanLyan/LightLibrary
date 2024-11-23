@@ -32,7 +32,7 @@
             </GridPane>
          </content>
       </ScrollPane>
-      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="21.0" layoutY="32.0" prefHeight="128.0" prefWidth="1262.0" styleClass="user-info-table">
+      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="21.0" layoutY="22.0" prefHeight="128.0" prefWidth="1262.0" styleClass="user-info-table">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
@@ -48,32 +48,32 @@
             <RowConstraints maxHeight="60.0" minHeight="22.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label fx:id="colISBN" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="ISBN">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="ISBN">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colTitle" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="177.0" text="Title" GridPane.columnIndex="1">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="177.0" text="Title" GridPane.columnIndex="1">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colAuthor" alignment="CENTER" prefHeight="30.0" prefWidth="230.0" text="Author" GridPane.columnIndex="2">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="230.0" text="Author" GridPane.columnIndex="2">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colTotalNumber" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Total Number" GridPane.columnIndex="3">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Total Number" GridPane.columnIndex="3">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colAvailable" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Available" GridPane.columnIndex="4">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Available" GridPane.columnIndex="4">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="colPrice" alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Price" GridPane.columnIndex="5">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Price" GridPane.columnIndex="5">
                <font>
                   <Font size="20.0" />
                </font>
@@ -113,6 +113,7 @@
             </Label>
             <Label fx:id="editPriceLabel" contentDisplay="CENTER" layoutX="66.0" layoutY="298.0" prefHeight="37.0" prefWidth="110.0" text="Price" />
             <Button fx:id="confirmButton" layoutX="509.0" layoutY="413.0" mnemonicParsing="false" text="Confirm" />
+            <Button fx:id="cancelEditButton" layoutX="413.0" layoutY="413.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="78.0" text="Cancel" />
          </children>
       </AnchorPane>
    </children>

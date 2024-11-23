@@ -92,6 +92,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="loginUsername" layoutX="56.0" layoutY="138.0" prefHeight="45.0" prefWidth="288.0" promptText="Enter your username" styleClass="login-and-register-text-field" stylesheets="@../StyleSheets/Style.css" />
+                  <PasswordField fx:id="loginPassword" layoutX="55.0" layoutY="228.0" prefHeight="45.0" prefWidth="288.0" promptText="Enter your password" styleClass="login-and-register-text-field" stylesheets="@../StyleSheets/Style.css" />
                   <Button layoutX="110.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleLoginAction" prefHeight="45.0" prefWidth="180.0" text="Login">
                      <font>
                         <Font size="20.0" />
@@ -100,7 +101,6 @@
                   <CheckBox layoutX="242.0" layoutY="278.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="101.0" text="Remember me" textAlignment="CENTER" />
                   <Hyperlink layoutX="55.0" layoutY="282.0" prefHeight="24.0" prefWidth="110.0" text="Forgot password" />
                   <Label fx:id="loginNotificationLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="55.0" layoutY="309.0" prefHeight="31.0" prefWidth="288.0" />
-                  <PasswordField fx:id="loginPassword" layoutX="55.0" layoutY="228.0" prefHeight="45.0" prefWidth="288.0" promptText="Enter your password" styleClass="login-and-register-text-field" stylesheets="@../StyleSheets/Style.css" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="registerForm" layoutX="800.0" prefHeight="480.0" prefWidth="400.0" styleClass="slider" stylesheets="@../StyleSheets/Style.css">

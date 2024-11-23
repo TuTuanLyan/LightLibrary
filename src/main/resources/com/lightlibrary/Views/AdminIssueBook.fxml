@@ -7,7 +7,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -19,7 +22,7 @@
          <children>
             <ScrollPane layoutX="15.0" layoutY="15.0" prefHeight="750.0" prefWidth="620.0">
                <content>
-                  <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="841.0" prefWidth="610.0" />
+                  <AnchorPane fx:id="resultSearchContainer" minHeight="0.0" minWidth="0.0" prefHeight="741.0" prefWidth="610.0" />
                </content>
             </ScrollPane>
             <Label layoutX="18.0" prefHeight="53.0" prefWidth="605.0" styleClass="for-you-label" text="    For you" textFill="WHITE">
@@ -29,7 +32,7 @@
             </Label>
          </children>
       </Pane>
-      <Pane layoutX="680.0" layoutY="15.0" prefHeight="780.0" prefWidth="645.0" styleClass="box-container">
+      <Pane layoutX="680.0" layoutY="15.0" prefHeight="470.0" prefWidth="645.0" styleClass="box-container">
          <children>
             <ImageView fx:id="detailThumbnailImage" fitHeight="160.0" fitWidth="125.0" layoutX="28.0" layoutY="61.0" pickOnBounds="true">
                <image>
@@ -38,24 +41,24 @@
             </ImageView>
             <Pane layoutX="18.0" layoutY="51.0" prefHeight="180.0" prefWidth="145.0" styleClass="thumbnail-result-border" />
             <Label alignment="CENTER" layoutX="28.0" layoutY="15.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
-            <Button fx:id="addBookButton" layoutX="523.0" layoutY="630.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
+            <Button fx:id="addBookButton" layoutX="544.0" layoutY="417.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
             <Label fx:id="detailTitleLabel" alignment="CENTER" layoutX="181.0" layoutY="25.0" prefHeight="36.0" prefWidth="446.0" styleClass="book-title-label" text="Label" />
-            <Label fx:id="detailDescriptionLabel" layoutX="181.0" layoutY="69.0" prefHeight="537.0" prefWidth="446.0" styleClass="book-info-label" text="Description" />
+            <Label fx:id="detailDescriptionLabel" layoutX="181.0" layoutY="69.0" prefHeight="238.0" prefWidth="446.0" styleClass="book-info-label" text="Description" />
             <Label fx:id="detailAuthorLabel" layoutX="16.0" layoutY="231.0" prefHeight="60.0" prefWidth="150.0" styleClass="book-info-label" text="Author" wrapText="true" />
-            <Label fx:id="detailPublishDateLabel" layoutX="16.0" layoutY="512.0" prefHeight="70.0" prefWidth="150.0" styleClass="book-info-label" text="Publish Date" wrapText="true" />
-            <Label fx:id="detailISBNLabel" layoutX="16.0" layoutY="291.0" prefHeight="116.0" prefWidth="150.0" styleClass="book-info-label" text="ISBN" wrapText="true" />
-            <Label fx:id="detailPublisherLabel" layoutX="16.0" layoutY="407.0" prefHeight="105.0" prefWidth="150.0" styleClass="book-info-label" text="Publisher" wrapText="true" />
-            <TextField fx:id="numbersOfAddBookTextField" layoutX="38.0" layoutY="685.0" prefHeight="60.0" prefWidth="200.0" promptText="Number of books">
+            <Label fx:id="detailPublishDateLabel" layoutX="16.0" layoutY="397.0" prefHeight="70.0" prefWidth="150.0" styleClass="book-info-label" text="Publish Date" wrapText="true" />
+            <Label fx:id="detailISBNLabel" layoutX="9.0" layoutY="291.0" prefHeight="36.0" prefWidth="164.0" styleClass="book-info-label" text="ISBN" wrapText="true" />
+            <Label fx:id="detailPublisherLabel" layoutX="2.0" layoutY="332.0" prefHeight="60.0" prefWidth="179.0" styleClass="book-info-label" text="Publisher" wrapText="true" />
+            <TextField fx:id="numbersOfAddBookTextField" layoutX="181.0" layoutY="367.0" prefHeight="36.0" prefWidth="200.0" promptText="Number of books">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="feePerDayTextField" layoutX="290.0" layoutY="685.0" prefHeight="60.0" prefWidth="200.0" promptText="Price / Day">
+            <TextField fx:id="feePerDayTextField" layoutX="433.0" layoutY="367.0" prefHeight="36.0" prefWidth="200.0" promptText="Price / Day">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Label layoutX="38.0" layoutY="612.0" prefHeight="60.0" prefWidth="200.0" text="Enter the numbers of books to add" textAlignment="CENTER" wrapText="true">
+            <Label layoutX="181.0" layoutY="307.0" prefHeight="60.0" prefWidth="200.0" text="Enter the numbers of books to add" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -76,7 +79,7 @@
                   </LinearGradient>
                </textFill>
             </Label>
-            <Label layoutX="290.0" layoutY="612.0" prefHeight="60.0" prefWidth="200.0" text="Enter the rental fee per day" textAlignment="CENTER" wrapText="true">
+            <Label layoutX="433.0" layoutY="307.0" prefHeight="60.0" prefWidth="200.0" text="Enter the rental fee per day" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -97,7 +100,51 @@
                   </LinearGradient>
                </textFill>
             </Label>
-            <Button layoutX="523.0" layoutY="703.0" mnemonicParsing="false" onAction="#cancelViewDetail" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Cancle" />
+            <Button layoutX="433.0" layoutY="417.0" mnemonicParsing="false" onAction="#cancelViewDetail" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Cancle" />
+         </children>
+      </Pane>
+      <Pane layoutX="680.0" layoutY="498.0" prefHeight="295.0" prefWidth="645.0" styleClass="box-container">
+         <children>
+            <ScrollPane layoutY="57.0" prefHeight="238.0" prefWidth="645.0">
+               <content>
+                  <GridPane fx:id="requireBookTable" prefHeight="0.0" prefWidth="633.0" styleClass="user-info-table">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="250.0" minWidth="83.0" prefWidth="90.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="176.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="362.0" minWidth="180.0" prefWidth="223.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="148.0" minWidth="81.0" prefWidth="119.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <Label alignment="CENTER" layoutX="14.0" layoutY="-1.0" prefHeight="25.0" prefWidth="179.0" styleClass="page-title" text="Require Books">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="14.0" layoutY="30.0" prefHeight="30.0" prefWidth="83.0" styleClass="page-title" text="User ID">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="121.0" layoutY="30.0" prefHeight="30.0" prefWidth="145.0" styleClass="page-title" text="ISBN">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="486.0" layoutY="30.0" prefHeight="30.0" prefWidth="145.0" styleClass="page-title" text="Remove">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="307.0" layoutY="30.0" prefHeight="30.0" prefWidth="145.0" styleClass="page-title" text="Title">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

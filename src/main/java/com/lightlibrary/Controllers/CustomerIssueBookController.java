@@ -1,6 +1,8 @@
 package com.lightlibrary.Controllers;
 
 import com.google.api.services.books.v1.model.Volume;
+import com.lightlibrary.Models.Customer;
+import com.lightlibrary.Models.DatabaseConnection;
 import com.lightlibrary.Models.GoogleBooksAPIClient;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -10,12 +12,17 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 
 import java.net.URL;
+import java.sql.*;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -35,6 +42,9 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
     @FXML
     private Button borrowBookButton;
+
+    @FXML
+    private Button requireBookButton;
 
     @FXML
     private Button detailCloseButton;
@@ -63,12 +73,29 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     @FXML
     private ImageView detailThumbnailImage;
 
-
     @FXML
     private DatePicker pickDueDatePiker;
 
     @FXML
     private TextField borrowDaysAmount;
+
+    @FXML
+    private  AnchorPane confirmBorrowPane;
+
+    @FXML
+    private Label confirmFeePerDay;
+
+    @FXML
+    private Label totalPriceLabel;
+
+    @FXML
+    private Button cancleBorrowButton;
+
+    @FXML
+    private Button confirmBorrowButton;
+
+    @FXML
+    private GridPane favouriteBookTable;
 
     private CustomerDashboardController parentController;
 
@@ -80,17 +107,41 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     public  void setParentController(AdminDashboardController parentController) {}
 
     @Override
+    public void autoUpdate() {
+
+    }
+
+    @Override
     public void setParentController(CustomerDashboardController parentController) {
         this.parentController = parentController;
+        loadingFavor();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        detailBookPane.setVisible(false);
-        detailCloseButton.setOnAction(e -> detailBookPane.setVisible(false));
+        detailCloseButton.setOnAction(e -> {
+            detailThumbnailImage.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/LightLibraryLogo.png")).toExternalForm()));
+            detailPriceLabel.setText("Fee / Day");
+            detailTItleLabel.setText("Title");
+            detailDescriptionLabel.setText("Description");
+            detailPublisherLabel.setText("Publisher");
+            detailPublishDateLabel.setText("Publish Date");
+            detailISBNLabel.setText("ISBN");
+            detailAuthorLabel.setText("Author");
+        });
 
         pickDueDatePiker.setOnAction(event -> handleDueDatePickerAction());
         setupOnActionForBorrowDays();
+
+        confirmBorrowPane.setVisible(false);
+        cancleBorrowButton.setOnAction(e -> {
+            confirmBorrowPane.setVisible(false);
+            pickDueDatePiker.setValue(LocalDate.now().plusDays(1));
+            borrowDaysAmount.clear();
+            confirmFeePerDay.setText("Fee / Days: ");
+            totalPriceLabel.setText("Total Price: ");
+        });
     }
 
     public void updateSearchResults(String query) {
@@ -137,13 +188,13 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                 String title = volumeInfo.getTitle();
                 String authors = volumeInfo.getAuthors() != null ?
                         String.join(", ", volumeInfo.getAuthors()) : "Unknown Author";
-                String ISBN = "ISBN: " + GoogleBooksAPIClient.getISBN(volumeInfo);
+                String ISBN = GoogleBooksAPIClient.getISBN(volumeInfo);
                 String description = volumeInfo.getDescription() != null ?
                         volumeInfo.getDescription() : "There is no description for this book :(";
                 String publisher = volumeInfo.getPublisher() != null ?
-                        "Publish by " + volumeInfo.getPublisher() : "Unknown Publisher";
+                        volumeInfo.getPublisher() : "Unknown Publisher";
                 String publishedDate = volumeInfo.getPublishedDate() != null ?
-                        "Publish at " + volumeInfo.getPublishedDate() : "Unknown published date";
+                        volumeInfo.getPublishedDate() : "Unknown published date";
 
 
                 int blockIndex = index;
@@ -258,14 +309,90 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                                String description, String publisher, String publishDate) {
 
         detailBookPane.setVisible(true);
+        Task<Double> checkISBNTask = new Task<>() {
+            @Override
+            protected Double call() throws Exception {
 
-        detailThumbnailImage.setImage(new Image(thumbnailUrl));
-        detailAuthorLabel.setText(author);
-        detailTItleLabel.setText(title);
-        detailDescriptionLabel.setText(description);
-        detailISBNLabel.setText(ISBN);
-        detailPublisherLabel.setText(publisher);
-        detailPublishDateLabel.setText(publishDate);
+                Platform.runLater(() -> {
+                    detailThumbnailImage.setImage(new Image(thumbnailUrl));
+                    detailAuthorLabel.setText(author);
+                    detailTItleLabel.setText(title);
+                    detailDescriptionLabel.setText(description);
+                    detailISBNLabel.setText(ISBN);
+                    detailPublisherLabel.setText(publisher);
+                    detailPublishDateLabel.setText(publishDate);
+                });
+
+                try (Connection connection = DatabaseConnection.getConnection();
+                     PreparedStatement preparedStatement = connection.prepareStatement(
+                             "SELECT availableNumber, price FROM books WHERE isbn = ?")) {
+                    preparedStatement.setString(1, ISBN);
+                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                        if (resultSet.next()) {
+                            int availableNumber = resultSet.getInt("availableNumber");
+                            double price = resultSet.getDouble("price");
+                            if (availableNumber > 0) {
+                                return price;
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return 0.0;
+            }
+        };
+
+        checkISBNTask.setOnSucceeded(event -> {
+            double price = checkISBNTask.getValue();
+            detailBookPane.setVisible(true);
+
+            if (price > 0.0D) {
+                addToFavouriteListButton.setVisible(true);
+                addToFavouriteListButton.setOnAction(e -> {
+                    Customer customer = parentController.getCustomer();
+                    addFavoriteBook(customer.getUserID(), ISBN,title,author);
+                });
+                borrowBookButton.setVisible(true);
+                borrowBookButton.setOnAction(e -> {
+                    confirmBorrowPane.setVisible(true);
+                    confirmFeePerDay.setText("Fee / Day: " + formatPrice(price));
+
+                    confirmBorrowButton.setOnAction(confirmEvent -> {
+                        LocalDate dueDate = pickDueDatePiker.getValue();
+                        if (dueDate == null) {
+                            showAlert(Alert.AlertType.ERROR, "Invalid Date", "Please select a due date!");
+                            return;
+                        }
+
+                        double totalPrice = getTotalPrice(Integer.parseInt(borrowDaysAmount.getText()));
+                        borrowBook(parentController.getCustomer(), ISBN, totalPrice);
+                        confirmBorrowPane.setVisible(false);
+                    });
+                });
+                requireBookButton.setVisible(false);
+
+                detailPriceLabel.setText("Fee / Day:\n" + price);
+            } else {
+                addToFavouriteListButton.setVisible(false);
+                borrowBookButton.setVisible(false);
+                requireBookButton.setVisible(true);
+                requireBookButton.setOnAction(e -> {
+                    Customer customer = parentController.getCustomer();
+                    addRequiredBook(customer.getUserID(), ISBN, title);
+                });
+
+                detailPriceLabel.setText("This book is not available");
+            }
+        });
+
+        checkISBNTask.setOnFailed(event -> {
+            System.out.println("Error checking ISBN in database.");
+        });
+
+        Thread checkISBNThread = new Thread(checkISBNTask);
+        checkISBNThread.setDaemon(true);
+        checkISBNThread.start();
     }
 
     private Button createViewDetailButton() {
@@ -296,6 +423,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                 } else {
                     LocalDate newDueDate = LocalDate.now().plusDays(daysToExtend);
                     pickDueDatePiker.setValue(newDueDate);
+                    updateTotalPrice(daysToExtend);
                 }
             } catch (NumberFormatException e) {
                 showAlert(Alert.AlertType.ERROR, "Invalid Date", "Invalid number of days entered!");
@@ -306,7 +434,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     private void handleDueDatePickerAction() {
         LocalDate selectedDate = pickDueDatePiker.getValue();
 
-        if (selectedDate == null) {
+        if (selectedDate == null && borrowDaysAmount.getText() == null) {
             showAlert(Alert.AlertType.ERROR, "Invalid Date", "The selected date is invalid!");
             return;
         }
@@ -314,13 +442,16 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(), selectedDate);
 
         if (daysBetween < 0) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Date", "The renewal date cannot before the current date.");
+            showAlert(Alert.AlertType.ERROR, "Invalid Date", "The renewal date cannot be before the current date.");
             pickDueDatePiker.setValue(LocalDate.now());
             borrowDaysAmount.setText("0");
+            updateTotalPrice(0);
         } else {
             borrowDaysAmount.setText(String.valueOf(daysBetween));
+            updateTotalPrice((int) daysBetween);
         }
     }
+
 
     /**
      * Hiển thị thông báo cho người dùng.
@@ -335,5 +466,241 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private double getTotalPrice(int days) {
+        String detailPriceText = detailPriceLabel.getText().trim();
+
+        String[] lines = detailPriceText.split("\n");
+        String priceText = lines[lines.length - 1].trim();
+
+        double pricePerDay = Double.parseDouble(priceText);
+        return pricePerDay * days - (int)(days / 15)  * 0.02 * pricePerDay;
+    }
+
+    private void updateTotalPrice(int days) {
+        try {
+            double totalPrice = getTotalPrice(days);
+            totalPriceLabel.setText("Total Price: " + formatPrice(totalPrice));
+        } catch (NumberFormatException e) {
+            totalPriceLabel.setText("0.00");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid price format in detailPriceLabel!");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            totalPriceLabel.setText("0.00");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid detailPriceLabel format!");
+        }
+    }
+
+    private String formatPrice(double price) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        numberFormat.setMinimumFractionDigits(2);
+        numberFormat.setMaximumFractionDigits(2);
+
+        return numberFormat.format(price);
+    }
+
+    private void borrowBook(Customer customer, String ISBN, double totalPrice) {
+        if (customer.getCoins() < totalPrice) {
+            Platform.runLater(() ->
+                    showAlert(Alert.AlertType.ERROR, "Insufficient Funds",
+                            "You do not have enough coins to borrow this book."));
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            connection.setAutoCommit(false); // Bắt đầu transaction
+
+            // Kiểm tra xem người dùng đã mượn cuốn sách này và chưa trả
+            String checkTransactionQuery = "SELECT * FROM transactions WHERE userID = ? AND isbn = ? AND returnDate IS NULL";
+            try (PreparedStatement checkStatement = connection.prepareStatement(checkTransactionQuery)) {
+                checkStatement.setInt(1, customer.getUserID());
+                checkStatement.setString(2, ISBN);
+                try (ResultSet resultSet = checkStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        // Nếu đã mượn và chưa trả, không thể mượn lại
+                        showAlert(Alert.AlertType.ERROR, "Book Already Borrowed", "You have already borrowed this book and have not returned it.");
+                        return;
+                    }
+                }
+            }
+
+            // Giảm số lượng sách
+            String updateBookQuery = "UPDATE books SET availableNumber = availableNumber - 1 WHERE isbn = ?";
+            try (PreparedStatement updateBookStmt = connection.prepareStatement(updateBookQuery)) {
+                updateBookStmt.setString(1, ISBN);
+                int rowsAffected = updateBookStmt.executeUpdate();
+                if (rowsAffected == 0) {
+                    throw new SQLException("Failed to update book availability.");
+                }
+            }
+
+            // Ghi vào bảng transactions
+            String insertTransactionQuery = "INSERT INTO transactions (userID, isbn, borrowDate, dueDate, borrowFee, totalPrice) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement insertTransactionStmt = connection.prepareStatement(insertTransactionQuery)) {
+                insertTransactionStmt.setInt(1, customer.getUserID());
+                insertTransactionStmt.setString(2, ISBN);
+                insertTransactionStmt.setDate(3, Date.valueOf(LocalDate.now()));
+                insertTransactionStmt.setDate(4, Date.valueOf(pickDueDatePiker.getValue()));
+                insertTransactionStmt.setDouble(5, totalPrice);
+                insertTransactionStmt.setDouble(6, totalPrice);
+                insertTransactionStmt.executeUpdate();
+            }
+
+            // Trừ coin người dùng
+            double updatedCoin = customer.getCoins() - totalPrice;
+            customer.setCoins(updatedCoin); // Cập nhật thông tin trên đối tượng
+            parentController.updateCoin(updatedCoin);
+            String updateUserQuery = "UPDATE users SET coin = ? WHERE userID = ?";
+            try (PreparedStatement updateUserStmt = connection.prepareStatement(updateUserQuery)) {
+                updateUserStmt.setDouble(1, updatedCoin);
+                updateUserStmt.setInt(2, customer.getUserID());
+                updateUserStmt.executeUpdate();
+            }
+
+            connection.commit(); // Commit transaction
+            Platform.runLater(() ->
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Book borrowed successfully!"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Platform.runLater(() ->
+                    showAlert(Alert.AlertType.ERROR, "Database Error", "An error occurred while borrowing the book."));
+        }
+    }
+
+    public void addRequiredBook(int userID, String ISBN, String title) {
+        String checkSql = "SELECT * FROM requiredBooks WHERE userID = ? AND ISBN = ?";
+        String insertSql = "INSERT INTO requiredBooks (userID, ISBN, title) VALUES (?, ?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
+
+            // Check if the required book already exists for the user
+            checkStatement.setInt(1, userID);
+            checkStatement.setString(2, ISBN);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                showAlert(Alert.AlertType.WARNING, "Duplicate Entry", "This book is already in your requiredBooks list and unresolved.");
+                return;
+            }
+
+            // Add the required book
+            insertStatement.setInt(1, userID);
+            insertStatement.setString(2, ISBN);
+            insertStatement.setString(3, title);
+
+            int rowsAffected = insertStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Book added to requiredBooks successfully!");
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Warning", "No rows were affected. Please try again.");
+            }
+
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error adding book to requiredBooks: " + e.getMessage());
+        }
+    }
+
+    public void addFavoriteBook(int userID, String ISBN, String title,String author) {
+        String checkSql = "SELECT * FROM favoriteBooks WHERE userID = ? AND ISBN = ?";
+        String insertSql = "INSERT INTO favoriteBooks (userID, ISBN) VALUES (?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
+
+            // Check if the book is already in the favorite list
+            checkStatement.setInt(1, userID);
+            checkStatement.setString(2, ISBN);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                showAlert(Alert.AlertType.WARNING, "Duplicate Entry", "This book is already in your favoriteBooks list.");
+                return;
+            }
+
+            // Add the book to favoriteBooks
+            insertStatement.setInt(1, userID);
+            insertStatement.setString(2, ISBN);
+
+            int rowsAffected = insertStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Book added to favoriteBooks successfully!");
+                loadingFavor();
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Warning", "No rows were affected. Please try again.");
+            }
+
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error adding book to favoriteBooks: " + e.getMessage());
+        }
+    }
+
+    public void loadingFavor() {
+        Connection connection = DatabaseConnection.getConnection();
+        String loadingQuery = "SELECT b.isbn, b.title, b.author FROM favoriteBooks f JOIN books b ON f.isbn = b.isbn WHERE f.userID = ?";
+        Platform.runLater(this::clearRow);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(loadingQuery);
+            preparedStatement.setInt(1,parentController.getCustomer().getUserID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String isbn = resultSet.getString("isbn");
+                String title = resultSet.getString("title");
+                String author = resultSet.getString("author");
+
+                Platform.runLater(() -> addRow(isbn,title,author));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Error loading favoriteBooks");
+        }
+
+    }
+
+    private void addRow(String isbn, String title, String author) {
+        Label isbnLabel = new Label(isbn);
+        Label titleLabel = new Label(title);
+        Label authorLabel = new Label(author);
+        Button removeButton = createRemoveButton(parentController.getCustomer().getUserID(),isbn);
+        favouriteBookTable.addRow(favouriteBookTable.getRowCount(), isbnLabel, titleLabel, authorLabel, removeButton);
+        favouriteBookTable.getRowConstraints().add(new RowConstraints(70));
+    }
+    private void clearRow() {
+        favouriteBookTable.getRowConstraints().clear();
+        favouriteBookTable.getChildren().clear();
+    }
+
+    private Button createRemoveButton(int userID,String isbn) {
+        Button button = new Button("Remove");
+        button.setOnAction(event -> {
+            removeFavor(userID,isbn);
+            loadingFavor();
+        });
+        return button;
+    }
+
+    private void removeFavor(int userID,String isbn) {
+        Connection connection = DatabaseConnection.getConnection();
+        String query = "DELETE FROM favoriteBooks WHERE userID = ? AND ISBN = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setString(2, isbn);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Book removed from FavouriteBooks successfully!");
+            }
+            else {
+                showAlert(Alert.AlertType.WARNING, "Warning", "This book not be removed from FavouriteBooks successfully! Please try again.");
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error deleting favoriteBooks have isbn: " + isbn);
+        }
     }
 }

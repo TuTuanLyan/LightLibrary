@@ -15,7 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -64,6 +66,9 @@ public class AdminIssueBookController implements Initializable, SyncAction {
     @FXML
     private Button addBookButton;
 
+    @FXML
+    private GridPane requireBookTable;
+
     AdminDashboardController parentController;
 
     public AdminDashboardController getParentController() {
@@ -76,9 +81,15 @@ public class AdminIssueBookController implements Initializable, SyncAction {
     }
 
     @Override
+    public void autoUpdate() {
+
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addBookButton.setOnAction(this::addBookAction);
         addBookButton.setDisable(true);
+        loadingRequire();
     }
 
     @Override
@@ -357,6 +368,9 @@ public class AdminIssueBookController implements Initializable, SyncAction {
         detailPublisherLabel.setText("Publisher");
         detailPublishDateLabel.setText("Published Date");
 
+        numbersOfAddBookTextField.clear();
+        feePerDayTextField.clear();
+
         addBookButton.setDisable(true);
     }
 
@@ -373,6 +387,69 @@ public class AdminIssueBookController implements Initializable, SyncAction {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void loadingRequire() {
+        Connection connection = DatabaseConnection.getConnection();
+        String loadingQuery = "select * from requiredBooks";
+        Platform.runLater(this::clearGrid);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(loadingQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int userID = resultSet.getInt("userID");
+                String isbn = resultSet.getString("isbn");
+                String title = resultSet.getString("title");
+
+                Platform.runLater(()->addRow(userID, isbn, title));
+
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "An error occurred while processing the database.");
+        }
+    }
+
+    private void clearGrid() {
+        requireBookTable.getChildren().clear();
+        requireBookTable.getRowConstraints().clear();
+    }
+
+    private Button createDoneButton(int userID, String isbn) {
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(event -> {
+            doneRequire(userID, isbn);
+            loadingRequire();
+        });
+        return removeButton;
+    }
+
+    private void addRow(int userID,String isbn,String title) {
+        Label userIDLabel = new Label(String.valueOf(userID));
+        Label isbnLabel = new Label(isbn);
+        Label titleLabel = new Label(title);
+        Button doneButton = createDoneButton(userID,isbn);
+        requireBookTable.addRow(requireBookTable.getRowCount(), userIDLabel, isbnLabel,titleLabel, doneButton);
+        requireBookTable.getRowConstraints().add(new RowConstraints(70));
+
+    }
+
+    private void doneRequire(int userID, String isbn) {
+        Connection connection = DatabaseConnection.getConnection();
+        String removeQuery = "delete from requiredBooks where userID = ? and isbn = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(removeQuery);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setString(2, isbn);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Required done successfully.");
+            }
+            else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Could not be done successfully.");
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Cannot loading the requiredBooks database.");
+        }
     }
 
 

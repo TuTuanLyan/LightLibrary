@@ -101,6 +101,21 @@ public class User {
         this.darkMode = darkMode;
     }
 
+    public boolean checkNameValidation(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        if (name.length() < 2) {
+            return false;
+        }
+        for (char c : name.toCharArray()) {
+            if (!Character.isLetter(c) && !Character.isWhitespace(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean checkEmailValidation(String email) {
         int atIndex = email.indexOf('@');
         return atIndex > 0 && email.indexOf('.', atIndex) > atIndex + 1;
