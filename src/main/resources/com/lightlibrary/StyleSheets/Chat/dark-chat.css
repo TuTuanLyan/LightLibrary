@@ -1,0 +1,35 @@
+/* Vùng connect box */
+.connect-box {
+    -fx-background-color: #2B2B2B;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
+/* Vùng chat box */
+.chat-box {
+    -fx-background-color: #1E1E1E;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
+/* Vùng online admin/user box */
+.online-box {
+    -fx-background-color: #262626;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
+/* ScrollPane */
+.message-scroll, .admin-scroll, .user-scroll {
+    -fx-background: #333333;
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+}
+
+/* TextField và Label */
+.text-field, .label {
+    -fx-text-fill: #FFFFFF;
+}

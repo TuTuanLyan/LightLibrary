@@ -5,9 +5,16 @@ import com.lightlibrary.Models.Chat.MainServer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import jakarta.websocket.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URI;
 import java.net.URL;
@@ -19,23 +26,24 @@ public class AdminChatController implements Initializable, SyncAction {
     @FXML
     private AnchorPane chatRoot;
     @FXML
-    private TextField ipField;           // TextField để nhập IP server
+    private TextField ipField;
     @FXML
-    private Button connectButton, disconnectButton;       // Nút để kết nối tới server WebSocket
-    @FXML
-    private TextArea messageDisplay;    // TextArea để hiển thị tin nhắn
-    @FXML
-    private TextField messageInput;     // TextField để nhập tin nhắn
-    @FXML
-    private Button sendButton;          // Nút gửi tin nhắn
-    @FXML
-    private TextArea adminListField, userListField;
+    private TextField messageInput;
     @FXML
     private Label adminLabel, userLabel;
+    @FXML
+    private ImageView connectImageView, disconnectImageView, sendImageView;
+    @FXML
+    private VBox messageDisplay, adminOnlineBox, userOnlineBox;
 
-    private Session session;            // Kết nối WebSocket
-    private String serverUri;           // Địa chỉ WebSocket của server
+    private Session session;
+    private String serverUri;
     private Admin admin;
+    private final Map<String, Label> pendingMessages = new HashMap<>();
+
+    private String lastSender = ""; // tên người gửi cuối cùng
+
+    AdminDashboardController parentController;
 
     public Admin getAdmin() {
         return admin;
@@ -45,14 +53,9 @@ public class AdminChatController implements Initializable, SyncAction {
         this.admin = admin;
     }
 
-    AdminDashboardController parentController;
-
     public AdminDashboardController getParentController() {
         return parentController;
     }
-
-    @Override
-    public void setParentController(CustomerDashboardController parentController) {}
 
     @Override
     public void setParentController(AdminDashboardController parentController) {
@@ -60,24 +63,49 @@ public class AdminChatController implements Initializable, SyncAction {
     }
 
     @Override
+    public void setParentController(CustomerDashboardController parentController) {}
+
+    @Override
     public void setTheme(boolean darkMode) {
         chatRoot.getStylesheets().clear();
         if (darkMode) {
+            /*
+            // Dark button
+            connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/Chat/connectDark.jpg")).toExternalForm()));
+            disconnectImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/Chat/disconnectDark.jpg")).toExternalForm()));
+            sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/Chat/sendMessageDark.jpg")).toExternalForm()));
+             */
             chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
         } else {
+            /*
+            // Light button
+            connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/Chat/connectLight.jpg")).toExternalForm()));
+            disconnectImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/Chat/disconnectLight.jpg")).toExternalForm()));
+            sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/Chat/sendMessageLight.jpg")).toExternalForm()));
+             */
             chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
         }
+        // Mặc định load light button. Dark mode đang gặp vấn đề
+        connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                .getResource("/com/lightlibrary/Images/Chat/connectLight.jpg")).toExternalForm()));
+        disconnectImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                .getResource("/com/lightlibrary/Images/Chat/disconnectLight.jpg")).toExternalForm()));
+        sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
+                .getResource("/com/lightlibrary/Images/Chat/sendMessageLight.jpg")).toExternalForm()));
+        chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
+                .getResource("/com/lightlibrary/StyleSheets/Chat/chat-style.css")).toExternalForm());
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Thiết lập sự kiện cho nút Connect và Send
-        connectButton.setOnAction(event -> connectToServer());
-        sendButton.setOnAction(event -> sendMessage());
-        disconnectButton.setOnAction(event -> disconnectFromServer());
-    }
+    public void initialize(URL url, ResourceBundle resourceBundle) {}
 
     private void showAlert(String title, String header, String content) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
@@ -106,33 +134,27 @@ public class AdminChatController implements Initializable, SyncAction {
     @FXML
     private void connectToServer() {
         try {
-            // Kiểm tra nếu đã kết nối, tránh kết nối lại
             if (session != null && session.isOpen()) {
                 showAlert("Connection Status", "Already Connected", "You are already connected to the server.");
                 return;
             }
 
-            // Lấy IP server từ TextField
             String serverIp = ipField.getText().trim();
 
-            // Kiểm tra nếu IP trống
             if (serverIp.isEmpty()) {
                 serverIp = MainServer.defaultIp;
             }
 
-            // Xây dựng URI kết nối
             serverUri = "ws://" + serverIp + ":8080/ws/chat?role=admin";
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             URI uri = new URI(serverUri);
 
-            // Kết nối tới server
             container.connectToServer(this, uri);
 
-            admin = parentController.getAdmin();
+            setAdmin(parentController.getAdmin());
             String userName = admin.getUsername();
             session.getBasicRemote().sendText("admin:" + userName + ":register");
 
-            // Hiển thị thông báo kết nối thành công
             showInfo("Connection Status", "Connected Successfully", "You have successfully connected to the server.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,53 +162,76 @@ public class AdminChatController implements Initializable, SyncAction {
         }
     }
 
-    // Khi kết nối WebSocket thành công
     @OnOpen
     public void onOpen(Session session) {
         this.session = session;
         System.out.println("Connected to WebSocket server.");
     }
 
-    // Nhận tin nhắn từ server
     @OnMessage
     public void onMessage(String message) {
+        System.out.println(message);
         Platform.runLater(() -> {
-            if (message.startsWith("UPDATE_ADMINS")) {
-                // Dữ liệu admin được server gửi dưới dạng: UPDATE_ADMINS:admin1,admin2,admin3
-                String adminData = message.substring("UPDATE_ADMINS:".length());
-                Set<String> onlineAdmins = new HashSet<>(Arrays.asList(adminData.split(",")));
-                updateAdminList(onlineAdmins);
+            if (message.startsWith("[SERVER] message sent.")) {
+                Optional<String> sentMessage = pendingMessages.keySet().stream().findFirst();
+                sentMessage.ifPresent(msg -> {
+                    displayMessage("You: " + msg, true, false);
+                    pendingMessages.remove(msg);
+                });
+            } else if (message.startsWith("[SERVER] recipient")) {
+                Optional<String> failedMessage = pendingMessages.keySet().stream().findFirst();
+                failedMessage.ifPresent(msg -> {
+                    displayMessage("You: " + msg, true, true);
+                    pendingMessages.remove(msg);
+                });
+                String error = message.substring("[SERVER] ".length());
+                showAlert("Message Error", "Recipient not found", error);
+            } else if (message.startsWith("[SERVER] no one else is online.")) {
+                Optional<String> failedMessage = pendingMessages.keySet().stream().findFirst();
+                failedMessage.ifPresent(msg -> {
+                    displayMessage("You: " + msg, true, true);
+                    pendingMessages.remove(msg);
+                });
+                showAlert("Message Error", "no one else is online", "no one else is online.");
+            } else if (message.startsWith("[SERVER] no other admin online.")) {
+                Optional<String> failedMessage = pendingMessages.keySet().stream().findFirst();
+                failedMessage.ifPresent(msg -> {
+                    displayMessage("You: " + msg, true, true);
+                    pendingMessages.remove(msg);
+                });
+                showAlert("Message Error", "no other admin online", "no other admin online.");
+            } else if (message.startsWith("[SERVER] no customer online.")) {
+                Optional<String> failedMessage = pendingMessages.keySet().stream().findFirst();
+                failedMessage.ifPresent(msg -> {
+                    displayMessage("You: " + msg, true, true);
+                    pendingMessages.remove(msg);
+                });
+                showAlert("Message Error", "no customer online", "no customer online.");
+            } else if (message.startsWith("UPDATE_ADMINS")) {
+                updateAdminList(new HashSet<>(Arrays.asList(message.substring("UPDATE_ADMINS:".length()).split(","))));
             } else if (message.startsWith("UPDATE_USERS")) {
-                // Dữ liệu user được server gửi dưới dạng: UPDATE_USERS:user1,user2,user3
-                String userData = message.substring("UPDATE_USERS:".length());
-                Set<String> onlineUsers = new HashSet<>(Arrays.asList(userData.split(",")));
-                updateUserList(onlineUsers);
+                updateUserList(new HashSet<>(Arrays.asList(message.substring("UPDATE_USERS:".length()).split(","))));
             } else {
-                // Xử lý các tin nhắn khác
-                messageDisplay.appendText(message + "\n");
+                displayMessage(message, false, false);
             }
         });
     }
 
-    // Lỗi WebSocket
     @OnError
     public void onError(Throwable throwable) {
         throwable.printStackTrace();
     }
 
-    // Kết nối WebSocket bị đóng
     @OnClose
     public void onClose(Session session, CloseReason reason) {
         System.out.println("Session closed: " + session.getId() + ". Reason: " + reason);
     }
 
-    // Gửi tin nhắn từ User đến server
     @FXML
     private void sendMessage() {
         try {
             String input = messageInput.getText().trim();
 
-            // Kiểm tra cú pháp
             if (input.isEmpty() || !input.contains(" ")) {
                 showAlert("Message Error", "Invalid Format", "Please use the format @recipient message.");
                 return;
@@ -196,13 +241,20 @@ public class AdminChatController implements Initializable, SyncAction {
                 return;
             }
 
-            // Gửi tin nhắn
             if (session != null && session.isOpen()) {
+                int spaceIndex = input.indexOf(" ");
+                String recipient = input.substring(1, spaceIndex).trim();
+                if (recipient.equals(admin.getUsername())) {
+                    showAlert("Message Error", "Self-chat", "You cannot send message to yourself.");
+                    return;
+                }
+
                 session.getBasicRemote().sendText(input);
-                messageDisplay.appendText("You: " + input + "\n");
+                Label messageLabel = new Label("You: " + input);
+                pendingMessages.put(input, messageLabel);
                 messageInput.clear();
             } else {
-                showAlert("Message Error", "Connection Closed", "Cannot send message because the connection is closed. Please press connect button at the bottom right of the screen.");
+                showAlert("Message Error", "No Connection", "You are currently not connecting to the server.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,8 +266,8 @@ public class AdminChatController implements Initializable, SyncAction {
     private void disconnectFromServer() {
         try {
             if (session != null && session.isOpen()) {
-                session.close(); // Đóng kết nối WebSocket
-                showInfo("Connection Status", "Disconnected from the server", "You have successfully connected to the server.");
+                session.close();
+                showInfo("Connection Status", "Disconnected Successfully", "You have been disconnected from the server.");
             } else {
                 showAlert("Connection Status", "No connection", "No active connection to disconnect.");
             }
@@ -223,9 +275,8 @@ public class AdminChatController implements Initializable, SyncAction {
             e.printStackTrace();
             showAlert("Disconnect Error", "Unable to Disconnect", "Error: " + e.getMessage());
         } finally {
-            session = null; // Đặt session về null
+            session = null;
 
-            // Cập nhật danh sách admin và user thành rỗng
             Platform.runLater(() -> {
                 updateAdminList(Collections.emptySet());
                 updateUserList(Collections.emptySet());
@@ -234,20 +285,133 @@ public class AdminChatController implements Initializable, SyncAction {
     }
 
     private void updateAdminList(Set<String> onlineAdmins) {
-        // Hiển thị danh sách admin online
         Platform.runLater(() -> {
-            String adminList = String.join("\n", onlineAdmins);
-            adminListField.setText(adminList);
+            adminOnlineBox.getChildren().clear(); // Xóa các mục cũ
+            int index = 0;
+
+            for (String otherAdmin : onlineAdmins) {
+                Label adminLabel = new Label(otherAdmin);
+                adminLabel.setPadding(new Insets(5));
+
+                adminLabel.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2) { // Double click để copy
+                        Clipboard clipboard = Clipboard.getSystemClipboard();
+                        ClipboardContent content = new ClipboardContent();
+                        content.putString(otherAdmin);
+                        clipboard.setContent(content);
+                        showInfo("Copied", "Admin name copied", "Admin name copied to clipboard.");
+                    }
+                });
+
+                // Phân biệt admin hiện tại và admin khác
+                if (otherAdmin.equals(admin.getUsername())) {
+                    adminLabel.getStyleClass().add("current-user-item");
+                } else {
+                    String cssClass = (index % 2 == 0) ? "admin-item-even" : "admin-item-odd";
+                    adminLabel.getStyleClass().add(cssClass);
+                }
+
+                adminOnlineBox.getChildren().add(adminLabel);
+                index++;
+            }
+
             adminLabel.setText("Online admin (" + onlineAdmins.size() + ")");
         });
     }
 
     private void updateUserList(Set<String> onlineUsers) {
         Platform.runLater(() -> {
-            // Hiển thị danh sách user online
-            String userList = String.join("\n", onlineUsers);
-            userListField.setText(userList);
+            userOnlineBox.getChildren().clear(); // Xóa các mục cũ
+            int index = 0;
+
+            for (String user : onlineUsers) {
+                Label userLabel = new Label(user);
+                userLabel.setPadding(new Insets(5));
+
+                userLabel.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2) { // Double click để copy
+                        Clipboard clipboard = Clipboard.getSystemClipboard();
+                        ClipboardContent content = new ClipboardContent();
+                        content.putString(user);
+                        clipboard.setContent(content);
+                        showInfo("Copied", "User name copied", "User name copied to clipboard.");
+                    }
+                });
+
+                // Phân biệt user hiện tại và user khác
+                if (user.equals(admin.getUsername())) {
+                    userLabel.getStyleClass().add("current-user-item");
+                } else {
+                    String cssClass = (index % 2 == 0) ? "user-item-even" : "user-item-odd";
+                    userLabel.getStyleClass().add(cssClass);
+                }
+
+                userOnlineBox.getChildren().add(userLabel);
+                index++;
+            }
+
             userLabel.setText("Online user (" + onlineUsers.size() + ")");
+        });
+    }
+
+    private void displayMessage(String message, boolean isSender, boolean isError) {
+        Platform.runLater(() -> {
+            // Phân tách tên người gửi và nội dung tin nhắn
+            int atIndex = message.indexOf('@');
+            String sender = (atIndex != -1) ? message.substring(0, atIndex - 2).trim() : "Unknown";
+            String messageContent = (atIndex != -1) ? message.substring(atIndex - 1) : message;
+
+            // Nếu tên người gửi khác với tin nhắn trước đó, hiển thị Label tên người gửi
+            if (!sender.equals(lastSender)) {
+                Label senderLabel = new Label(sender);
+                senderLabel.setStyle("-fx-text-fill: black; -fx-font-size: 12");
+                lastSender = sender;
+
+                HBox senderContainer = new HBox(senderLabel);
+                senderContainer.setFillHeight(false);
+
+                if (sender.equals("You")) {
+                    senderContainer.getStyleClass().add("my-message-container");
+                } else {
+                    senderContainer.getStyleClass().add("other-message-container");
+                }
+                messageDisplay.getChildren().add(senderContainer);
+            }
+
+            Label messageLabel = new Label(messageContent);
+            messageLabel.setWrapText(true);
+            messageLabel.setMaxWidth(messageDisplay.getWidth() * 0.75);
+
+            HBox messageContainer = new HBox(messageLabel);
+            messageContainer.setFillHeight(false);
+
+            messageLabel.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) { // Double click để copy
+                    Clipboard clipboard = Clipboard.getSystemClipboard();
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString(message);
+                    clipboard.setContent(content);
+                    showInfo("Copied", "Message copied", "Message copied to clipboard.");
+                }
+            });
+
+            if (isError) {
+                messageLabel.getStyleClass().add("error-message");
+                messageContainer.getStyleClass().add("my-message-container");
+            } else if (isSender) {
+                messageLabel.getStyleClass().add("my-message");
+                messageContainer.getStyleClass().add("my-message-container");
+            } else {
+                String messageClass = (messageDisplay.getChildren().size() % 2 == 0) ? "other-message-even" : "other-message-odd";
+                messageLabel.getStyleClass().add(messageClass);
+                messageContainer.getStyleClass().add("other-message-container");
+            }
+
+            if (messageDisplay.getChildren().size() > 200) {
+                messageDisplay.getChildren().removeFirst();
+            }
+
+            messageDisplay.getChildren().add(messageContainer);
         });
     }
 }

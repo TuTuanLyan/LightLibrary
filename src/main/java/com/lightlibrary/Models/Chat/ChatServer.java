@@ -106,7 +106,12 @@ public class ChatServer {
         return "Unknown";
     }
 
-    private void broadcastMessageToAll(String message, Session senderSession) {
+    private void broadcastMessageToAll(String message, Session senderSession) throws IOException {
+        if (admins.size() + users.size() == 1) {
+            senderSession.getBasicRemote().sendText("[SERVER] no one else is online.");
+            return;
+        }
+
         for (Session adminSession : admins.values()) {
             try {
                 if (!adminSession.equals(senderSession)) {
@@ -126,9 +131,19 @@ public class ChatServer {
                 e.printStackTrace();
             }
         }
+
+        senderSession.getBasicRemote().sendText("[SERVER] message sent.");
     }
 
-    private void broadcastMessageToAdmins(String message, Session senderSession) {
+    private void broadcastMessageToAdmins(String message, Session senderSession) throws IOException {
+        if (admins.isEmpty()) {
+            senderSession.getBasicRemote().sendText("[SERVER] no admin online.");
+            return;
+        } else if (admins.size() == 1 && admins.containsValue(senderSession)) {
+            senderSession.getBasicRemote().sendText("[SERVER] no other admin online.");
+            return;
+        }
+
         for (Session adminSession : admins.values()) {
             try {
                 if (!adminSession.equals(senderSession)) {
@@ -138,9 +153,19 @@ public class ChatServer {
                 e.printStackTrace();
             }
         }
+
+        senderSession.getBasicRemote().sendText("[SERVER] message sent.");
     }
 
-    private void broadcastMessageToCustomers(String message, Session senderSession) {
+    private void broadcastMessageToCustomers(String message, Session senderSession) throws IOException {
+        if (users.isEmpty()) {
+            senderSession.getBasicRemote().sendText("[SERVER] no user online.");
+            return;
+        } else if (users.size() == 1 && users.containsValue(senderSession)) {
+            senderSession.getBasicRemote().sendText("[SERVER] no other customer online.");
+            return;
+        }
+
         for (Session userSession : users.values()) {
             try {
                 if (!userSession.equals(senderSession)) {
@@ -150,6 +175,8 @@ public class ChatServer {
                 e.printStackTrace();
             }
         }
+
+        senderSession.getBasicRemote().sendText("[SERVER] message sent.");
     }
 
     private void sendPrivateMessage(String senderName, String recipient, String msgContent, Session senderSession, boolean isSenderAdmin) {
@@ -158,6 +185,7 @@ public class ChatServer {
                 // Gửi từ admin đến user
                 if (users.containsKey(recipient)) {
                     users.get(recipient).getBasicRemote().sendText("[Admin] " + senderName + ": " + msgContent);
+                    admins.get(senderName).getBasicRemote().sendText("[SERVER] message sent.");
                 } else {
                     senderSession.getBasicRemote().sendText("[SERVER] recipient @" + recipient + " not found.");
                 }
@@ -165,6 +193,7 @@ public class ChatServer {
                 // Gửi từ user đến admin
                 if (admins.containsKey(recipient)) {
                     admins.get(recipient).getBasicRemote().sendText("[Customer] " + senderName + ": " + msgContent);
+                    users.get(senderName).getBasicRemote().sendText("[SERVER] message sent.");
                 } else {
                     senderSession.getBasicRemote().sendText("[SERVER] recipient @" + recipient + " not found.");
                 }

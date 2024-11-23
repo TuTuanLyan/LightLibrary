@@ -1,44 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="chatRoot" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminChatController">
-   <children>
-      <!-- Vùng connect tới IP xác định -->
-      <HBox fx:id="connectionBox" layoutX="918.0" layoutY="762.0" prefHeight="25.0" prefWidth="396.0" spacing="5.0">
-         <Label prefHeight="25.0" prefWidth="47.0" text="Server IP" />
-         <TextField fx:id="ipField" prefHeight="25.0" prefWidth="199.0" promptText="Enter server IP" text="192.168.0.104" />
-         <Button fx:id="connectButton" onAction="#connectToServer" text="Connect" />
-         <Button fx:id="disconnectButton" mnemonicParsing="false" text="Disconnect" />
-      </HBox>
+   <!-- Liên kết CSS -->
+   <stylesheets>
+      <URL value="@../StyleSheets/Chat/chat-style.css" />
+   </stylesheets>
 
+   <!-- Vùng connect tới IP xác định -->
+   <VBox layoutX="917.0" layoutY="734.0" prefHeight="58.0" prefWidth="400.0" spacing="10.0" styleClass="connect-box">
+      <HBox prefHeight="35.0" prefWidth="409.0" spacing="5.0">
+         <Label prefHeight="34.0" prefWidth="68.0" text="Server IP">
+            <font>
+               <Font size="16.0" />
+            </font></Label>
+         <TextField fx:id="ipField" prefHeight="35.0" prefWidth="226.0" promptText="Enter server IP" text="192.168.0.104">
+            <font>
+               <Font size="16.0" />
+            </font></TextField>
+         <ImageView fx:id="connectImageView" fitHeight="32" fitWidth="32" onMouseClicked="#connectToServer" preserveRatio="true" />
+         <ImageView fx:id="disconnectImageView" fitHeight="32" fitWidth="32" onMouseClicked="#disconnectFromServer" preserveRatio="true" />
+      </HBox>
+   </VBox>
+
+   <!-- Vùng hiển thị tin nhắn và nhập -->
+   <VBox layoutX="20.0" layoutY="19.0" prefHeight="775.0" prefWidth="878.0" spacing="10.0" styleClass="chat-box">
       <!-- Vùng hiển thị tin nhắn -->
-      <VBox fx:id="messageBox" layoutX="20.0" layoutY="19.0" spacing="10.0">
-         <TextArea fx:id="messageDisplay" editable="false" prefHeight="719.0" prefWidth="861.0" wrapText="true" />
-      </VBox>
+      <ScrollPane fx:id="messageScrollPane" fitToWidth="true" prefHeight="733.0" prefWidth="839.0" styleClass="message-scroll">
+         <VBox fx:id="messageDisplay" spacing="5.0" />
+      </ScrollPane>
 
       <!-- Vùng nhập tin nhắn và nút send -->
-      <HBox fx:id="inputBox" layoutX="20.0" layoutY="762.0" prefHeight="25.0" prefWidth="861.0" spacing="10.0">
-         <TextField fx:id="messageInput" prefHeight="25.0" prefWidth="824.0" promptText="Enter message (format @recipient message)" />
-         <Button fx:id="sendButton" onAction="#sendMessage" prefHeight="25.0" prefWidth="59.0" text="Send" />
+      <HBox spacing="10.0">
+         <TextField fx:id="messageInput" prefHeight="35.0" prefWidth="812.0" promptText="\@recipient message (Use @all/@admin/@customer for everyone/all admins/all customers)">
+            <font>
+               <Font size="16.0" />
+            </font></TextField>
+         <ImageView fx:id="sendImageView" fitHeight="32" fitWidth="32" onMouseClicked="#sendMessage" preserveRatio="true" />
       </HBox>
+   </VBox>
 
-      <!-- Vùng hiển thị admin online -->
-      <VBox fx:id="adminOnlineBox" layoutX="917.0" layoutY="19.0" spacing="5.0">
-         <Label fx:id="adminLabel" text="Online admin (0)" />
-         <TextArea fx:id="adminListField" editable="false" prefHeight="327.0" prefWidth="396.0" />
-      </VBox>
+   <!-- Vùng hiển thị admin online -->
+   <VBox layoutX="917.0" layoutY="19.0" prefHeight="343.0" prefWidth="400.0" spacing="10.0" styleClass="online-box">
+      <Label fx:id="adminLabel" text="Online admin (0)">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <ScrollPane fx:id="adminScrollPane" fitToWidth="true" prefHeight="302.0" prefWidth="378.0" styleClass="admin-scroll">
+         <VBox fx:id="adminOnlineBox" spacing="5.0" />
+      </ScrollPane>
+   </VBox>
 
-      <!-- Vùng hiển thị user online -->
-      <VBox fx:id="userOnlineBox" layoutX="917.0" layoutY="379.0" spacing="5.0">
-         <Label fx:id="userLabel" text="Online user (0)" />
-         <TextArea fx:id="userListField" editable="false" prefHeight="333.0" prefWidth="396.0" />
-      </VBox>
-   </children>
+   <!-- Vùng hiển thị user online -->
+   <VBox layoutX="917.0" layoutY="378.0" prefHeight="343.0" prefWidth="400.0" spacing="10.0" styleClass="online-box">
+      <Label fx:id="userLabel" text="Online user (0)">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <ScrollPane fx:id="userScrollPane" fitToWidth="true" prefHeight="300.0" styleClass="user-scroll">
+         <VBox fx:id="userOnlineBox" spacing="5.0" />
+      </ScrollPane>
+   </VBox>
 </AnchorPane>
