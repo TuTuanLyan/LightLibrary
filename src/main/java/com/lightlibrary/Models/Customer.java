@@ -79,17 +79,36 @@ public class Customer extends User {
         this.listTransactions = listTransactions;
     }
 
-    /**
-     *
-     */
-    public void borrowBook(String isbn) {
+    private boolean checkPasswordValidation(String password) {
+        if (password.length() < 8) {
+            return false;
+        }
 
+        boolean hasLetter = false;
+        int consecutiveIncreaseCount = 0;
+
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+
+            if (Character.isLetter(c)) {
+                hasLetter = true;
+                consecutiveIncreaseCount = 0;
+            } else if (Character.isDigit(c)) {
+                if (i > 0 && Character.isDigit(password.charAt(i - 1))) {
+                    if (password.charAt(i) - password.charAt(i - 1) == 1) {
+                        consecutiveIncreaseCount++;
+                        if (consecutiveIncreaseCount >= 2) {
+                            return false;
+                        }
+                    } else {
+                        consecutiveIncreaseCount = 0;
+                    }
+                }
+            }
+        }
+
+        return hasLetter;
     }
-
-    /**
-     *
-     */
-    public void returnBook() {}
 
     @Override
     public String toString() {

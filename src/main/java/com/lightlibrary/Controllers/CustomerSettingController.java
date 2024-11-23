@@ -161,7 +161,10 @@ public class CustomerSettingController implements Initializable {
         return numberFormat.format(price);
     }
 
+    public void updatePassword() {
+        Customer customer = customerDashboardController.getCustomer();
 
+    }
 
 
     @FXML
