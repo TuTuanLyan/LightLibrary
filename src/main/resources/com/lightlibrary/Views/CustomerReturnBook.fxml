@@ -11,7 +11,7 @@
 
 <AnchorPane fx:id="returnBookRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="page-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerReturnBookController">
    <children>
-      <GridPane layoutX="16.0" layoutY="84.0" prefHeight="120.0" prefWidth="1308.0" styleClass="user-info-table">
+      <GridPane layoutX="16.0" layoutY="30.0" prefHeight="120.0" prefWidth="1308.0" styleClass="user-info-table">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="201.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="254.0" />
@@ -40,7 +40,7 @@
             <DatePicker fx:id="fillDueDatePicker" prefHeight="34.0" prefWidth="170.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <ScrollPane layoutX="16.0" layoutY="212.0" prefHeight="586.0" prefWidth="1320.0">
+      <ScrollPane layoutX="16.0" layoutY="160.0" prefHeight="633.0" prefWidth="1320.0">
          <content>
             <GridPane fx:id="notReturnBookTable" prefHeight="0.0" prefWidth="1308.0" styleClass="user-info-table">
                <columnConstraints>

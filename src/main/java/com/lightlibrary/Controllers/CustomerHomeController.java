@@ -202,7 +202,7 @@ public class CustomerHomeController implements Initializable, SyncAction {
 
         int userID = parentController.getCustomer().getUserID();
         Connection connectDB = DatabaseConnection.getConnection();
-        String queryBorrowing = "select b.isbn,b.title,b.author,t.dueDate from transactions t left join books b on b.isbn = t.isbn where t.userID= ?";
+        String queryBorrowing = "select b.isbn,b.title,b.author,t.dueDate from transactions t left join books b on b.isbn = t.isbn where t.userID= ? and t.returnDate is null";
         try {
             PreparedStatement preparedStatement = connectDB.prepareStatement(queryBorrowing);
             preparedStatement.setInt(1, userID);
