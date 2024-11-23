@@ -53,12 +53,6 @@ public class CustomerHistoryController implements Initializable, SyncAction {
     private DatePicker returnDatePicker;
 
     @FXML
-    private Label spenrTotalCoinLabel;
-
-    @FXML
-    private GridPane titleGrid;
-
-    @FXML
     private Button borrowedButton;
 
     @FXML
@@ -69,11 +63,11 @@ public class CustomerHistoryController implements Initializable, SyncAction {
 
 
     public enum Status {
-        Borrowed,
-        Overdue,
-        Returned
+        BORROWED,
+        OVERDUE,
+        RETURNED
     }
-    public Status status = Status.Borrowed;
+    public Status status = Status.BORROWED;
 
 
     CustomerDashboardController parentController;
@@ -93,7 +87,7 @@ public class CustomerHistoryController implements Initializable, SyncAction {
     @Override
     public void setParentController(CustomerDashboardController parentController) {
         this.parentController = parentController;
-        this.status = Status.Borrowed;
+        this.status = Status.BORROWED;
         control();
     }
 
@@ -121,10 +115,10 @@ public class CustomerHistoryController implements Initializable, SyncAction {
 
     private String buildQuery() {
         StringBuilder query = new StringBuilder("select t.isbn,b.title,b.author,t.borrowDate,t.dueDate,t.returnDate, case when t.returnDate is not null then datediff(t.returnDate,t.borrowDate) * b.price else datediff(current_date(),t.borrowDate) * b.price end as totalFee from transactions t join books b on t.isbn = b.isbn where t.userID = ?");
-        if (status == Status.Overdue) {
+        if (status == Status.OVERDUE) {
             query = new StringBuilder("select t.isbn,b.title,b.author,t.borrowDate,t.dueDate,t.returnDate,datediff(current_date(),t.borrowDate) * b.price as totalFee  from transactions t join books b on t.isbn = b.isbn where t.dueDate < current_date() and t.returnDate is null and t.userID = ?;");
         }
-        else if (status == Status.Returned) {
+        else if (status == Status.RETURNED) {
             query = new StringBuilder("select t.isbn,b.title,b.author,t.borrowDate,t.dueDate,t.returnDate,datediff(t.returnDate,t.borrowDate) * b.price as totalFee from transactions t join books b on t.isbn = b.isbn where t.returnDate is not null and t.userID = ? ");
         }
         if (!fillISBNField.getText().isEmpty()) query.append(" AND t.isbn LIKE ?");
@@ -207,35 +201,31 @@ public class CustomerHistoryController implements Initializable, SyncAction {
     public void control() {
         reLoad();
         borrowedButton.setOnAction(event -> {
-            status = Status.Borrowed;
+            status = Status.BORROWED;
             reLoad();
         });
         overdueButton.setOnAction(event -> {
-            status = Status.Overdue;
+            status = Status.OVERDUE;
             reLoad();
         });
 
         returnedButton.setOnAction(event -> {
-            status = Status.Returned;
+            status = Status.RETURNED;
             reLoad();
         });
         fillISBNField.setOnKeyTyped(event -> {
-            //if(fillISBNField.getText().isEmpty()) return;
             reLoad();
 
         });
         fillTitleField.setOnKeyTyped(event -> {
-            //if(fillTitleField.getText().isEmpty()) return;
             reLoad();
 
         });
         fillAuthorField.setOnKeyTyped(event -> {
-            //if(fillAuthorField.getText().isEmpty()) return;
             reLoad();
         });
 
         fillTotalField.setOnKeyTyped(event -> {
-            //if(fillTotalField.getText().isEmpty()) return;
             reLoad();
         });
         borrowDatePicker.setOnAction(event -> reLoad());
@@ -243,8 +233,6 @@ public class CustomerHistoryController implements Initializable, SyncAction {
         dueDatePicker.setOnAction(event -> reLoad());
 
         returnDatePicker.setOnAction(event -> reLoad());
-
-
     }
 
 }

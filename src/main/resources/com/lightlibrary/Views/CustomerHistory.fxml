@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="historyRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="page-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerHistoryController">
    <children>
-      <GridPane fx:id="titleGrid" alignment="CENTER" layoutX="10.0" layoutY="74.0" prefHeight="128.0" prefWidth="1315.0" styleClass="user-info-table">
+      <GridPane alignment="CENTER" layoutX="13.0" layoutY="50.0" prefHeight="128.0" prefWidth="1315.0" styleClass="user-info-table">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="177.0" prefWidth="218.0" />
@@ -43,21 +43,6 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Borrow Date" GridPane.columnIndex="3">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Due Date" GridPane.columnIndex="4">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="177.0" text="Return Date" GridPane.columnIndex="5">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
             <Label alignment="CENTER" prefHeight="30.0" prefWidth="180.0" text="Total" GridPane.columnIndex="6">
                <font>
                   <Font size="20.0" />
@@ -70,14 +55,12 @@
             <DatePicker fx:id="borrowDatePicker" prefHeight="36.0" prefWidth="189.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <DatePicker fx:id="dueDatePicker" prefHeight="36.0" prefWidth="189.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <DatePicker fx:id="returnDatePicker" prefHeight="36.0" prefWidth="189.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Button fx:id="borrowedButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="189.0" styleClass="view-detail-button" text="Borrowed" GridPane.columnIndex="3" />
+            <Button fx:id="overdueButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="182.0" styleClass="view-detail-button" text="Overdue" GridPane.columnIndex="4" />
+            <Button fx:id="returnedButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="183.0" styleClass="view-detail-button" text="Returned" GridPane.columnIndex="5" />
          </children>
       </GridPane>
-      <Label fx:id="spenrTotalCoinLabel" layoutX="21.0" layoutY="21.0" prefHeight="36.0" prefWidth="723.0" styleClass="page-title" text="You have spent a total of xxxxxx coins on the books. ">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <ScrollPane layoutX="10.0" layoutY="215.0" prefHeight="581.0" prefWidth="1330.0">
+      <ScrollPane layoutX="5.0" layoutY="190.0" prefHeight="606.0" prefWidth="1330.0">
          <content>
             <GridPane fx:id="historyTableGrid" alignment="CENTER" prefHeight="22.0" prefWidth="1315.0" styleClass="user-info-table">
                <columnConstraints>
@@ -95,8 +78,5 @@
             </GridPane>
          </content>
       </ScrollPane>
-      <Button fx:id="borrowedButton" layoutX="853.0" layoutY="27.0" mnemonicParsing="false" text="Borrowed" />
-      <Button fx:id="overdueButton" layoutX="965.0" layoutY="27.0" mnemonicParsing="false" text="Overdue" />
-      <Button fx:id="returnedButton" layoutX="1093.0" layoutY="27.0" mnemonicParsing="false" text="Returned" />
    </children>
 </AnchorPane>
