@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="historyRoot" prefHeight="810.0" prefWidth="1340.0" styleClass="page-content-container" stylesheets="@../StyleSheets/light-theme.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.CustomerHistoryController">
    <children>
-      <GridPane alignment="CENTER" layoutX="13.0" layoutY="50.0" prefHeight="128.0" prefWidth="1315.0" styleClass="user-info-table">
+      <GridPane alignment="CENTER" layoutX="13.0" layoutY="24.0" prefHeight="128.0" prefWidth="1315.0" styleClass="user-info-table">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="177.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="177.0" prefWidth="218.0" />
@@ -60,7 +60,7 @@
             <Button fx:id="returnedButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="183.0" styleClass="view-detail-button" text="Returned" GridPane.columnIndex="5" />
          </children>
       </GridPane>
-      <ScrollPane layoutX="5.0" layoutY="190.0" prefHeight="606.0" prefWidth="1330.0">
+      <ScrollPane layoutX="14.0" layoutY="164.0" prefHeight="628.0" prefWidth="1330.0">
          <content>
             <GridPane fx:id="historyTableGrid" alignment="CENTER" prefHeight="22.0" prefWidth="1315.0" styleClass="user-info-table">
                <columnConstraints>

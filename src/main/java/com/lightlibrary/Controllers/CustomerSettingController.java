@@ -119,28 +119,65 @@ public class CustomerSettingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         paymentContentField.setEditable(false);
-        // Gắn sự kiện cho nút "Đổi ảnh đại diện"
-        changeAvatarButton.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Chọn ảnh đại diện");
 
-            // Lọc chỉ cho phép chọn file hình ảnh
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Hình ảnh", "*.png", "*.jpg", "*.jpeg", "*.gif")
-            );
-
-            // Mở trình duyệt file
-            File selectedFile = fileChooser.showOpenDialog(getStage());
-            if (selectedFile != null) {
-                // Cập nhật và hiển thị ảnh mới trong ImageView
-                Image avatar = new Image(selectedFile.toURI().toString());
-                avatarView.setImage(avatar);
-
-                // Nếu cần lưu đường dẫn vào cơ sở dữ liệu, bạn có thể thực hiện tại đây
-                // Ví dụ: saveAvatarPathToDatabase(selectedFile.getAbsolutePath());
-            }
-        });
+        changeAvatarButton.setOnAction(event -> handleChangeAvatar());
+        saveAvatarButton.setOnAction(event -> saveAvatarToDatabase());
     }
+
+    private void handleChangeAvatar() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Chọn ảnh đại diện");
+
+        // Lọc chỉ cho phép chọn file hình ảnh
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Hình ảnh", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        // Mở trình duyệt file
+        File selectedFile = fileChooser.showOpenDialog(getStage());
+        if (selectedFile != null) {
+            // Cập nhật và hiển thị ảnh mới trong ImageView
+            Image avatar = new Image(selectedFile.toURI().toString());
+            avatarView.setImage(avatar);
+
+            // Hiển thị nút saveAvatarButton
+            saveAvatarButton.setVisible(true);
+
+            // Lưu đường dẫn ảnh tạm thời (nếu cần)
+            saveAvatarButton.setUserData(selectedFile.getAbsolutePath());
+        }
+    }
+
+    // Hàm lưu avatar vào database
+    private void saveAvatarToDatabase() {
+        // Lấy đường dẫn file từ userData của nút
+        String avatarPath = (String) saveAvatarButton.getUserData();
+
+        if (avatarPath == null) {
+            System.out.println("Không có ảnh đại diện để lưu.");
+            return;
+        }
+
+        // Thực hiện kết nối và lưu đường dẫn vào cơ sở dữ liệu
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "UPDATE users SET avatarImage = ? WHERE userID = ?"; // Bảng và cột phù hợp với database của bạn
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, avatarPath);
+                preparedStatement.setInt(2, customerDashboardController.getCustomer().getUserID()); // Hàm này trả về ID người dùng hiện tại
+                int rowsUpdated = preparedStatement.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Cập nhật ảnh đại diện thành công.");
+                    saveAvatarButton.setVisible(false); // Ẩn nút sau khi lưu
+                } else {
+                    System.out.println("Không thể cập nhật ảnh đại diện.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void setPaymentPrompt() {
         String userID = String.format("#%08d ", customerDashboardController.getCustomer().getUserID());
