@@ -295,6 +295,7 @@ public class CustomerSettingController implements Initializable {
         customerDashboardController.getCustomer().setFullName(newName);
         if (updateField("fullName", newName)) {
             userNameLabel.setText(newName);
+            updateNameTextField.clear();
         }
     }
 
@@ -307,6 +308,7 @@ public class CustomerSettingController implements Initializable {
         customerDashboardController.getCustomer().setEmail(newEmail);
         if (updateField("email", newEmail)) {
             emailLabel.setText("Email: " + newEmail);
+            updateEmailField.clear();
         }
     }
 
@@ -319,6 +321,7 @@ public class CustomerSettingController implements Initializable {
         customerDashboardController.getCustomer().setPhoneNumber(newPhoneNumber);
         if (updateField("phoneNumber", newPhoneNumber)) {
             phoneNumberLabel.setText("Phone number: " + newPhoneNumber);
+            updatePhoneNumberField.clear();
         }
     }
 

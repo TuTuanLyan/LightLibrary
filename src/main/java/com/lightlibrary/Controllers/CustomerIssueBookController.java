@@ -120,6 +120,9 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         detailCloseButton.setOnAction(e -> {
+            addToFavouriteListButton.setVisible(false);
+            borrowBookButton.setVisible(false);
+            requireBookButton.setVisible(false);
             detailThumbnailImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/LightLibraryLogo.png")).toExternalForm()));
             detailPriceLabel.setText("Fee / Day");
@@ -132,7 +135,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
         });
 
         pickDueDatePiker.setOnAction(event -> handleDueDatePickerAction());
-        setupOnActionForBorrowDays();
+        borrowDaysAmount.setOnAction(event -> setupOnActionForBorrowDays());
 
         confirmBorrowPane.setVisible(false);
         cancleBorrowButton.setOnAction(e -> {
@@ -359,6 +362,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                     confirmFeePerDay.setText("Fee / Day: " + formatPrice(price));
 
                     confirmBorrowButton.setOnAction(confirmEvent -> {
+                        setupOnActionForBorrowDays();
                         LocalDate dueDate = pickDueDatePiker.getValue();
                         if (dueDate == null) {
                             showAlert(Alert.AlertType.ERROR, "Invalid Date", "Please select a due date!");
@@ -368,6 +372,10 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                         double totalPrice = getTotalPrice(Integer.parseInt(borrowDaysAmount.getText()));
                         borrowBook(parentController.getCustomer(), ISBN, totalPrice);
                         confirmBorrowPane.setVisible(false);
+                        pickDueDatePiker.setValue(LocalDate.now().plusDays(1));
+                        borrowDaysAmount.clear();
+                        confirmFeePerDay.setText("Fee / Days: ");
+                        totalPriceLabel.setText("Total Price: ");
                     });
                 });
                 requireBookButton.setVisible(false);
@@ -406,29 +414,27 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     }
 
     private void setupOnActionForBorrowDays() {
-        borrowDaysAmount.setOnAction(event -> {
-            String input = borrowDaysAmount.getText().trim();
+        String input = borrowDaysAmount.getText().trim();
 
-            if (input.isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Invalid Date", "Invalid number of days entered!");
-                return;
+        if (input.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Date", "Invalid number of days entered!");
+            return;
+        }
+
+        try {
+            int daysToExtend = Integer.parseInt(input);
+
+            if (daysToExtend < 0) {
+                borrowDaysAmount.setText("0");
+                showAlert(Alert.AlertType.ERROR, "Invalid Date", "The renewal date cannot be negative!");
+            } else {
+                LocalDate newDueDate = LocalDate.now().plusDays(daysToExtend);
+                pickDueDatePiker.setValue(newDueDate);
+                updateTotalPrice(daysToExtend);
             }
-
-            try {
-                int daysToExtend = Integer.parseInt(input);
-
-                if (daysToExtend < 0) {
-                    borrowDaysAmount.setText("0");
-                    showAlert(Alert.AlertType.ERROR, "Invalid Date", "The renewal date cannot be negative!");
-                } else {
-                    LocalDate newDueDate = LocalDate.now().plusDays(daysToExtend);
-                    pickDueDatePiker.setValue(newDueDate);
-                    updateTotalPrice(daysToExtend);
-                }
-            } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Invalid Date", "Invalid number of days entered!");
-            }
-        });
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Date", "Invalid number of days entered!");
+        }
     }
 
     private void handleDueDatePickerAction() {
