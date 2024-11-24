@@ -306,15 +306,21 @@ public class CustomerChatController implements Initializable, SyncAction {
                     }
                 });
 
+                HBox nameContainer = new HBox(adminLabel);
+                nameContainer.setSpacing(5);
+
                 // Phân biệt admin hiện tại và admin khác
                 if (admin.equals(customer.getUsername())) {
                     adminLabel.getStyleClass().add("current-user-item");
+                    Label mySelf = new Label("Me");
+                    mySelf.getStyleClass().add("self-indicator-item");
+                    nameContainer.getChildren().add(mySelf);
                 } else {
                     String cssClass = (index % 2 == 0) ? "admin-item-even" : "admin-item-odd";
                     adminLabel.getStyleClass().add(cssClass);
                 }
 
-                adminOnlineBox.getChildren().add(adminLabel);
+                adminOnlineBox.getChildren().add(nameContainer);
                 index++;
             }
 
@@ -341,15 +347,21 @@ public class CustomerChatController implements Initializable, SyncAction {
                     }
                 });
 
+                HBox nameContainer = new HBox(userLabel);
+                nameContainer.setSpacing(5);
+
                 // Phân biệt user hiện tại và user khác
                 if (user.equals(customer.getUsername())) {
                     userLabel.getStyleClass().add("current-user-item");
+                    Label mySelf = new Label("Me");
+                    mySelf.getStyleClass().add("self-indicator-item");
+                    nameContainer.getChildren().add(mySelf);
                 } else {
                     String cssClass = (index % 2 == 0) ? "user-item-even" : "user-item-odd";
                     userLabel.getStyleClass().add(cssClass);
                 }
 
-                userOnlineBox.getChildren().add(userLabel);
+                userOnlineBox.getChildren().add(nameContainer);
                 index++;
             }
 
@@ -361,19 +373,35 @@ public class CustomerChatController implements Initializable, SyncAction {
         Platform.runLater(() -> {
             // Phân tách tên người gửi và nội dung tin nhắn
             int atIndex = message.indexOf('@');
-            String sender = (atIndex != -1) ? message.substring(0, atIndex - 2).trim() : "Unknown";
-            String messageContent = (atIndex != -1) ? message.substring(atIndex - 1) : message;
+            int spaceIndex2nd = message.indexOf(' ', atIndex + 1);
+            String sender = message.substring(0, atIndex - 2).trim();
+            String recipient = message.substring(atIndex, spaceIndex2nd).trim();
+
+            sender += " → " + recipient;
+            if (!(recipient.equals("@all") || recipient.equals("@admin") || recipient.equals("@customer"))) {
+                sender += " (direct message)";
+            }
+
+            String messageContent = message.substring(spaceIndex2nd + 1);
 
             // Nếu tên người gửi khác với tin nhắn trước đó, hiển thị Label tên người gửi
             if (!sender.equals(lastSender)) {
                 Label senderLabel = new Label(sender);
-                senderLabel.setStyle("-fx-text-fill: black; -fx-font-size: 12");
+                if (recipient.equals("@all")) {
+                    senderLabel.getStyleClass().add("everyone-message-name-label");
+                } else if (recipient.equals("@admin")) {
+                    senderLabel.getStyleClass().add("all-admins-message-name-label");
+                } else if (recipient.equals("@customer")) {
+                    senderLabel.getStyleClass().add("all-users-message-name-label");
+                } else {
+                    senderLabel.getStyleClass().add("direct-message-name-label");
+                }
                 lastSender = sender;
 
                 HBox senderContainer = new HBox(senderLabel);
                 senderContainer.setFillHeight(false);
 
-                if (sender.equals("You")) {
+                if (sender.startsWith("You")) {
                     senderContainer.getStyleClass().add("my-message-container");
                 } else {
                     senderContainer.getStyleClass().add("other-message-container");
