@@ -20,7 +20,8 @@
 }
 
 .other-message-even {
-    -fx-background-color: linear-gradient(to bottom right, #D4D4D4, #AFAFAF);
+    /* -fx-background-color: linear-gradient(to bottom right, #D4D4D4, #AFAFAF); */
+    -fx-background-color: linear-gradient(to bottom right, #7096ff, #08d792);
     -fx-text-fill: #000000;
     -fx-padding: 10;
     -fx-border-radius: 10;
@@ -31,7 +32,8 @@
 }
 
 .other-message-odd {
-    -fx-background-color: linear-gradient(to bottom right, #B3B3B3, #8C8C8C);
+    /* -fx-background-color: linear-gradient(to bottom right, #B3B3B3, #8C8C8C); */
+    -fx-background-color: linear-gradient(to bottom right, #7096ff, #08d792);
     -fx-text-fill: #000000;
     -fx-padding: 10;
     -fx-border-radius: 10;

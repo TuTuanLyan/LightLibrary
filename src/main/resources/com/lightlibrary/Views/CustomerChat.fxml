@@ -62,7 +62,7 @@
 
    <!-- Vùng hiển thị user online -->
    <VBox layoutX="917.0" layoutY="378.0" prefHeight="343.0" prefWidth="400.0" spacing="10.0" styleClass="online-box">
-      <Label fx:id="userLabel" text="Online user (0)">
+      <Label fx:id="userLabel" text="Online customer (0)">
          <font>
             <Font size="16.0" />
          </font></Label>

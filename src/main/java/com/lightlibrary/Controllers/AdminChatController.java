@@ -107,6 +107,9 @@ public class AdminChatController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {}
 
+    @Override
+    public void autoUpdate() {}
+
     private void showAlert(String title, String header, String content) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -334,7 +337,7 @@ public class AdminChatController implements Initializable, SyncAction {
                         ClipboardContent content = new ClipboardContent();
                         content.putString(user);
                         clipboard.setContent(content);
-                        showInfo("Copied", "User name copied", "User name copied to clipboard.");
+                        showInfo("Copied", "Customer name copied", "Customer name copied to clipboard.");
                     }
                 });
 
@@ -350,7 +353,7 @@ public class AdminChatController implements Initializable, SyncAction {
                 index++;
             }
 
-            userLabel.setText("Online user (" + onlineUsers.size() + ")");
+            userLabel.setText("Online customer (" + onlineUsers.size() + ")");
         });
     }
 
