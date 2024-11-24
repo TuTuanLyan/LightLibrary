@@ -177,6 +177,7 @@ public class AdminDashboardController implements Initializable {
                 Object controller = loader.getController();
                 if (controller instanceof SyncAction) {
                     ((SyncAction) controller).setTheme(admin.isDarkMode());
+                    changeThemeToggleButtonAnimation(admin.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
                     ((SyncAction) controller).autoUpdate();
                 }
@@ -219,6 +220,7 @@ public class AdminDashboardController implements Initializable {
                 Object controller = loader.getController();
                 if (controller instanceof SyncAction) {
                     ((SyncAction) controller).setTheme(admin.isDarkMode());
+                    changeThemeToggleButtonAnimation(admin.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
                     ((SyncAction) controller).autoUpdate();
                 }

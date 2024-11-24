@@ -174,6 +174,7 @@ public class CustomerDashboardController implements Initializable {
                 Object controller = loader.getController();
                 if (controller instanceof SyncAction) {
                     ((SyncAction) controller).setTheme(customer.isDarkMode());
+                    changeThemeToggleButtonAnimation(customer.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
                     ((SyncAction) controller).autoUpdate();
                 }
@@ -220,6 +221,7 @@ public class CustomerDashboardController implements Initializable {
                 Object controller = loader.getController();
                 if (controller instanceof SyncAction) {
                     ((SyncAction) controller).setTheme(customer.isDarkMode());
+                    changeThemeToggleButtonAnimation(customer.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
                     ((SyncAction) controller).autoUpdate();
                 }
