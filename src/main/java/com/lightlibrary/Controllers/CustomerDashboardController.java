@@ -26,6 +26,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -58,6 +59,9 @@ public class CustomerDashboardController implements Initializable {
 
     @FXML
     private Pane avatarImageContainer;
+
+    @FXML
+    private ImageView avatarImage;
 
     @FXML
     private Label customerNameLabel;
@@ -409,6 +413,19 @@ public class CustomerDashboardController implements Initializable {
     private void displayCustomerInformation() {
         Circle avatarClip = new Circle(35, 35, 35);
         avatarImageContainer.setClip(avatarClip);
+
+        String avatarUrl = customer.getAvatarImageUrl();
+        if (avatarUrl != null) {
+            if (!avatarUrl.startsWith("file:")) {
+                avatarUrl = new File(avatarUrl).toURI().toString();
+            }
+        } else {
+            avatarUrl = Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/LightLibraryLogo.png")).toExternalForm();
+        }
+
+        Image avatar = new Image(avatarUrl);
+        avatarImage.setImage(avatar);
 
         if (customer != null) {
             customerNameLabel.setText(this.customer.getFullName() == null ?

@@ -78,7 +78,7 @@
          <children>
             <Button layoutX="-8.0" layoutY="-4.0" mnemonicParsing="false" onAction="#goToSetting" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: transparent;">
                <graphic>
-                  <ImageView fitHeight="70.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="avatarImage" fitHeight="70.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../Images/LightLibraryLogo.png" />
                      </image>
@@ -159,7 +159,7 @@
             </FontAwesomeIcon>
          </graphic>
       </Button>
-      <Button layoutX="22.0" layoutY="639.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button" onAction="#goToGame">
+      <Button layoutX="22.0" layoutY="639.0" mnemonicParsing="false" onAction="#goToGame" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
          <graphic>
             <FontAwesomeIcon glyphName="GAMEPAD" size="3em" textAlignment="CENTER">
                <fill>

@@ -99,6 +99,19 @@ public class CustomerSettingController implements Initializable {
         emailLabel.setText(customer.getEmail() != null ? "Email: " + customer.getEmail() : "You have not set your email");
         phoneNumberLabel.setText(customer.getPhoneNumber() != null ? "Phone number: " + customer.getPhoneNumber() : "You have not set your phone number");
 
+        String avatarUrl = customer.getAvatarImageUrl();
+        if (avatarUrl != null) {
+            if (!avatarUrl.startsWith("file:")) {
+                avatarUrl = new File(avatarUrl).toURI().toString();
+            }
+        } else {
+            avatarUrl = Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/LightLibraryLogo.png")).toExternalForm();
+        }
+
+        Image avatar = new Image(avatarUrl);
+        avatarView.setImage(avatar);
+
         changePasswordButton.setOnAction(event -> {
             updatePassword();
         });
@@ -128,49 +141,41 @@ public class CustomerSettingController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Chọn ảnh đại diện");
 
-        // Lọc chỉ cho phép chọn file hình ảnh
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Hình ảnh", "*.png", "*.jpg", "*.jpeg", "*.gif")
+                new FileChooser.ExtensionFilter("*.png", "*.jpg", "*.jpeg", "*.gif")
         );
 
-        // Mở trình duyệt file
         File selectedFile = fileChooser.showOpenDialog(getStage());
         if (selectedFile != null) {
-            // Cập nhật và hiển thị ảnh mới trong ImageView
             Image avatar = new Image(selectedFile.toURI().toString());
             avatarView.setImage(avatar);
 
-            // Hiển thị nút saveAvatarButton
             saveAvatarButton.setVisible(true);
-
-            // Lưu đường dẫn ảnh tạm thời (nếu cần)
             saveAvatarButton.setUserData(selectedFile.getAbsolutePath());
         }
     }
 
-    // Hàm lưu avatar vào database
     private void saveAvatarToDatabase() {
-        // Lấy đường dẫn file từ userData của nút
         String avatarPath = (String) saveAvatarButton.getUserData();
 
         if (avatarPath == null) {
-            System.out.println("Không có ảnh đại diện để lưu.");
+            showAlert("Error", "There is no avatar to save!", Alert.AlertType.ERROR);
             return;
         }
 
-        // Thực hiện kết nối và lưu đường dẫn vào cơ sở dữ liệu
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "UPDATE users SET avatarImage = ? WHERE userID = ?"; // Bảng và cột phù hợp với database của bạn
+            String sql = "UPDATE users SET avatarImage = ? WHERE userID = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, avatarPath);
-                preparedStatement.setInt(2, customerDashboardController.getCustomer().getUserID()); // Hàm này trả về ID người dùng hiện tại
+                preparedStatement.setInt(2, customerDashboardController.getCustomer().getUserID());
                 int rowsUpdated = preparedStatement.executeUpdate();
 
                 if (rowsUpdated > 0) {
-                    System.out.println("Cập nhật ảnh đại diện thành công.");
+                    customerDashboardController.getCustomer().setAvatarImageUrl(avatarPath);
+                    showAlert("Success", "Avatar updated successfully.", Alert.AlertType.INFORMATION);
                     saveAvatarButton.setVisible(false); // Ẩn nút sau khi lưu
                 } else {
-                    System.out.println("Không thể cập nhật ảnh đại diện.");
+                    showAlert("Error", "Can not update the avatar :(.", Alert.AlertType.ERROR);
                 }
             }
         } catch (SQLException e) {
@@ -251,10 +256,15 @@ public class CustomerSettingController implements Initializable {
                 stmt.setInt(2, customer.getUserID());
                 stmt.executeUpdate();
                 customer.setPassword(newPassword);
+                currentPasswordField.clear();
+                updateNewPasswordField.clear();
+                confirmNewPasswordField.clear();
                 showAlert("Success", "Password updated successfully.", Alert.AlertType.INFORMATION);
             }
         } catch (SQLException e) {
             showAlert("Error", "Failed to update password.", Alert.AlertType.ERROR);
+            updateNewPasswordField.clear();
+            confirmNewPasswordField.clear();
             e.printStackTrace();
         }
     }
@@ -277,7 +287,7 @@ public class CustomerSettingController implements Initializable {
     }
 
     public void updateName() {
-        String newName = updateNameTextField.getText().trim();
+        String newName = updateNameTextField.getText();
         if (!customerDashboardController.getCustomer().checkNameValidation(newName)) {
             showAlert("Error", "Invalid name. Name must be at least 2 characters and contain only letters or spaces.", Alert.AlertType.ERROR);
             return;
