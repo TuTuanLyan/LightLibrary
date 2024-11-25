@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="chatRoot" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminChatController">
+<AnchorPane fx:id="chatRoot" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminChatController">
    <!-- Vùng connect tới IP xác định -->
    <VBox layoutX="917.0" layoutY="734.0" prefHeight="58.0" prefWidth="400.0" spacing="10.0" styleClass="connect-box">
       <HBox prefHeight="35.0" prefWidth="409.0" spacing="5.0">

@@ -91,7 +91,11 @@ public class CustomerChatController implements Initializable, SyncAction {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {}
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        messageInput.setOnAction(e -> {
+            sendMessage();
+        });
+    }
 
     @Override
     public void autoUpdate() {}
