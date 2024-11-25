@@ -11,18 +11,10 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="chatRoot" prefHeight="810.0" prefWidth="1340.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lightlibrary.Controllers.AdminChatController">
-   <!-- Liên kết CSS -->
-   <stylesheets>
-      <URL value="@../StyleSheets/Chat/chat-style.css" />
-   </stylesheets>
-
    <!-- Vùng connect tới IP xác định -->
    <VBox layoutX="917.0" layoutY="734.0" prefHeight="58.0" prefWidth="400.0" spacing="10.0" styleClass="connect-box">
       <HBox prefHeight="35.0" prefWidth="409.0" spacing="5.0">
-         <Label prefHeight="34.0" prefWidth="68.0" text="Server IP">
-            <font>
-               <Font size="16.0" />
-            </font></Label>
+         <Label prefHeight="34.0" prefWidth="68.0" text="Server IP" styleClass="ui-text"/>
          <TextField fx:id="ipField" prefHeight="35.0" prefWidth="226.0" promptText="Enter server IP" text="192.168.0.104">
             <font>
                <Font size="16.0" />
@@ -51,10 +43,7 @@
 
    <!-- Vùng hiển thị admin online -->
    <VBox layoutX="917.0" layoutY="19.0" prefHeight="343.0" prefWidth="400.0" spacing="10.0" styleClass="online-box">
-      <Label fx:id="adminLabel" text="Online admin (0)">
-         <font>
-            <Font size="16.0" />
-         </font></Label>
+      <Label fx:id="adminLabel" text="Online admin (0)" styleClass="ui-text" />
       <ScrollPane fx:id="adminScrollPane" fitToWidth="true" prefHeight="302.0" prefWidth="378.0" styleClass="admin-scroll">
          <VBox fx:id="adminOnlineBox" spacing="5.0" />
       </ScrollPane>
@@ -62,10 +51,7 @@
 
    <!-- Vùng hiển thị user online -->
    <VBox layoutX="917.0" layoutY="378.0" prefHeight="343.0" prefWidth="400.0" spacing="10.0" styleClass="online-box">
-      <Label fx:id="userLabel" text="Online customer (0)">
-         <font>
-            <Font size="16.0" />
-         </font></Label>
+      <Label fx:id="userLabel" text="Online customer (0)" styleClass="ui-text"/>
       <ScrollPane fx:id="userScrollPane" fitToWidth="true" prefHeight="300.0" styleClass="user-scroll">
          <VBox fx:id="userOnlineBox" spacing="5.0" />
       </ScrollPane>

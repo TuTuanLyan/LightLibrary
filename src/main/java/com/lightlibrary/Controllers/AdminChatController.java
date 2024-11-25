@@ -41,7 +41,7 @@ public class AdminChatController implements Initializable, SyncAction {
     private Admin admin;
     private final Map<String, Label> pendingMessages = new HashMap<>();
 
-    private String lastSender = ""; // tên người gửi cuối cùng
+    private String lastSender = "";
 
     AdminDashboardController parentController;
 
@@ -69,7 +69,6 @@ public class AdminChatController implements Initializable, SyncAction {
     public void setTheme(boolean darkMode) {
         chatRoot.getStylesheets().clear();
         if (darkMode) {
-            // Dark button
             connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/Chat/connectDark.jpg")).toExternalForm()));
             disconnectImageView.setImage(new Image(Objects.requireNonNull(getClass()
@@ -77,9 +76,8 @@ public class AdminChatController implements Initializable, SyncAction {
             sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/Chat/sendMessageDark.jpg")).toExternalForm()));
             chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
-                    .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
+                    .getResource("/com/lightlibrary/StyleSheets/Chat/dark-chat.css")).toExternalForm());
         } else {
-            // Light button
             connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/Chat/connectLight.jpg")).toExternalForm()));
             disconnectImageView.setImage(new Image(Objects.requireNonNull(getClass()
@@ -87,18 +85,8 @@ public class AdminChatController implements Initializable, SyncAction {
             sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/Chat/sendMessageLight.jpg")).toExternalForm()));
             chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
-                    .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
+                    .getResource("/com/lightlibrary/StyleSheets/Chat/light-chat.css")).toExternalForm());
         }
-        /*
-        // Mặc định load light button. Dark mode đang gặp vấn đề
-        connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
-                .getResource("/com/lightlibrary/Images/Chat/connectLight.jpg")).toExternalForm()));
-        disconnectImageView.setImage(new Image(Objects.requireNonNull(getClass()
-                .getResource("/com/lightlibrary/Images/Chat/disconnectLight.jpg")).toExternalForm()));
-        sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
-                .getResource("/com/lightlibrary/Images/Chat/sendMessageLight.jpg")).toExternalForm())); */
-        chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
-                .getResource("/com/lightlibrary/StyleSheets/Chat/chat-style.css")).toExternalForm());
     }
 
     @Override
@@ -288,7 +276,8 @@ public class AdminChatController implements Initializable, SyncAction {
 
     private void updateAdminList(Set<String> onlineAdmins) {
         Platform.runLater(() -> {
-            adminOnlineBox.getChildren().clear(); // Xóa các mục cũ
+            adminOnlineBox.getChildren().clear();
+            onlineAdmins.remove("");
             int index = 0;
 
             for (String otherAdmin : onlineAdmins) {
@@ -308,7 +297,6 @@ public class AdminChatController implements Initializable, SyncAction {
                 HBox nameContainer = new HBox(adminLabel);
                 nameContainer.setSpacing(5);
 
-                // Phân biệt admin hiện tại và admin khác
                 if (otherAdmin.equals(admin.getUsername())) {
                     adminLabel.getStyleClass().add("current-user-item");
                     Label mySelf = new Label("Me");
@@ -329,7 +317,8 @@ public class AdminChatController implements Initializable, SyncAction {
 
     private void updateUserList(Set<String> onlineUsers) {
         Platform.runLater(() -> {
-            userOnlineBox.getChildren().clear(); // Xóa các mục cũ
+            userOnlineBox.getChildren().clear();
+            onlineUsers.remove("");
             int index = 0;
 
             for (String user : onlineUsers) {
@@ -349,7 +338,6 @@ public class AdminChatController implements Initializable, SyncAction {
                 HBox nameContainer = new HBox(userLabel);
                 nameContainer.setSpacing(5);
 
-                // Phân biệt user hiện tại và user khác
                 if (user.equals(admin.getUsername())) {
                     userLabel.getStyleClass().add("current-user-item");
                     Label mySelf = new Label("Me");
