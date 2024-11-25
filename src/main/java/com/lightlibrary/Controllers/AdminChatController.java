@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import jakarta.websocket.*;
 import javafx.scene.image.Image;
@@ -15,6 +16,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.net.URI;
 import java.net.URL;
@@ -60,6 +62,7 @@ public class AdminChatController implements Initializable, SyncAction {
     @Override
     public void setParentController(AdminDashboardController parentController) {
         this.parentController = parentController;
+        parentController.setAdminChatController(this);
     }
 
     @Override
@@ -247,6 +250,12 @@ public class AdminChatController implements Initializable, SyncAction {
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Message Error", "Unable to Send", "Error: " + e.getMessage());
+        }
+    }
+
+    public void autoDisconnect() {
+        if (session != null && session.isOpen()) {
+            disconnectFromServer();
         }
     }
 

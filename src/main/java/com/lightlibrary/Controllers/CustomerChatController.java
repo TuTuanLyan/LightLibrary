@@ -60,6 +60,7 @@ public class CustomerChatController implements Initializable, SyncAction {
     @Override
     public void setParentController(CustomerDashboardController parentController) {
         this.parentController = parentController;
+        parentController.setCustomerChatController(this);
     }
 
     @Override
@@ -247,6 +248,12 @@ public class CustomerChatController implements Initializable, SyncAction {
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Message Error", "Unable to Send", "Error: " + e.getMessage());
+        }
+    }
+
+    public void autoDisconnect() {
+        if (session != null && session.isOpen()) {
+            disconnectFromServer();
         }
     }
 

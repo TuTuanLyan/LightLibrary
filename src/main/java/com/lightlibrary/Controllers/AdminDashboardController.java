@@ -117,6 +117,12 @@ public class AdminDashboardController implements Initializable {
         setTheme(admin.isDarkMode());
     }
 
+    private AdminChatController adminChatController;
+
+    void setAdminChatController(AdminChatController adminChatController) {
+        this.adminChatController = adminChatController;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         preLoad();
@@ -415,9 +421,19 @@ public class AdminDashboardController implements Initializable {
     }
 
     public void logout(ActionEvent event) throws IOException {
+        if (adminChatController != null) {
+            adminChatController.autoDisconnect();
+        }
         Parent login = FXMLLoader.load(Objects.requireNonNull(getClass()
                 .getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setOnCloseRequest(_ -> {
+            if (adminChatController != null) {
+                adminChatController.autoDisconnect();
+            }
+            Platform.exit();
+            System.exit(0);
+        });
         Platform.runLater(stage::centerOnScreen);
         stage.setScene(new Scene(login, 960, 640));
         stage.show();

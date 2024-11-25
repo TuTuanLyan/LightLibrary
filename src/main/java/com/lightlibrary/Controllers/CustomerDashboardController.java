@@ -126,6 +126,12 @@ public class CustomerDashboardController implements Initializable {
         changeThemeToggleButtonAnimation(customer.isDarkMode());
     }
 
+    CustomerChatController customerChatController;
+
+    public void setCustomerChatController(CustomerChatController customerChatController) {
+        this.customerChatController = customerChatController;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         preLoad();
@@ -503,9 +509,19 @@ public class CustomerDashboardController implements Initializable {
     }
 
     public void logout(ActionEvent event) throws IOException {
+        if (customerChatController != null) {
+            customerChatController.autoDisconnect();
+        }
         Parent login = FXMLLoader.load(Objects.requireNonNull(getClass()
                 .getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setOnCloseRequest(_ -> {
+            if (customerChatController != null) {
+                customerChatController.autoDisconnect();
+            }
+            Platform.exit();
+            System.exit(0);
+        });
         Platform.runLater(stage::centerOnScreen);
         stage.setScene(new Scene(login, 960, 640));
         stage.show();
