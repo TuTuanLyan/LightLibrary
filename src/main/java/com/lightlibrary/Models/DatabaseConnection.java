@@ -11,9 +11,9 @@ public class DatabaseConnection {
      * @return a Connection data is link to connect with database.
      */
     public static Connection getConnection() {
-        String databaseName = "LibraryDB";
+        String databaseName = "LibraryDBNew";
         String databaseUser = "root";
-        String databasePassword = "#1Tutuan313";
+        String databasePassword = "50022111";
 
         String databaseUrl = "jdbc:mysql://localhost:3306/" + databaseName;
 

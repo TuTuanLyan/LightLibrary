@@ -115,7 +115,12 @@ public class AdminDashboardController implements Initializable {
         this.admin = admin;
         displayAdminInformation();
         setTheme(admin.isDarkMode());
-        changeThemeToggleButtonAnimation(admin.isDarkMode());
+    }
+
+    private AdminChatController adminChatController;
+
+    void setAdminChatController(AdminChatController adminChatController) {
+        this.adminChatController = adminChatController;
     }
 
     @Override
@@ -173,13 +178,11 @@ public class AdminDashboardController implements Initializable {
 
             loadTask.setOnSucceeded(event -> {
                 FXMLLoader loader = loadTask.getValue();
-
                 Object controller = loader.getController();
                 if (controller instanceof SyncAction) {
                     ((SyncAction) controller).setTheme(admin.isDarkMode());
                     changeThemeToggleButtonAnimation(admin.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
-                    ((SyncAction) controller).autoUpdate();
                 }
                 cache.put(fxmlPath, loader);
             });
@@ -195,13 +198,12 @@ public class AdminDashboardController implements Initializable {
     private void loadPane(final String fxmlPath) {
         if (cache.containsKey(fxmlPath)) {
             FXMLLoader loader = (FXMLLoader) cache.get(fxmlPath);
-            setPaneWithAnimation(loader.getRoot());
             Object controller = loader.getController();
             if (controller instanceof SyncAction) {
                 ((SyncAction) controller).setTheme(admin.isDarkMode());
                 ((SyncAction) controller).setParentController(this);
-                ((SyncAction) controller).autoUpdate();
             }
+            setPaneWithAnimation(loader.getRoot());
         } else {
             Task<FXMLLoader> loadTask = new Task<>() {
                 @Override
@@ -222,7 +224,6 @@ public class AdminDashboardController implements Initializable {
                     ((SyncAction) controller).setTheme(admin.isDarkMode());
                     changeThemeToggleButtonAnimation(admin.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
-                    ((SyncAction) controller).autoUpdate();
                 }
             });
 
@@ -366,7 +367,7 @@ public class AdminDashboardController implements Initializable {
             issueBookImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/light-borrowed-book.png")).toExternalForm()));
             userImage.setImage(new Image(Objects.requireNonNull(getClass()
-                    .getResource("/com/lightlibrary/Images/light-user.png")).toExternalForm()));
+                    .getResource("/com/lightlibrary/Images/light-history.png")).toExternalForm()));
             chatImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/light-help.png")).toExternalForm()));
         } else {
@@ -379,7 +380,7 @@ public class AdminDashboardController implements Initializable {
             issueBookImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/dark-borrowed-book.png")).toExternalForm()));
             userImage.setImage(new Image(Objects.requireNonNull(getClass()
-                    .getResource("/com/lightlibrary/Images/dark-user.png")).toExternalForm()));
+                    .getResource("/com/lightlibrary/Images/dark-history.png")).toExternalForm()));
             chatImage.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/dark-help.png")).toExternalForm()));
         }
@@ -422,9 +423,19 @@ public class AdminDashboardController implements Initializable {
     }
 
     public void logout(ActionEvent event) throws IOException {
+        if (adminChatController != null) {
+            adminChatController.autoDisconnect();
+        }
         Parent login = FXMLLoader.load(Objects.requireNonNull(getClass()
                 .getResource("/com/lightlibrary/Views/LoginAndRegister.fxml")));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setOnCloseRequest(_ -> {
+            if (adminChatController != null) {
+                adminChatController.autoDisconnect();
+            }
+            Platform.exit();
+            System.exit(0);
+        });
         Platform.runLater(stage::centerOnScreen);
         stage.setScene(new Scene(login, 960, 640));
         stage.show();
