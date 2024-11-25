@@ -283,6 +283,28 @@
     -fx-text-fill: linear-gradient(to bottom right, #08d792, #7096ff);
 }
 
+.avatar-modify-button {
+    -fx-background-color: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-background-radius: 10px;
+    -fx-font-size: 16px;
+    -fx-fill: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.avatar-modify-button:hover {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-font-size: 16px;
+    -fx-border-color: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-border-width: 2px;
+    -fx-fill: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-text-fill: linear-gradient(to bottom right, #08d792, #7096ff);
+    -fx-font-weight: bold;
+}
+
+
 
 
 

@@ -60,8 +60,8 @@
             </ImageView>
             <Pane layoutX="18.0" layoutY="51.0" prefHeight="180.0" prefWidth="145.0" styleClass="thumbnail-result-border" />
             <Label alignment="CENTER" layoutX="28.0" layoutY="15.0" prefHeight="36.0" prefWidth="125.0" styleClass="for-you-label" text="Details" />
-            <Button fx:id="addToFavouriteListButton" layoutX="436.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" />
-            <Button fx:id="borrowBookButton" layoutX="542.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Borrow" />
+            <Button fx:id="addToFavouriteListButton" layoutX="436.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Add" visible="false" />
+            <Button fx:id="borrowBookButton" layoutX="542.0" layoutY="356.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" styleClass="view-detail-button" text="Borrow" visible="false" />
             <Button fx:id="detailCloseButton" layoutX="605.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="functional-detail-button">
                <graphic>
                   <FontAwesomeIcon glyphName="CLOSE" size="1.6em" styleClass="functional-detail-button" textAlignment="CENTER" />

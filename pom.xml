@@ -68,6 +68,13 @@
       <artifactId>google-api-services-books</artifactId>
       <version>v1-rev20240214-2.0.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>9.0.0</version>
+    </dependency>
+
+  </dependencies>
 
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>

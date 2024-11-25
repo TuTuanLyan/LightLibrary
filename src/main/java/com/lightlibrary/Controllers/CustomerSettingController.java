@@ -99,6 +99,19 @@ public class CustomerSettingController implements Initializable {
         emailLabel.setText(customer.getEmail() != null ? "Email: " + customer.getEmail() : "You have not set your email");
         phoneNumberLabel.setText(customer.getPhoneNumber() != null ? "Phone number: " + customer.getPhoneNumber() : "You have not set your phone number");
 
+        String avatarUrl = customer.getAvatarImageUrl();
+        if (avatarUrl != null) {
+            if (!avatarUrl.startsWith("file:")) {
+                avatarUrl = new File(avatarUrl).toURI().toString();
+            }
+        } else {
+            avatarUrl = Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/Images/LightLibraryLogo.png")).toExternalForm();
+        }
+
+        Image avatar = new Image(avatarUrl);
+        avatarView.setImage(avatar);
+
         changePasswordButton.setOnAction(event -> {
             updatePassword();
         });
@@ -119,28 +132,57 @@ public class CustomerSettingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         paymentContentField.setEditable(false);
-        // Gắn sự kiện cho nút "Đổi ảnh đại diện"
-        changeAvatarButton.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Chọn ảnh đại diện");
 
-            // Lọc chỉ cho phép chọn file hình ảnh
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Hình ảnh", "*.png", "*.jpg", "*.jpeg", "*.gif")
-            );
-
-            // Mở trình duyệt file
-            File selectedFile = fileChooser.showOpenDialog(getStage());
-            if (selectedFile != null) {
-                // Cập nhật và hiển thị ảnh mới trong ImageView
-                Image avatar = new Image(selectedFile.toURI().toString());
-                avatarView.setImage(avatar);
-
-                // Nếu cần lưu đường dẫn vào cơ sở dữ liệu, bạn có thể thực hiện tại đây
-                // Ví dụ: saveAvatarPathToDatabase(selectedFile.getAbsolutePath());
-            }
-        });
+        changeAvatarButton.setOnAction(event -> handleChangeAvatar());
+        saveAvatarButton.setOnAction(event -> saveAvatarToDatabase());
     }
+
+    private void handleChangeAvatar() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Chọn ảnh đại diện");
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(getStage());
+        if (selectedFile != null) {
+            Image avatar = new Image(selectedFile.toURI().toString());
+            avatarView.setImage(avatar);
+
+            saveAvatarButton.setVisible(true);
+            saveAvatarButton.setUserData(selectedFile.getAbsolutePath());
+        }
+    }
+
+    private void saveAvatarToDatabase() {
+        String avatarPath = (String) saveAvatarButton.getUserData();
+
+        if (avatarPath == null) {
+            showAlert("Error", "There is no avatar to save!", Alert.AlertType.ERROR);
+            return;
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "UPDATE users SET avatarImage = ? WHERE userID = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, avatarPath);
+                preparedStatement.setInt(2, customerDashboardController.getCustomer().getUserID());
+                int rowsUpdated = preparedStatement.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    customerDashboardController.getCustomer().setAvatarImageUrl(avatarPath);
+                    showAlert("Success", "Avatar updated successfully.", Alert.AlertType.INFORMATION);
+                    saveAvatarButton.setVisible(false); // Ẩn nút sau khi lưu
+                } else {
+                    showAlert("Error", "Can not update the avatar :(.", Alert.AlertType.ERROR);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void setPaymentPrompt() {
         String userID = String.format("#%08d ", customerDashboardController.getCustomer().getUserID());
@@ -214,10 +256,15 @@ public class CustomerSettingController implements Initializable {
                 stmt.setInt(2, customer.getUserID());
                 stmt.executeUpdate();
                 customer.setPassword(newPassword);
+                currentPasswordField.clear();
+                updateNewPasswordField.clear();
+                confirmNewPasswordField.clear();
                 showAlert("Success", "Password updated successfully.", Alert.AlertType.INFORMATION);
             }
         } catch (SQLException e) {
             showAlert("Error", "Failed to update password.", Alert.AlertType.ERROR);
+            updateNewPasswordField.clear();
+            confirmNewPasswordField.clear();
             e.printStackTrace();
         }
     }
@@ -240,7 +287,7 @@ public class CustomerSettingController implements Initializable {
     }
 
     public void updateName() {
-        String newName = updateNameTextField.getText().trim();
+        String newName = updateNameTextField.getText();
         if (!customerDashboardController.getCustomer().checkNameValidation(newName)) {
             showAlert("Error", "Invalid name. Name must be at least 2 characters and contain only letters or spaces.", Alert.AlertType.ERROR);
             return;
@@ -248,6 +295,7 @@ public class CustomerSettingController implements Initializable {
         customerDashboardController.getCustomer().setFullName(newName);
         if (updateField("fullName", newName)) {
             userNameLabel.setText(newName);
+            updateNameTextField.clear();
         }
     }
 
@@ -260,6 +308,7 @@ public class CustomerSettingController implements Initializable {
         customerDashboardController.getCustomer().setEmail(newEmail);
         if (updateField("email", newEmail)) {
             emailLabel.setText("Email: " + newEmail);
+            updateEmailField.clear();
         }
     }
 
@@ -272,6 +321,7 @@ public class CustomerSettingController implements Initializable {
         customerDashboardController.getCustomer().setPhoneNumber(newPhoneNumber);
         if (updateField("phoneNumber", newPhoneNumber)) {
             phoneNumberLabel.setText("Phone number: " + newPhoneNumber);
+            updatePhoneNumberField.clear();
         }
     }
 

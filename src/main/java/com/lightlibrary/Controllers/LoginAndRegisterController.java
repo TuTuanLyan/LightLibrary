@@ -195,6 +195,7 @@ public class LoginAndRegisterController implements Initializable {
                     customer.setDarkMode(resultSet.getBoolean("darkMode"));
                     customer.setEmail(resultSet.getString("email"));
                     customer.setPhoneNumber(resultSet.getString("phoneNumber"));
+                    customer.setAvatarImageUrl(resultSet.getString("avatarImage"));
                     customer.setCoins(resultSet.getLong("coin"));
                     return customer;
                 } else if (role.equalsIgnoreCase("ADMIN")) {

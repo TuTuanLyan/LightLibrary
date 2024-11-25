@@ -28,7 +28,10 @@
                   <Image url="@../Images/LightLibraryLogo.png" />
                </image>
             </ImageView>
-            <Button fx:id="changeAvatarButton" layoutX="29.0" layoutY="202.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="129.0" text="Change Avatar" />
+            <Button fx:id="changeAvatarButton" layoutX="16.0" layoutY="199.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="156.0" styleClass="avatar-modify-button" text="Change Avatar">
+               <font>
+                  <Font size="16.0" />
+               </font></Button>
             <Label fx:id="userIDLabel" layoutX="186.0" layoutY="20.0" prefHeight="44.0" prefWidth="375.0" styleClass="page-title" text="User ID: ">
                <font>
                   <Font size="25.0" />
@@ -49,7 +52,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="saveAvatarButton" layoutX="29.0" layoutY="253.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="129.0" text="Save Avatar" />
+            <Button fx:id="saveAvatarButton" layoutX="15.0" layoutY="248.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="156.0" styleClass="avatar-modify-button" text="Save Avatar" visible="false" />
          </children>
       </Pane>
       <Pane layoutX="637.0" layoutY="110.0" prefHeight="300.0" prefWidth="300.0" styleClass="box-container">
