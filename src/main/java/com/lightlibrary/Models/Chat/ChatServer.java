@@ -36,6 +36,21 @@ public class ChatServer {
                 return;
             }
 
+            // Xử lí sign out
+            if (message.startsWith("admin:") && message.endsWith(":unregister")) {
+                String username = message.split(":")[1];
+                admins.remove(username);
+                System.out.println("Admin unregistered: " + username);
+                broadcastOnlineLists();
+                return;
+            } else if (message.startsWith("user:") && message.endsWith(":unregister")) {
+                String username = message.split(":")[1];
+                users.remove(username);
+                System.out.println("User unregistered: " + username);
+                broadcastOnlineLists();
+                return;
+            }
+
             // Kiểm tra tin nhắn có đúng định dạng không
             if (!message.startsWith("@")) {
                 session.getBasicRemote().sendText("Invalid message format. Use @recipient message.");
@@ -58,19 +73,19 @@ public class ChatServer {
 
             switch (recipient.toLowerCase()) {
                 case "all": // Gửi tin nhắn đến toàn bộ người dùng online
-                    broadcastMessageToAll(senderType + " " + senderName + ": " + msgContent, session);
+                    broadcastMessageToAll(senderType + " " + senderName + ": " + message, session);
                     break;
 
                 case "admin": // Gửi tin nhắn đến tất cả admin online
-                    broadcastMessageToAdmins(senderType + " " + senderName + ": " + msgContent, session);
+                    broadcastMessageToAdmins(senderType + " " + senderName + ": " + message, session);
                     break;
 
                 case "customer": // Gửi tin nhắn đến tất cả user online
-                    broadcastMessageToCustomers(senderType + " " + senderName + ": " + msgContent, session);
+                    broadcastMessageToCustomers(senderType + " " + senderName + ": " + message, session);
                     break;
 
                 default: // Gửi tin nhắn riêng
-                    sendPrivateMessage(senderName, recipient, msgContent, session, isAdmin);
+                    sendPrivateMessage(senderName, recipient, message, session, isAdmin);
                     break;
             }
         } catch (Exception e) {
@@ -215,19 +230,22 @@ public class ChatServer {
         // Gửi danh sách admin
         String adminList = String.join(",", admins.keySet());
         System.out.println(adminList);
+        // Gửi danh sách user
+        String userList = String.join(",", users.keySet());
+        System.out.println(userList);
+
         for (Session session : admins.values()) {
             try {
                 session.getBasicRemote().sendText("UPDATE_ADMINS:" + adminList);
+                session.getBasicRemote().sendText("UPDATE_USERS:" + userList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        // Gửi danh sách user
-        String userList = String.join(",", users.keySet());
-        System.out.println(userList);
         for (Session session : users.values()) {
             try {
+                session.getBasicRemote().sendText("UPDATE_ADMINS:" + adminList);
                 session.getBasicRemote().sendText("UPDATE_USERS:" + userList);
             } catch (IOException e) {
                 e.printStackTrace();

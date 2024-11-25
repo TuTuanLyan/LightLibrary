@@ -69,7 +69,6 @@ public class CustomerChatController implements Initializable, SyncAction {
     public void setTheme(boolean darkMode) {
         chatRoot.getStylesheets().clear();
         if (darkMode) {
-            /*
             // Dark button
             connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/Chat/connectDark.jpg")).toExternalForm()));
@@ -77,11 +76,9 @@ public class CustomerChatController implements Initializable, SyncAction {
                     .getResource("/com/lightlibrary/Images/Chat/disconnectDark.jpg")).toExternalForm()));
             sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/Chat/sendMessageDark.jpg")).toExternalForm()));
-             */
             chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
         } else {
-            /*
             // Light button
             connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/Chat/connectLight.jpg")).toExternalForm()));
@@ -89,17 +86,17 @@ public class CustomerChatController implements Initializable, SyncAction {
                     .getResource("/com/lightlibrary/Images/Chat/disconnectLight.jpg")).toExternalForm()));
             sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/Images/Chat/sendMessageLight.jpg")).toExternalForm()));
-             */
             chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
         }
+        /*
         // Mặc định load light button. Dark mode đang gặp vấn đề
         connectImageView.setImage(new Image(Objects.requireNonNull(getClass()
                 .getResource("/com/lightlibrary/Images/Chat/connectLight.jpg")).toExternalForm()));
         disconnectImageView.setImage(new Image(Objects.requireNonNull(getClass()
                 .getResource("/com/lightlibrary/Images/Chat/disconnectLight.jpg")).toExternalForm()));
         sendImageView.setImage(new Image(Objects.requireNonNull(getClass()
-                .getResource("/com/lightlibrary/Images/Chat/sendMessageLight.jpg")).toExternalForm()));
+                .getResource("/com/lightlibrary/Images/Chat/sendMessageLight.jpg")).toExternalForm())); */
         chatRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                 .getResource("/com/lightlibrary/StyleSheets/Chat/chat-style.css")).toExternalForm());
     }
@@ -269,6 +266,8 @@ public class CustomerChatController implements Initializable, SyncAction {
     private void disconnectFromServer() {
         try {
             if (session != null && session.isOpen()) {
+                String userName = customer.getUsername();
+                session.getBasicRemote().sendText("user:" + userName + ":unregister");
                 session.close();
                 showInfo("Connection Status", "Disconnected Successfully", "You have been disconnected from the server.");
             } else {
