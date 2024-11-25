@@ -369,7 +369,8 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
                             return;
                         }
 
-                        double totalPrice = getTotalPrice(Integer.parseInt(borrowDaysAmount.getText()));
+                        double totalPrice = getTotalPrice(Integer.parseInt(borrowDaysAmount.getText() != null ?
+                                borrowDaysAmount.getText() : "0"));
                         borrowBook(parentController.getCustomer(), ISBN, totalPrice);
                         confirmBorrowPane.setVisible(false);
                         pickDueDatePiker.setValue(LocalDate.now().plusDays(1));

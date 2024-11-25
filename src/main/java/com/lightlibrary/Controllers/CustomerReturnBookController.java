@@ -171,29 +171,47 @@ public class CustomerReturnBookController implements Initializable, SyncAction {
 
     }
 
-    private void returnedBook (int userID,String isbn) {
-        Task<Void> task = new Task<Void>() {
+    private void returnedBook(int userID, String isbn) {
+        Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                String query = "update transactions set returnDate = current_date() where userID = ? and isbn = ?";
-                try (Connection connectDB = DatabaseConnection.getConnection();
-                     PreparedStatement preparedStatement = connectDB.prepareStatement(query)) {
+                String updateTransactionQuery = "UPDATE transactions SET returnDate = CURRENT_DATE() WHERE userID = ? AND isbn = ?";
+                String updateBooksQuery = "UPDATE books SET availableNumber = availableNumber + 1 WHERE isbn = ?";
 
-                    preparedStatement.setInt(1, userID);
-                    preparedStatement.setString(2, isbn);
-                    int rowsAffected = preparedStatement.executeUpdate();
+                try (Connection connectDB = DatabaseConnection.getConnection()) {
+                    connectDB.setAutoCommit(false);
 
-                    if (rowsAffected > 0) {
-                        Platform.runLater(() -> sortReturn());
+                    try (PreparedStatement transactionStmt = connectDB.prepareStatement(updateTransactionQuery);
+                         PreparedStatement booksStmt = connectDB.prepareStatement(updateBooksQuery)) {
+
+                        transactionStmt.setInt(1, userID);
+                        transactionStmt.setString(2, isbn);
+                        int rowsAffected = transactionStmt.executeUpdate();
+
+                        if (rowsAffected > 0) {
+                            booksStmt.setString(1, isbn);
+                            booksStmt.executeUpdate();
+
+                            connectDB.commit();
+                            Platform.runLater(() -> sortReturn());
+                        } else {
+                            connectDB.rollback();
+                        }
+                    } catch (SQLException e) {
+                        connectDB.rollback();
+                        throw e;
+                    } finally {
+                        connectDB.setAutoCommit(true);
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
                 return null;
             }
         };
 
-        sortReturn();
         new Thread(task).start();
     }
+
 }
