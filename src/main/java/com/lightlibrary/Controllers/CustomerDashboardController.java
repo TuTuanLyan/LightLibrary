@@ -127,6 +127,10 @@ public class CustomerDashboardController implements Initializable {
         this.customer = customer;
         displayCustomerInformation();
         setTheme(customer.isDarkMode());
+
+        preLoad();
+        goToHomePage();
+
         changeThemeToggleButtonAnimation(customer.isDarkMode());
     }
 
@@ -138,12 +142,6 @@ public class CustomerDashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        preLoad();
-
-        loadPane("/com/lightlibrary/Views/CustomerHome.fxml");
-        activeButton = ActiveButton.HOME;
-        currentPageNameLabel.setText("Dashboard");
-
         searchBar.setOnAction(event -> {
             String query = searchBar.getText();
             updateIssueBookSearchResults(query);

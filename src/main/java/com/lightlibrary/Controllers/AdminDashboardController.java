@@ -115,6 +115,11 @@ public class AdminDashboardController implements Initializable {
         this.admin = admin;
         displayAdminInformation();
         setTheme(admin.isDarkMode());
+
+        preLoad();
+        goToHomePage();
+
+        changeThemeToggleButtonAnimation(admin.isDarkMode());
     }
 
     private AdminChatController adminChatController;
@@ -125,12 +130,6 @@ public class AdminDashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        preLoad();
-
-        loadPane("/com/lightlibrary/Views/AdminHome.fxml");
-        activeButton = ActiveButton.HOME;
-        currentPageNameLabel.setText("Dashboard");
-
         searchBar.setOnAction(event -> {
             String query = searchBar.getText();
             updateIssueBookSearchResults(query);

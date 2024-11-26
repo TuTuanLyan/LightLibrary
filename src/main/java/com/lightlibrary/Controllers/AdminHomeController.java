@@ -245,7 +245,7 @@ public class AdminHomeController implements Initializable, SyncAction {
             while (index >= 0) {
                 LocalDate localDate = LocalDate.now().minusDays(index);
                 boolean found = false;
-                resultSet.beforeFirst();
+                resultSet.beforeFirst(); // Reset ResultSet to start from the beginning each time
                 while (resultSet.next()) {
                     LocalDate borrowDate = resultSet.getDate("borrowDate").toLocalDate();
                     if (borrowDate.equals(localDate)) {
@@ -277,11 +277,12 @@ public class AdminHomeController implements Initializable, SyncAction {
             while (index >= 0) {
                 LocalDate localDate = LocalDate.now().minusDays(index);
                 boolean found = false;
-                resultSet.beforeFirst();
+                resultSet.beforeFirst(); // Reset ResultSet to start from the beginning each time
                 while (resultSet.next()) {
                     LocalDate returnDate = resultSet.getDate("returnDate").toLocalDate();
                     if (returnDate.equals(localDate)) {
                         int total = resultSet.getInt("returnPerDay");
+                        // Update returnTotals on UI thread
                         Platform.runLater(() -> returnTotals.getData().add(new XYChart.Data<>(localDate.toString(), total)));
                         found = true;
                         break;
@@ -297,11 +298,21 @@ public class AdminHomeController implements Initializable, SyncAction {
             e.printStackTrace();
         }
 
+        // Ensure the graph is updated on the JavaFX Application Thread
         Platform.runLater(() -> {
-            graph.getData().addAll(Arrays.asList(borrowTotals, returnTotals));
-            graph.setPrefWidth(paneHaveGraph.getPrefWidth());
-            graph.setPrefHeight(paneHaveGraph.getPrefHeight());
-            paneHaveGraph.getChildren().add(graph);
+            if (paneHaveGraph != null) {
+                graph.getData().addAll(Arrays.asList(borrowTotals, returnTotals));
+                graph.setPrefWidth(paneHaveGraph.getPrefWidth());
+                graph.setPrefHeight(paneHaveGraph.getPrefHeight());
+                if (paneHaveGraph.getChildren() != null) {
+                    paneHaveGraph.getChildren().add(graph);
+                } else {
+                    System.out.println("paneHaveGraph is null");
+                }
+            } else {
+                System.out.println("Graph or paneHaveGraph is null");
+            }
         });
     }
+
 }
