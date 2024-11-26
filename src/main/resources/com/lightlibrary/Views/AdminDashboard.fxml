@@ -52,7 +52,7 @@
                 </Button>
             </children>
         </Pane>
-        <Line endX="-36.0" layoutX="117.0" layoutY="609.0" startX="-100.0">
+        <Line endX="-36.0" layoutX="118.0" layoutY="631.0" startX="-100.0">
             <stroke>
                 <LinearGradient endX="0.7109004739336493" endY="1.0" startY="1.0">
                     <stops>
@@ -73,28 +73,6 @@
         <Button layoutX="21.0" layoutY="821.0" mnemonicParsing="false" onAction="#logout" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
             <graphic>
                 <FontAwesomeIcon glyphName="SIGN_OUT" rotate="180.0" size="3em" textAlignment="CENTER">
-                    <fill>
-                        <LinearGradient endX="1.0" endY="1.0" startY="1.0">
-                            <stops>
-                                <Stop>
-                                    <color>
-                                        <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
-                                    </color>
-                                </Stop>
-                                <Stop offset="1.0">
-                                    <color>
-                                        <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
-                                    </color>
-                                </Stop>
-                            </stops>
-                        </LinearGradient>
-                    </fill>
-                </FontAwesomeIcon>
-            </graphic>
-        </Button>
-        <Button layoutX="22.0" layoutY="648.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="56.0" styleClass="special-scene-navigation-button">
-            <graphic>
-                <FontAwesomeIcon glyphName="COG" size="3em" textAlignment="CENTER">
                     <fill>
                         <LinearGradient endX="1.0" endY="1.0" startY="1.0">
                             <stops>

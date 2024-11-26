@@ -30,6 +30,36 @@
                   <Font size="20.0" />
                </font>
             </Label>
+            <Pane fx:id="promptSearchPane" layoutX="63.0" layoutY="99.0" prefHeight="543.0" prefWidth="515.0">
+               <children>
+                  <Label fx:id="detailPriceLabel1" alignment="CENTER" layoutY="369.0" prefHeight="160.0" prefWidth="515.0" text="There is no thing here now, please search something to explore our library." textAlignment="CENTER" wrapText="true">
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="368.0" fitWidth="400.0" layoutX="67.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/searching-robot.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Pane layoutX="680.0" layoutY="15.0" prefHeight="470.0" prefWidth="645.0" styleClass="box-container">

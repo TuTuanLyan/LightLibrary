@@ -97,6 +97,9 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
     @FXML
     private GridPane favouriteBookTable;
 
+    @FXML
+    private Pane promptSearchPane;
+
     private CustomerDashboardController parentController;
 
     public CustomerDashboardController getParentController() {
@@ -119,6 +122,8 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        promptSearchPane.setVisible(true);
+
         detailCloseButton.setOnAction(e -> {
             addToFavouriteListButton.setVisible(false);
             borrowBookButton.setVisible(false);
@@ -152,6 +157,7 @@ public class CustomerIssueBookController implements Initializable, SyncAction {
 
         resultSearchContainer.setVisible(true);
         resultSearchContainer.getChildren().clear();
+        promptSearchPane.setVisible(false);
 
         if ((query.contains("nguoi yeu") || query.contains("ny")) && query.contains("kieu van tuyen")) {
             Pane notFound = createNotFound();
