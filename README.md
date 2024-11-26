@@ -24,13 +24,13 @@ This app has 2 role to access are Customer and Admin.
 - Developed controllers for pages and implemented inter-page communication.
 - Handled multi-threading and created object models for the project.
 - Implemented search APIs and database connections. 
-### 2. Pham Huu Manh 23020548 [**]
+### 2. Pham Huu Manh 23020548 [**maomaoisgoodcat3**](https://github.com/maomaoisgoodcat3)
 
 - Focused on displaying and filtering data in the UI.
 - Developed features for displaying library books and filtering based on various criteria.
 - Handled SQL queries and ensured data integration with the UI.
 
-### 3. 0525
+### 3. Duong Nguyen Minh Duc 23020525 [**fyb174147**](https://github.com/fyb174147)
 - Developed the customer game feature.
 - Implemented the chat system for communication between users (both admin and customer).
 
@@ -47,6 +47,9 @@ This app has 2 role to access are Customer and Admin.
 ## UML Diagram
 
 ![UMLDiagram](Assets/LightLibraryUML.png)
+
+## Main Features
+
 
 
 
