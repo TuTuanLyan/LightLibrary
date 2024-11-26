@@ -32,6 +32,36 @@
                   <Font size="20.0" />
                </font>
             </Label>
+            <Pane fx:id="promptSearchPane" layoutX="68.0" layoutY="119.0" prefHeight="543.0" prefWidth="515.0">
+               <children>
+                  <Label fx:id="detailPriceLabel1" alignment="CENTER" layoutY="369.0" prefHeight="160.0" prefWidth="515.0" text="There is no thing here now, please search something to explore our library." textAlignment="CENTER" wrapText="true">
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.0313725508749485" green="0.843137264251709" blue="0.572549045085907" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.43921568989753723" green="0.5882353186607361" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="368.0" fitWidth="400.0" layoutX="67.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/searching-robot.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
          </children></Pane>
       <Pane layoutX="680.0" layoutY="12.0" prefHeight="415.0" prefWidth="645.0" styleClass="box-container" visible="false">
          <children>
@@ -98,9 +128,9 @@
          </children></Pane>
       <Pane layoutX="680.0" layoutY="442.0" prefHeight="350.0" prefWidth="645.0" styleClass="box-container">
          <children>
-            <ScrollPane layoutX="8.0" layoutY="69.0" prefHeight="274.0" prefWidth="645.0">
+            <ScrollPane layoutX="8.0" layoutY="69.0" prefHeight="274.0" prefWidth="635.0">
                <content>
-                  <GridPane fx:id="favouriteBookTable" prefHeight="16.0" prefWidth="633.0" styleClass="user-info-table">
+                  <GridPane fx:id="favouriteBookTable" prefHeight="32.0" prefWidth="625.0" styleClass="user-info-table">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="143.0" prefWidth="143.0" />
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="218.0" minWidth="180.0" prefWidth="180.0" />
@@ -118,22 +148,22 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="60.0" layoutY="36.0" prefHeight="15.0" prefWidth="54.0" styleClass="page-title" text="ISBN">
+            <Label alignment="CENTER" layoutX="56.0" layoutY="36.0" prefHeight="15.0" prefWidth="54.0" styleClass="page-title" text="ISBN">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="239.0" layoutY="36.0" prefHeight="27.0" prefWidth="48.0" styleClass="page-title" text="Title">
+            <Label alignment="CENTER" layoutX="236.0" layoutY="36.0" prefHeight="27.0" prefWidth="48.0" styleClass="page-title" text="Title">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="387.0" layoutY="36.0" prefHeight="27.0" prefWidth="81.0" styleClass="page-title" text="Author">
+            <Label alignment="CENTER" layoutX="384.0" layoutY="36.0" prefHeight="27.0" prefWidth="81.0" styleClass="page-title" text="Author">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="538.0" layoutY="36.0" prefHeight="27.0" prefWidth="81.0" styleClass="page-title" text="Remove">
+            <Label alignment="CENTER" layoutX="535.0" layoutY="36.0" prefHeight="27.0" prefWidth="81.0" styleClass="page-title" text="Remove">
                <font>
                   <Font size="18.0" />
                </font>

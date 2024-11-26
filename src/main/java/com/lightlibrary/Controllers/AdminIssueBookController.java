@@ -69,6 +69,9 @@ public class AdminIssueBookController implements Initializable, SyncAction {
     @FXML
     private GridPane requireBookTable;
 
+    @FXML
+    private Pane promptSearchPane;
+
     AdminDashboardController parentController;
 
     public AdminDashboardController getParentController() {
@@ -90,6 +93,8 @@ public class AdminIssueBookController implements Initializable, SyncAction {
         addBookButton.setOnAction(this::addBookAction);
         addBookButton.setDisable(true);
         loadingRequire();
+
+        promptSearchPane.setVisible(true);
     }
 
     @Override
@@ -112,6 +117,7 @@ public class AdminIssueBookController implements Initializable, SyncAction {
 
         resultSearchContainer.setVisible(true);
         resultSearchContainer.getChildren().clear();
+        promptSearchPane.setVisible(false);
 
         if ((query.contains("nguoi yeu") || query.contains("ny")) && query.contains("kieu van tuyen")) {
             Pane notFound = createNotFound();
