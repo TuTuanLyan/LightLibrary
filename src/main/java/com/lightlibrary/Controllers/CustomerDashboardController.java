@@ -378,6 +378,7 @@ public class CustomerDashboardController implements Initializable {
     private void setTheme(boolean darkMode) {
         updateChildThemes(darkMode);
 
+        dashBoardRoot.getStylesheets().clear();
         if (darkMode) {
             dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass()
                     .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());

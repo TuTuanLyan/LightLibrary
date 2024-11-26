@@ -358,6 +358,8 @@ public class AdminDashboardController implements Initializable {
     }
 
     private void setTheme(boolean darkMode) {
+        updateChildThemes(darkMode);
+
         dashBoardRoot.getStylesheets().clear();
         if (darkMode) {
             dashBoardRoot.getStylesheets().add(Objects.requireNonNull(getClass()
@@ -387,7 +389,7 @@ public class AdminDashboardController implements Initializable {
                     .getResource("/com/lightlibrary/Images/dark-help.png")).toExternalForm()));
         }
 
-        updateChildThemes(darkMode);
+
     }
 
     private void changeThemeToggleButtonAnimation(boolean darkMode) {

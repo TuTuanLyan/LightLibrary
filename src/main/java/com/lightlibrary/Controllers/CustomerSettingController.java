@@ -99,6 +99,8 @@ public class CustomerSettingController implements Initializable {
         emailLabel.setText(customer.getEmail() != null ? "Email: " + customer.getEmail() : "You have not set your email");
         phoneNumberLabel.setText(customer.getPhoneNumber() != null ? "Phone number: " + customer.getPhoneNumber() : "You have not set your phone number");
 
+        setTheme(customer.isDarkMode());
+
         String avatarUrl = customer.getAvatarImageUrl();
         if (avatarUrl != null) {
             if (!avatarUrl.startsWith("file:")) {
@@ -135,6 +137,16 @@ public class CustomerSettingController implements Initializable {
 
         changeAvatarButton.setOnAction(event -> handleChangeAvatar());
         saveAvatarButton.setOnAction(event -> saveAvatarToDatabase());
+    }
+
+    private void setTheme(boolean darkMode) {
+        if (darkMode) {
+            rootSettingContainer.getStylesheets().add(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/StyleSheets/dark-theme.css")).toExternalForm());
+        } else {
+            rootSettingContainer.getStylesheets().add(Objects.requireNonNull(getClass()
+                    .getResource("/com/lightlibrary/StyleSheets/light-theme.css")).toExternalForm());
+        }
     }
 
     private void handleChangeAvatar() {
