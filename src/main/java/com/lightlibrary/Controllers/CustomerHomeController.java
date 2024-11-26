@@ -76,7 +76,7 @@ public class CustomerHomeController implements Initializable, SyncAction {
 
     @Override
     public void autoUpdate() {
-
+        disPlayTopChoices();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class CustomerHomeController implements Initializable, SyncAction {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateDate(curentTimeLabel);
-        disPlayTopChoices();
+        autoUpdate();
     }
 
     @Override

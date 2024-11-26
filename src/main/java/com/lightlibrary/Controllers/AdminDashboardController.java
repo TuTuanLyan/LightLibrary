@@ -202,6 +202,7 @@ public class AdminDashboardController implements Initializable {
             if (controller instanceof SyncAction) {
                 ((SyncAction) controller).setTheme(admin.isDarkMode());
                 ((SyncAction) controller).setParentController(this);
+                ((SyncAction) controller).autoUpdate();
             }
             setPaneWithAnimation(loader.getRoot());
         } else {
@@ -224,6 +225,7 @@ public class AdminDashboardController implements Initializable {
                     ((SyncAction) controller).setTheme(admin.isDarkMode());
                     changeThemeToggleButtonAnimation(admin.isDarkMode());
                     ((SyncAction) controller).setParentController(this);
+                    ((SyncAction) controller).autoUpdate();
                 }
             });
 
