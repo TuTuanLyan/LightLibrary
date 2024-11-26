@@ -30,9 +30,9 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Pane fx:id="promptSearchPane" layoutX="63.0" layoutY="99.0" prefHeight="543.0" prefWidth="515.0">
+            <Pane fx:id="promptSearchPane" layoutX="63.0" layoutY="99.0" prefHeight="553.0" prefWidth="515.0">
                <children>
-                  <Label fx:id="detailPriceLabel1" alignment="CENTER" layoutY="369.0" prefHeight="160.0" prefWidth="515.0" text="There is no thing here now, please search something to explore our library." textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="detailPriceLabel1" alignment="CENTER" layoutY="369.0" prefHeight="180.0" prefWidth="515.0" text="There is no thing here now, please search something to get information and add book into library." textAlignment="CENTER" wrapText="true">
                      <textFill>
                         <LinearGradient endX="1.0" endY="1.0">
                            <stops>
@@ -50,7 +50,7 @@
                         </LinearGradient>
                      </textFill>
                      <font>
-                        <Font name="System Bold" size="32.0" />
+                        <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
                   <ImageView fitHeight="368.0" fitWidth="400.0" layoutX="67.0" pickOnBounds="true" preserveRatio="true">

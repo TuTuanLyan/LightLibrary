@@ -1,6 +1,7 @@
 package com.lightlibrary.Controllers;
 
 import com.lightlibrary.Models.DatabaseConnection;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -139,7 +140,8 @@ public class AdminHomeController implements Initializable, SyncAction {
             PreparedStatement preparedStatement = connection.prepareStatement(queryTotalBooks);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                label.setText(resultSet.getString("total"));
+                String total = resultSet.getString("total");
+                Platform.runLater(() -> label.setText(total));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -161,10 +163,16 @@ public class AdminHomeController implements Initializable, SyncAction {
                 String title = resultSet.getString("TITLE");
                 String author = resultSet.getString("AUTHOR");
                 int available = resultSet.getInt("availableNumber");
-                listBookGridPane.addRow(listBookGridPane.getRowCount(), new Label(ISBN), new Label(title), new Label(author), new Label(Integer.toString(available)));
-                RowConstraints curConstraints = new RowConstraints();
-                curConstraints.setMinHeight(70);
-                listBookGridPane.getRowConstraints().add(curConstraints);
+                Platform.runLater(() ->{
+                    listBookGridPane.addRow(listBookGridPane.getRowCount(),
+                            new Label(ISBN),
+                            new Label(title),
+                            new Label(author),
+                            new Label(Integer.toString(available)));
+                    RowConstraints curConstraints = new RowConstraints();
+                    curConstraints.setMinHeight(70);
+                    listBookGridPane.getRowConstraints().add(curConstraints);
+                });
             }
 
         } catch (SQLException e) {
@@ -196,10 +204,16 @@ public class AdminHomeController implements Initializable, SyncAction {
                 String userName = resultSet.getString("userName");
                 int totalBorrowed = resultSet.getInt("totalBorrowed");
 
-                listUserGridPane.addRow(listUserGridPane.getRowCount(), new Label(Integer.toString(userID)), new Label(userName), new Label(fullName), new Label(Integer.toString(totalBorrowed)));
-                RowConstraints curConstraints = new RowConstraints();
-                curConstraints.setMinHeight(70);
-                listUserGridPane.getRowConstraints().add(curConstraints);
+                Platform.runLater(() -> {
+                    listUserGridPane.addRow(listUserGridPane.getRowCount(),
+                            new Label(Integer.toString(userID)),
+                            new Label(userName),
+                            new Label(fullName),
+                            new Label(Integer.toString(totalBorrowed)));
+                    RowConstraints curConstraints = new RowConstraints();
+                    curConstraints.setMinHeight(70);
+                    listUserGridPane.getRowConstraints().add(curConstraints);
+                });
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -220,7 +234,10 @@ public class AdminHomeController implements Initializable, SyncAction {
         returnTotals.setName("Returned");
 
         Connection connection = DatabaseConnection.getConnection();
-        String queryConnect1 = "select t.borrowDate,count(t.borrowDate) as borrowPerDay from transactions t where t.borrowDate between current_date() - 6 and current_date() group by t.borrowDate order by t.borrowDate asc";
+
+        // Query for borrowed books
+        String queryConnect1 = "select t.borrowDate, count(t.borrowDate) as borrowPerDay from transactions t " +
+                "where t.borrowDate between current_date() - 6 and current_date() group by t.borrowDate order by t.borrowDate asc";
         try {
             Statement preparedStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = preparedStatement.executeQuery(queryConnect1);
@@ -234,50 +251,45 @@ public class AdminHomeController implements Initializable, SyncAction {
                     if (borrowDate.equals(localDate)) {
                         int total = resultSet.getInt("borrowPerDay");
                         XYChart.Data<String, Number> temporaryBar = new XYChart.Data<>(localDate.toString(), total);
-                        borrowTotals.getData().add(temporaryBar);
+                        // Update borrowTotals on UI thread
+                        Platform.runLater(() -> borrowTotals.getData().add(temporaryBar));
                         found = true;
                         break;
                     }
                 }
-
                 if (!found) {
-                    borrowTotals.getData().add(new XYChart.Data<>(localDate.toString(), 0));
+                    Platform.runLater(() -> borrowTotals.getData().add(new XYChart.Data<>(localDate.toString(), 0)));
                 }
-
                 index--;
             }
         } catch (SQLException e) {
             System.out.println("cannot create connection");
             e.printStackTrace();
         }
-        String queryConnect2 = "select t.returnDate,count(t.returnDate) as returnPerDay from transactions t where t.returnDate between current_date() - 6 and current_date() group by t.returnDate order by t.returnDate asc";
+
+        // Query for returned books
+        String queryConnect2 = "select t.returnDate, count(t.returnDate) as returnPerDay from transactions t " +
+                "where t.returnDate between current_date() - 6 and current_date() group by t.returnDate order by t.returnDate asc";
         try {
             Statement preparedStatement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet resultSet = preparedStatement.executeQuery(queryConnect2);
             int index = 6;
-            // Đặt con trỏ về đầu ResultSet
-
             while (index >= 0) {
                 LocalDate localDate = LocalDate.now().minusDays(index);
-                boolean found = false; // Biến để kiểm tra xem có tìm thấy ngày không
+                boolean found = false;
                 resultSet.beforeFirst();
-                // Lặp qua các hàng trong ResultSet
                 while (resultSet.next()) {
                     LocalDate returnDate = resultSet.getDate("returnDate").toLocalDate();
                     if (returnDate.equals(localDate)) {
                         int total = resultSet.getInt("returnPerDay");
-                        returnTotals.getData().add(new XYChart.Data<>(localDate.toString(), total));
-                        found = true; // Đánh dấu là đã tìm thấy
-                        break; // Thoát khỏi vòng lặp khi đã tìm thấy
-
+                        Platform.runLater(() -> returnTotals.getData().add(new XYChart.Data<>(localDate.toString(), total)));
+                        found = true;
+                        break;
                     }
                 }
-
-                // Nếu không tìm thấy, có thể thêm giá trị 0 hoặc một giá trị mặc định
                 if (!found) {
-                    returnTotals.getData().add(new XYChart.Data<>(localDate.toString(), 0));
+                    Platform.runLater(() -> returnTotals.getData().add(new XYChart.Data<>(localDate.toString(), 0)));
                 }
-
                 index--;
             }
         } catch (SQLException e) {
@@ -285,11 +297,11 @@ public class AdminHomeController implements Initializable, SyncAction {
             e.printStackTrace();
         }
 
-        graph.getData().addAll(Arrays.asList(borrowTotals, returnTotals));
-
-        graph.setPrefWidth(paneHaveGraph.getPrefWidth());
-        graph.setPrefHeight(paneHaveGraph.getPrefHeight());
-        paneHaveGraph.getChildren().add(graph);
-
+        Platform.runLater(() -> {
+            graph.getData().addAll(Arrays.asList(borrowTotals, returnTotals));
+            graph.setPrefWidth(paneHaveGraph.getPrefWidth());
+            graph.setPrefHeight(paneHaveGraph.getPrefHeight());
+            paneHaveGraph.getChildren().add(graph);
+        });
     }
 }
