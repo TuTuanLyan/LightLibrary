@@ -73,8 +73,8 @@ public class AdminHomeController implements Initializable, SyncAction {
 
     @Override
     public void autoUpdate() {
+        graphController();
         ExecutorService executorService = Executors.newCachedThreadPool();
-        executorService.submit(this::graphController);
         executorService.execute(this::loadViewBook);
         executorService.execute(this::loadViewUser);
         executorService.submit(() -> loadTotalOverviewLabel(totalBookLabel, "books"));

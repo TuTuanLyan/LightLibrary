@@ -7,3 +7,9 @@ The application is written in Java and uses the JavaFX library, and it is based 
 This app has 2 role to access are Customer and Admin.
 
 ### Customer
+
+
+
+## UML Diagram
+
+![UMLDiagram]()
