@@ -375,10 +375,17 @@ public class CustomerChatController implements Initializable, SyncAction {
             String sender = message.substring(0, atIndex - 2).trim();
             String recipient = message.substring(atIndex, spaceIndex2nd).trim();
 
-            if (!(recipient.equals("@all") || recipient.equals("@admin") || recipient.equals("@customer"))) {
-                sender += " → You (direct message)";
-            } else {
+            if (sender.equals("You")) {
                 sender += " → " + recipient;
+                if (!(recipient.equals("@all") || recipient.equals("@admin") || recipient.equals("@customer"))) {
+                    sender += " (direct message)";
+                }
+            } else {
+                if (!(recipient.equals("@all") || recipient.equals("@admin") || recipient.equals("@customer"))) {
+                    sender += " → You (direct message)";
+                } else {
+                    sender += " → " + recipient;
+                }
             }
 
             String messageContent = message.substring(spaceIndex2nd + 1);
