@@ -9,7 +9,7 @@ This app has 2 role to access are Customer and Admin.
 ## Tech Stack
 
 - Language: Java
-- Database: Sqlite, MySQL Server
+- Database: MySQL Server
 - Backend: JDBC, Gson, [Google Books API](https://developers.google.com/books)
 - Frontend: JavaFX, JavaFX CSS
 - Build tool: maven
