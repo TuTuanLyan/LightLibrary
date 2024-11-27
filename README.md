@@ -112,6 +112,9 @@ This app has 2 role to access are Customer and Admin.
 - **Game**
 ![Game](Assets/Game.png)
 
+## Demo
+[**Light library Video Demo**](https://drive.google.com/drive/u/0/folders/1RFtEOsOYPGNiwfleJi0zSwGxXiCB9uEY)
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
